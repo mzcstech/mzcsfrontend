@@ -2,7 +2,7 @@
 A full simple application for react material ui
 
 ## Features
-- Responsive
+- Responsive mzcs
 - Include a Graph using [recharts](https://github.com/recharts/recharts)
 - With [Router](https://github.com/ReactTraining/react-router) included
 - A docker container for production build
