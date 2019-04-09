@@ -14,7 +14,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Menu from './Menu';
-
+import Button from '@material-ui/core/Button';
+import Menu1 from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 const logo = require('../images/logo.svg');
 
 const styles = theme => ({
@@ -82,7 +84,9 @@ class Topbar extends Component {
 
   state = {
     value: 0,
-    menuDrawer: false
+    menuDrawer: false,
+    menus: [],
+    anchorEl:null
   };
 
   handleChange = (event, value) => {
@@ -126,11 +130,17 @@ class Topbar extends Component {
    
 
   }
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
 
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
   render() {
 
     const { classes } = this.props;
-
+    const { anchorEl } = this.state;
     return (
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
@@ -176,6 +186,23 @@ class Topbar extends Component {
                       {Menu.map((item, index) => (
                         <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
                       ))}
+                      <Button
+                        aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
+                        aria-haspopup="true"
+                        onClick={this.handleClick}
+                      >
+                        Open Menu
+                      </Button>
+                      
+                      <Menu1
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={this.handleClose}                      >
+                        <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                        <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+                      </Menu1>
                     </Tabs>
                   </div>
                 </React.Fragment>
