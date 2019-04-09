@@ -15,8 +15,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Menu from './Menu';
 import Button from '@material-ui/core/Button';
-import Menu1 from '@material-ui/core/Menu'; 
+import Menu1 from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { SERVER_URL } from '../constants.js';
 const logo = require('../images/logo.svg');
 
 const styles = theme => ({
@@ -86,9 +87,52 @@ class Topbar extends Component {
     value: 0,
     menuDrawer: false,
     menus: [],
-    anchorEl:null
+    anchorEl: null
   };
+  componentWillMount() {
+    this.fetchTemplate();
+  }
+  //获取菜单
+  fetchTemplate = () => {
+    fetch(SERVER_URL + '/index/index', {
 
+      mode: "cors",
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json,text/plain,*/*'
+      }
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        //console.log(responseData.data[0].subMenu);
+        this.setState({
+          menus: responseData.data[0].subMenu
+        });
+        this.state.menus.forEach(element => {
+          var ele = {
+            label: '', pathname: ''
+          }
+          ele.label = element.menu_NAME;
+          ele.pathname = element.menu_URL;
+          console.log("Menu")
+
+          console.log(Menu)
+
+          var isExist = false;
+          Menu.forEach(item => {
+            if (item.label === ele.label) {
+              isExist = true;
+            }
+          })
+          if (!isExist) {
+            Menu.push(ele);//将后台返回的菜单保存到menu中
+          }
+        });
+        console.log(Menu)
+      })
+      .catch(err => console.error(err));
+  }
   handleChange = (event, value) => {
     this.setState({ value });
   };
@@ -124,10 +168,10 @@ class Topbar extends Component {
     if (this.props.currentPath === '/template') {
       return 5
     }
-     if (this.props.currentPath === '/demo') {
+    if (this.props.currentPath === '/demo') {
       return 6
     }
-   
+
 
   }
   handleClick = event => {
@@ -193,7 +237,7 @@ class Topbar extends Component {
                       >
                         Open Menu
                       </Button>
-                      
+
                       <Menu1
                         id="simple-menu"
                         anchorEl={anchorEl}
