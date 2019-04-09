@@ -18,6 +18,14 @@ const Menu = [
   {
     label: "Cards",
     pathname: "/cards"
+  },
+  {
+    label: "Template",
+    pathname: "/template"
+  },
+  {
+    label: "Demo",
+    pathname: "/demo"
   }
 
 ];
