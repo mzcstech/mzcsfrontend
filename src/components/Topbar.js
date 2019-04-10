@@ -18,6 +18,7 @@ import Button from '@material-ui/core/Button';
 import Menu1 from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { SERVER_URL } from '../constants.js';
+import MenuList from '@material-ui/core/MenuList';
 const logo = require('../images/logo.svg');
 
 const styles = theme => ({
@@ -107,18 +108,17 @@ class Topbar extends Component {
       .then((responseData) => {
         //console.log(responseData.data[0].subMenu);
         this.setState({
-          menus: responseData.data[0].subMenu
+          menus: responseData.data
         });
-        this.state.menus.forEach(element => {
+        console.log(this.state.menus)
+
+        //单级菜单数据回显
+        responseData.data[0].subMenu.forEach(element => {
           var ele = {
             label: '', pathname: ''
           }
           ele.label = element.menu_NAME;
           ele.pathname = element.menu_URL;
-          console.log("Menu")
-
-          console.log(Menu)
-
           var isExist = false;
           Menu.forEach(item => {
             if (item.label === ele.label) {
@@ -129,7 +129,7 @@ class Topbar extends Component {
             Menu.push(ele);//将后台返回的菜单保存到menu中
           }
         });
-        console.log(Menu)
+
       })
       .catch(err => console.error(err));
   }
@@ -174,17 +174,33 @@ class Topbar extends Component {
 
 
   }
-  handleClick = event => {
+  handleClick(menu_ID,event){
+    console.log("menu_ID") 
+    console.log(event.currentTarget)   
+    console.log(menu_ID) 
+    console.log("menu_ID") 
+    this.state.menus.forEach(element => {
+      if(element.menu_ID==menu_ID){
+      element.anchorEl =event.currentTarget   
+    }  
+    });
     this.setState({ anchorEl: event.currentTarget });
+    
   };
 
   handleClose = () => {
+    this.state.menus.forEach(element => {
+      element.anchorEl=null
+    });
     this.setState({ anchorEl: null });
   };
   render() {
 
     const { classes } = this.props;
     const { anchorEl } = this.state;
+
+    console.log(this.state.menus);
+
     return (
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
@@ -230,15 +246,41 @@ class Topbar extends Component {
                       {Menu.map((item, index) => (
                         <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
                       ))}
-                      <Button
+
+
+                      {this.state.menus.map((menu) => (
+                        <Button
+                          aria-owns={this.state.anchorEl ? menu.menu_ID : undefined}
+                          aria-haspopup="true"
+                          onClick={this.handleClick.bind(this,menu.menu_ID)}
+                         >{menu.menu_NAME}</Button>                   
+                      ))}
+                      
+                      {this.state.menus.map((menu) => (
+                      <Menu1
+                        id={menu.menu_ID}
+                        anchorEl={menu.anchorEl}
+                        open={Boolean(menu.anchorEl)}
+                        onClose={this.handleClose} >
+
+                        {menu.subMenu.map((subMenu,index) => (                          
+                            // <MenuItem onClick={this.handleClose} >{subMenu.menu_NAME}</MenuItem> 
+                            <Tab key={index} component={Link} to={{ pathname: subMenu.menu_NAME, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
+                            
+                        ))}    
+                                     
+                      </Menu1>
+                    ))}
+
+                      {/* <Button
                         aria-owns={this.state.anchorEl ? 'simple-menu' : undefined}
                         aria-haspopup="true"
                         onClick={this.handleClick}
                       >
                         Open Menu
-                      </Button>
+                      </Button> */}
 
-                      <Menu1
+                      {/* <Menu1
                         id="simple-menu"
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}
@@ -246,7 +288,7 @@ class Topbar extends Component {
                         <MenuItem onClick={this.handleClose}>Profile</MenuItem>
                         <MenuItem onClick={this.handleClose}>My account</MenuItem>
                         <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                      </Menu1>
+                      </Menu1> */}
                     </Tabs>
                   </div>
                 </React.Fragment>
