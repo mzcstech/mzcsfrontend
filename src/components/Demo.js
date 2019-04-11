@@ -19,6 +19,11 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Topbar from './Topbar';
+import AddTemplate from './AddTemplate.js';
+import EditTemplate from './EditTemplate.js';
+import Button from '@material-ui/core/Button';
+import { confirmAlert } from 'react-confirm-alert';
+import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../constants.js'
 let counter = 0;
 function createData(tEMPLATE_ID, uSER_ID, tEMPLATE_SELECT, tEMPLATE_DATE, tEMPLATE_DATETIME,tEMPLATE_RADIO,tEMPLATE_CHECKBOX,tEMPLATE_TEXTAREA) {
@@ -59,8 +64,46 @@ const rows = [
   { id: 'tEMPLATE_RADIO', numeric: true, disablePadding: false, label: '单选' },
   { id: 'tEMPLATE_CHECKBOX', numeric: true, disablePadding: false, label: '多选' },
   { id: 'tEMPLATE_TEXTAREA', numeric: true, disablePadding: false, label: '文本框' },
+  {
+    id: 'updatePagebutton',
+    numeric: false,
+    disablePadding: false,
+    label: '操作',
+    width: 100,
+    Cell: ({ row }) =>
+        (<EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)                
+}, {
+    id: 'delbutton',
+    numeric: false,
+    disablePadding: false,
+    label: '删除',
+    width: 100,
+    Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>Delete</Button>)
+}
 ];
-
+//修改
+function editTemplate(params) {
+  console.log(params)
+  let templateVo = new FormData()
+  if (params) {
+      for (let key in params) {
+          templateVo.append(key, params[key])
+      }
+  }
+  console.log(templateVo)
+  fetch(SERVER_URL + '/template/edit',
+      {
+          mode: "cors",
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+              'Accept': 'application/json,text/plain,*/*'                   
+          },
+          body: templateVo
+      })
+      .then(res => this.fetchTemplate())
+      .catch(err => console.error(err))
+}
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -218,6 +261,64 @@ class EnhancedTable extends React.Component {
   componentDidMount= () => {
     this.fetchTemplate();
 }
+// 新增
+addTemplate(params) {
+  let templateVo = new FormData()
+  if (params) {
+      for (let key in params) {
+          templateVo.append(key, params[key])
+      }
+  }
+  fetch(SERVER_URL + '/template/save',
+      {
+          mode: "cors",
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+              'Accept': 'application/json,text/plain,*/*'
+          },
+          body: templateVo
+      }
+  )
+      .then(res => this.fetchTemplate())
+      .catch(err => console.error(err))
+}
+//删除
+onDelClick = (id) => {
+  fetch(SERVER_URL + '/template/delete/' + id,
+      {
+          mode: "cors",
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+              'Accept': '*/*'
+          }
+      })
+      // fetch(SERVER_URL + 'cars/')
+      .then(res => {
+          this.setState({ open: true, message: '删除成功' });
+          this.fetchTemplate()
+      })
+      .catch(err => {
+          this.setState({ open: true, message: 'Error when deleting' });
+          console.error(err)
+      })
+}
+//确认是否删除
+confirmDelete = (id) => {
+  confirmAlert({
+      message: '确认是否删除?' + id,
+      buttons: [
+          {
+              label: '是',
+              onClick: () => this.onDelClick(id)
+          },
+          {
+              label: '否',
+          }
+      ]
+  })
+}
 //获取模板列表
 fetchTemplate = () => {
   let templateVo=new FormData();  
@@ -310,7 +411,9 @@ fetchTemplate = () => {
       <Paper className={classes.root}>
       <Topbar currentPath={currentPath} />
         <EnhancedTableToolbar numSelected={selected.length} />
-        
+        <Grid container>
+                    <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
+                </Grid> 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -349,6 +452,8 @@ fetchTemplate = () => {
                       <TableCell align="right">{n.tEMPLATE_RADIO}</TableCell>
                       <TableCell align="right">{n.tEMPLATE_CHECKBOX}</TableCell>
                       <TableCell align="right">{n.tEMPLATE_TEXTAREA}</TableCell>
+                      <TableCell align="right"><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
+                      <TableCell align="right"><Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>Delete</Button></TableCell>
                     </TableRow>
                   );
                 })}
