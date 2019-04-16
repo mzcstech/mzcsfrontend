@@ -5,7 +5,7 @@ import Routes from './routes'
 import { blue, indigo } from '@material-ui/core/colors'
 
 const theme = createMuiTheme({
-  palette: {
+  palette: {  
     secondary: {
       main: blue[900]
     },
