@@ -1,27 +1,41 @@
 import React, { Component } from 'react';
-import { SERVER_URL } from '../constants.js';
+import { SERVER_URL } from '../../constants.js';
 import ReactTable from "react-table";
 import 'react-table/react-table.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import AddTemplate from './AddTemplate.js';
 import EditTemplate from './EditTemplate.js';
+import SeeTemplate  from './SeeTemplate.js';
+import QueryTemplate  from './QueryTemplate.js';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
-
-import Topbar from './Topbar';
-
+import Topbar from '../Topbar';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import { Backdrop } from '@material-ui/core';
+require('./Template.css')
+const styles = theme => ({
+    button: {
+      margin: theme.spacing.unit,
+    },
+    input: {
+      display: 'none',
+    },
+  });
 class Template extends Component {
-
+   
     constructor(props) {
         super(props);
+    
         this.state = { templates: [], open: false, message: '',TEMPLATE_ID:'' };
     }
 
     componentDidMount() {
         this.fetchTemplate();
     }
+   
     //获取模板列表
     fetchTemplate = () => {
         fetch(SERVER_URL + '/template/list', {
@@ -164,71 +178,85 @@ class Template extends Component {
     handleClose = (event, reason) => {
         this.setState({ open: false });
     };
+    
     //页面样式list字段配置
     render() {
+        let linkStyle = {backgroundColor: '#c9302c',color:'#ffffff',height:'36px',margin:'0',}
         const columns = [{
             Header: 'tEMPLATE_ID',
             accessor: 'tEMPLATE_ID',
-            Cell: this.renderEditable
+            style:''
         }, {
             Header: '输入框',
             accessor: 'uSER_ID',
-            Cell: this.renderEditable
         }, {
             Header: '下拉框',
             accessor: 'tEMPLATE_SELECT',
-            Cell: this.renderEditable
         }, {
             Header: '日期',
             accessor: 'tEMPLATE_DATE',
-            Cell: this.renderEditable
         }, {
             Header: '日期时间',
             accessor: 'tEMPLATE_DATETIME',
-            Cell: this.renderEditable
         }, {
             Header: '单选',
             accessor: 'tEMPLATE_RADIO',
-            Cell: this.renderEditable
         }, {
             Header: '多选',
             accessor: 'tEMPLATE_CHECKBOX',
-            Cell: this.renderEditable
         }, {
             Header: '文本框',
             accessor: 'tEMPLATE_TEXTAREA',
-            Cell: this.renderEditable
-        }, {
+        }, 
+        {
             id: 'updatePagebutton',
             sortable: false,
             filterable: false,
-            width: 100,
+            width: 70,
             Cell: ({ row }) =>
-                (<EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)                
+                (<SeeTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></SeeTemplate>)                
+        },
+        {
+            id: 'updatePagebutton',
+            sortable: false,
+            filterable: false,
+            width: 70,
+            Cell: ({ row }) =>
+                (<EditTemplate  editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></EditTemplate>)                
         }, {
             id: 'delbutton',
             sortable: false,
             filterable: false,
-            width: 100,
-            Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>Delete</Button>)
+            width: 70,
+            Cell: ({ row }) => (<Button size="small"    style={linkStyle}  className={this.props.classes.button}  variant="contained"  onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }} >删除</Button>)
         }
         ];
         const currentPath = this.props.location.pathname;
         return (
             <div className="App">
                 <Topbar currentPath={currentPath} />
-                <Grid container>
-                    <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
-                </Grid>                              
-                <ReactTable data={this.state.templates} columns={columns}
+                <Grid container className="Grid">
+                     <div className="QueryTemplate">
+                        <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
+                        <div className="QueryTemplateInto" >
+                            <QueryTemplate ></QueryTemplate>
+                        </div>
+                    </div>
+                </Grid>           
+                
+                <ReactTable data={this.state.templates}  columns={columns}
                     filterable={true} />
+
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
-                    open={this.state.open} onClose={this.handleClose}
+                    open={this.state.open}  onClose={this.handleClose}
                     autoHideDuration={1500} message={this.state.message} />
+                <button onClick={this.fetchTemplate}>点击分页</button>
             </div>
         );
     }
 }
-
-export default Template;
+Template.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+export default withStyles(styles)(Template);

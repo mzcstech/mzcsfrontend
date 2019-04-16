@@ -6,8 +6,8 @@ import Cards from './components/Cards'
 import Main from './components/Main'
 import Signup from './components/Signup'
 import ScrollToTop from './components/ScrollTop'
-import Template from './components/Template'
-import Demo from './components/Demo'
+import Template from './components/template/Template'
+import Demo from './components/demo/Demo'
 export default props => (
     <HashRouter>
       <ScrollToTop>
@@ -19,7 +19,6 @@ export default props => (
           <Route exact path='/cards' component={ Cards } />
           <Route exact path='/template' component={ Template } />
           <Route exact path='/Demo' component={ Demo } />
-
         </Switch>
       </ScrollToTop>
     </HashRouter>

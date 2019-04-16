@@ -18,13 +18,17 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import Topbar from './Topbar';
+import Topbar from '../Topbar';
 import AddTemplate from './AddTemplate.js';
 import EditTemplate from './EditTemplate.js';
+import SeeTemplate from './SeeTemplate.js';
+import QueryTemplate from './QueryTemplate.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
-import { SERVER_URL } from '../constants.js'
+import Snackbar from '@material-ui/core/Snackbar';
+import { SERVER_URL } from '../../constants.js'
+require('./Template.css')
 let counter = 0;
 function createData(tEMPLATE_ID, uSER_ID, tEMPLATE_SELECT, tEMPLATE_DATE, tEMPLATE_DATETIME,tEMPLATE_RADIO,tEMPLATE_CHECKBOX,tEMPLATE_TEXTAREA) {
   counter += 1;
@@ -56,31 +60,42 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'tEMPLATE_ID', numeric: false, disablePadding: true, label: 'tEMPLATE_ID' },
-  { id: 'uSER_ID', numeric: true, disablePadding: false, label: '输入框' },
-  { id: 'tEMPLATE_SELECT', numeric: true, disablePadding: false, label: '下拉框' },
-  { id: 'tEMPLATE_DATE', numeric: true, disablePadding: false, label: '日期' },
-  { id: 'tEMPLATE_DATETIME', numeric: true, disablePadding: false, label: '日期时间' },
-  { id: 'tEMPLATE_RADIO', numeric: true, disablePadding: false, label: '单选' },
-  { id: 'tEMPLATE_CHECKBOX', numeric: true, disablePadding: false, label: '多选' },
-  { id: 'tEMPLATE_TEXTAREA', numeric: true, disablePadding: false, label: '文本框' },
+  { id: 'tEMPLATE_ID',      numeric: false,disablePadding: true,  label: 'tEMPLATE_ID' },
+  { id: 'uSER_ID',          numeric: true, disablePadding: false, label: '输入框' },
+  { id: 'tEMPLATE_SELECT',  numeric: true, disablePadding: false, label: '下拉框' },
+  { id: 'tEMPLATE_DATE',    numeric: true, disablePadding: false, label: '日期' },
+  { id: 'tEMPLATE_DATETIME',numeric: true, disablePadding: false, label: '日期时间' },
+  { id: 'tEMPLATE_RADIO',   numeric: true, disablePadding: false, label: '单选' },
+  { id: 'tEMPLATE_CHECKBOX',numeric: true, disablePadding: false, label: '多选' },
+  { id: 'tEMPLATE_TEXTAREA',numeric: true, disablePadding: false, label: '文本框' },
   {
+    id: 'updatePagebutton',
+    sortable: false,
+    filterable: false,
+    label: '查看',
+  
+    Cell: ({ row }) =>
+        (<SeeTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></SeeTemplate>)                
+},
+{
     id: 'updatePagebutton',
     numeric: false,
     disablePadding: false,
-    label: '操作',
-    width: 100,
+    label: '修改',
+  
     Cell: ({ row }) =>
         (<EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)                
-}, {
+}, 
+{
     id: 'delbutton',
     numeric: false,
     disablePadding: false,
     label: '删除',
-    width: 100,
-    Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>Delete</Button>)
+    width:70,
+    Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>删除</Button>)
 }
 ];
+
 //修改
 function editTemplate(params) {
   console.log(params)
@@ -115,8 +130,8 @@ class EnhancedTableHead extends React.Component {
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
+          <TableCell padding="checkbox" className="TableCellCheckbox">
+            <Checkbox 
               indeterminate={numSelected > 0 && numSelected < rowCount}
               checked={numSelected === rowCount}
               onChange={onSelectAllClick}
@@ -125,9 +140,12 @@ class EnhancedTableHead extends React.Component {
           {rows.map(
             row => (
               <TableCell
-                key={row.id}
-                align={row.numeric ? 'right' : 'left'}
-                padding={row.disablePadding ? 'none' : 'default'}
+                className="TableCell"
+                key={row.id} 
+                // align={row.numeric ? 'right' : 'left'}
+                align="center"
+                // padding={row.disablePadding ? 'none' : 'default'}
+                padding="none"
                 sortDirection={orderBy === row.id ? order : false}
               >
                 <Tooltip
@@ -136,11 +154,13 @@ class EnhancedTableHead extends React.Component {
                   enterDelay={300}
                 >
                   <TableSortLabel
+                    className="TableSortLabel"
                     active={orderBy === row.id}
+                    hideSortIcon={true}
                     direction={order}
                     onClick={this.createSortHandler(row.id)}
                   >
-                    {row.label}
+                      {row.label}
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
@@ -257,10 +277,17 @@ class EnhancedTable extends React.Component {
     page: 0,
     rowsPerPage: 5,
     total:0,
+    message: '',
+    open: false,
+    TEMPLATE_ID:''
   };
   componentDidMount= () => {
     this.fetchTemplate();
 }
+//提示框的显示判断
+handleClose = (event, reason) => {
+  this.setState({ open: false });
+};
 // 新增
 addTemplate(params) {
   let templateVo = new FormData()
@@ -372,7 +399,6 @@ fetchTemplate = () => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -403,17 +429,24 @@ fetchTemplate = () => {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
+    let linkStyle = {backgroundColor: '#c9302c',color:'#ffffff',height:'36px',margin:'0',}
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
+     
       <Paper className={classes.root}>
       <Topbar currentPath={currentPath} />
         <EnhancedTableToolbar numSelected={selected.length} />
         <Grid container>
-                    <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
-                </Grid> 
+            <div className="QueryTemplate">
+                <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
+                <div className="QueryTemplateInto" >
+                    <QueryTemplate ></QueryTemplate>
+                </div>
+            </div>
+        </Grid> 
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -424,36 +457,42 @@ fetchTemplate = () => {
               onRequestSort={this.handleRequestSort}
               rowCount={this.state.total}
             />
-            <TableBody>
+            <TableBody >
               {stableSort(data, getSorting(order, orderBy))
                 .slice(0, rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.tEMPLATE_ID);
+                  // 便利显示列表页面
                   return (
+                    
                     <TableRow
+                      className=""
                       hover
-                      onClick={event => this.handleClick(event, n.tEMPLATE_ID)}
+                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.tEMPLATE_ID}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
+                      <TableCell  padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.tEMPLATE_ID}
-                      </TableCell>
-                      <TableCell align="right">{n.uSER_ID}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_SELECT}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_DATE}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_DATETIME}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_RADIO}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_CHECKBOX}</TableCell>
-                      <TableCell align="right">{n.tEMPLATE_TEXTAREA}</TableCell>
-                      <TableCell align="right"><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
-                      <TableCell align="right"><Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>Delete</Button></TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.tEMPLATE_ID}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.uSER_ID}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_SELECT}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_DATE}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_DATETIME}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_RADIO}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_CHECKBOX}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_TEXTAREA}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"><SeeTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>删除</Button></TableCell>
+                      <Snackbar
+                      style={{ width: 300, color: 'green' }}
+                      open={this.state.open} onClose={this.handleClose}
+                      autoHideDuration={1500} message={this.state.message} />
                     </TableRow>
                   );
                 })}
