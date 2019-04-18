@@ -133,7 +133,8 @@
             right:20px;
         }
     .TableCell{
-        width:11%;
+        width:10.5%;
+        padding:0 10px;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         /* overflow: hidden;

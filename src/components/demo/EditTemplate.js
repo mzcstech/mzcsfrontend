@@ -81,8 +81,9 @@ class EditTemplate extends React.Component {
             TEMPLATE_TEXTAREA: this.state.TEMPLATE_TEXTAREA,
             TEMPLATE_CHECKBOX:this.state.TEMPLATE_CHECKBOX
         };       
+        console.log(this.props,123)
         this.props.editTemplate(templateVo);
-        this.refs.addDialog.hide();
+        this.refs.editDialog.hide();
         this.setState({
             open:true,
             message:'修改成功'

@@ -12,7 +12,6 @@ import SimpleLineChart from './SimpleLineChart';
 import Months from './common/Months';
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser';
 import Loading from './common/Loading';
-
 import Topbar from './Topbar';
 
 const numeral = require('numeral');

@@ -10,9 +10,7 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+
 
 class EditTemplate extends React.Component {
     constructor(props) {
@@ -31,64 +29,7 @@ class EditTemplate extends React.Component {
             templateVo: null,
             open:false,
         };
-    }
-    handleChange = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-    }
-    //提示框
-    handleClose = (event, reason) => {
-        this.setState({ open: false });
-    };
-    //多选框事件
-    handleChangeCheckbox = name => event => {
-        this.setState({ [name]: event.target.checked });
-        console.log("name:" + name + "       " + "value:" + event.target.value)
-        let checkedbox = this.state.TEMPLATE_CHECKBOX
-        if (checkedbox !== null && checkedbox !== "") {            
-            //判断TEMPLATE_CHECKBOX是否包含当前点击选项，如果包含，则移除，如果不包含，则添加
-            if (checkedbox.indexOf(event.target.value)>=0) { 
-                checkedbox = checkedbox.replace(event.target.value+",fh,","");
-                this.setState(
-                    { TEMPLATE_CHECKBOX: checkedbox }
-                )
-            } else {                
-                checkedbox=checkedbox+event.target.value+",fh,";
-                this.setState(
-                    { TEMPLATE_CHECKBOX: checkedbox }
-                )
-            }
-        } else {            
-            checkedbox = event.target.value+",fh,"
-            this.setState(
-                { TEMPLATE_CHECKBOX: checkedbox }
-            )            
-        }       
-        console.log(this.state.TEMPLATE_CHECKBOX)
-
-    };
-    // Save car and close modal form
-    handleSubmit = (event) => {
-        event.preventDefault();
-        var templateVo = {
-            TEMPLATE_ID: this.state.templeteId,           
-            USER_ID: this.state.USER_ID,
-            TEMPLATE_SELECT: this.state.TEMPLATE_SELECT,
-            TEMPLATE_DATE: this.state.TEMPLATE_DATE,
-            TEMPLATE_DATETIME: this.state.TEMPLATE_DATETIME,
-            TEMPLATE_RADIO: this.state.TEMPLATE_RADIO,
-            TEMPLATE_TEXTAREA: this.state.TEMPLATE_TEXTAREA,
-            TEMPLATE_CHECKBOX:this.state.TEMPLATE_CHECKBOX
-        };       
-        this.props.editTemplate(templateVo);
-        this.refs.editDialog.hide();
-        this.setState({
-            open:true,
-            message:'修改成功'
-        })
-    }
-    
+    }    
     //查询详情，并展示详情页
     findById = (event) => {
         event.preventDefault();
@@ -133,41 +74,28 @@ class EditTemplate extends React.Component {
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
-                    <h3>编辑模板</h3>
+                    <h3>查看模板</h3>
                     <form>
                        <div className="OutermostBox">
                         <div   className="tow-row" >
                           <div className="InputBox">
                             <input type="hidden" value={this.state.templeteId} name="TEMPLATE_ID"></input>
-                            <FormLabel className="InputBox-text">输入框:</FormLabel>
-                            <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID" onChange={this.handleChange} value={this.state.USER_ID} />
+                                <FormLabel className="InputBox-text">输入框:</FormLabel>
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.USER_ID} />
                            </div>
-                           <div className="downBox">
-                                <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
-                                <Select
-                                    className="downBox-form"
-                                    value={this.state.TEMPLATE_SELECT}
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        name: 'TEMPLATE_SELECT',
-                                        id: 'TEMPLATE_SELECT',
-                                    }}
-                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value="下拉框1">下拉框1</MenuItem>
-                                    <MenuItem value="下拉框2">下拉框2</MenuItem>
-                                    <MenuItem value="下拉框3">下拉框3</MenuItem>
-                                </Select>
+                           <div className="InputBox">
+                                <FormLabel className="InputBox-text">下拉框:</FormLabel>
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_SELECT} />
+                           </div>
+                            <div className="InputBox">
+                                <FormLabel className="InputBox-text">日期选择:</FormLabel>
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATE} />
+                                {/* <FormLabel className="dateChoice-text">日期选择:</FormLabel>
+                                <TextField className="dateChoice-form" type="date" value={this.state.TEMPLATE_DATE} onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} /> */}
                             </div>
-                            <div className="dateChoice">
-                                <FormLabel className="dateChoice-text">日期选择:</FormLabel>
-                                <TextField className="dateChoice-form" type="date" value={this.state.TEMPLATE_DATE} onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} />
-                            </div>
-                            <div className="dateChoice">
-                                <FormLabel className="dateChoice-text">时间选择:</FormLabel>
-                                <TextField  className="dateChoice-form" type="datetime-local" value={this.state.TEMPLATE_DATETIME} onChange={this.handleChange} name="TEMPLATE_DATETIME" InputLabelProps={{ shrink: true, }} />
+                            <div className="InputBox">
+                                <FormLabel className="InputBox-text">时间选择:</FormLabel>
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATETIME} />
                             </div>
 
                             <div className="singleElection">
@@ -177,7 +105,6 @@ class EditTemplate extends React.Component {
                                 <FormControlLabel control={
                                     <Radio
                                         checked={this.state.TEMPLATE_RADIO === 'a'}
-                                        onChange={this.handleChange}
                                         value="a"
                                         name="TEMPLATE_RADIO"
                                         aria-label="A"
@@ -186,7 +113,6 @@ class EditTemplate extends React.Component {
                                 <FormControlLabel control={
                                     <Radio
                                         checked={this.state.TEMPLATE_RADIO === 'b'}
-                                        onChange={this.handleChange}
                                         value="b"
                                         name="TEMPLATE_RADIO"
                                         aria-label="B"
@@ -194,7 +120,6 @@ class EditTemplate extends React.Component {
                                 <FormControlLabel control={
                                     <Radio
                                         checked={this.state.TEMPLATE_RADIO === 'e'}
-                                        onChange={this.handleChange}
                                         value="e"
                                         color="default"
                                         name="TEMPLATE_RADIO"
@@ -205,18 +130,15 @@ class EditTemplate extends React.Component {
                                   </div>
                             </div>
                             <div className="singleElection">
-                            {/* <FormControlLabel control={<FormLabel>多选框</FormLabel>} /> */}
                                 <div className="singleElection-text">多选框:</div>
                                 <div className="singleElection-next">
                                     <Checkbox
                                         checked={this.state.TEMPLATE_CHECKBOX!==null&&this.state.TEMPLATE_CHECKBOX.indexOf("checkedA")>=0?true:false}
-                                        onChange={this.handleChangeCheckbox('checkedA')}
                                         value="checkedA"
                                         name="checkedA"
                                     />
                                     <Checkbox
                                         checked={this.state.TEMPLATE_CHECKBOX!==null&&this.state.TEMPLATE_CHECKBOX.indexOf("checkedB")>=0?true:false}
-                                        onChange={this.handleChangeCheckbox('checkedB')}
                                         value="checkedB"
                                         name="checkedB"
                                         color="primary"
@@ -229,7 +151,7 @@ class EditTemplate extends React.Component {
                         */}
                        <div className="textDomain">
                             <TextField  className="textDomain-class" label="文本域" placeholder="TEMPLATE_TEXTAREA" multiline={true} rows={2}
-                            name="TEMPLATE_TEXTAREA" onChange={this.handleChange} value={this.state.TEMPLATE_TEXTAREA}/>
+                            name="TEMPLATE_TEXTAREA"  value={this.state.TEMPLATE_TEXTAREA}/>
                        </div>
                     </div>
                 </form>

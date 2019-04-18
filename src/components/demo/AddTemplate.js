@@ -77,6 +77,7 @@ class AddTemplate extends React.Component {
             TEMPLATE_TEXTAREA: this.state.TEMPLATE_TEXTAREA,
             TEMPLATE_CHECKBOX: this.state.TEMPLATE_CHECKBOX            
         };
+        
         this.props.addTemplate(templateVo);
         this.refs.addDialog.hide();
         this.setState({
@@ -95,7 +96,7 @@ class AddTemplate extends React.Component {
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
-                    <h3 className="title">新增模板</h3>
+                    <h3 className="title">查看模板</h3>
                     <form>
                         <div className="OutermostBox">
                         <div className="tow-row">
@@ -105,23 +106,23 @@ class AddTemplate extends React.Component {
                                     name="USER_ID" onChange={this.handleChange} />
                             </div>                        
                         <div className="downBox">
-                            <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
-                            <Select
-                                className="downBox-form"
-                                value={this.state.TEMPLATE_SELECT}
-                                onChange={this.handleChange}
-                                inputProps={{
-                                    name: 'TEMPLATE_SELECT',
-                                    id: 'TEMPLATE_SELECT',
-                                }}
-                            >
-                                <MenuItem value="">
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value="下拉框1">下拉框1</MenuItem>
-                                <MenuItem value="下拉框2">下拉框2</MenuItem>
-                                <MenuItem value="下拉框3">下拉框3</MenuItem>
-                            </Select>
+                                <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
+                                <Select
+                                    className="downBox-form"
+                                    value={this.state.TEMPLATE_SELECT}
+                                    onChange={this.handleChange}
+                                    inputProps={{
+                                        name: 'TEMPLATE_SELECT',
+                                        id: 'TEMPLATE_SELECT',
+                                    }}
+                                 >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    <MenuItem value="下拉框1">下拉框1</MenuItem>
+                                    <MenuItem value="下拉框2">下拉框2</MenuItem>
+                                    <MenuItem value="下拉框3">下拉框3</MenuItem>
+                                </Select>
                         </div>
                         <div className="dateChoice">
                             <FormLabel className="dateChoice-text">日期选择:</FormLabel>
