@@ -98,7 +98,7 @@ class Topbar extends Component {
   }
   //获取菜单
   fetchTemplate = () => {
-    fetch(SERVER_URL + '/index/index', {
+    fetch(SERVER_URL + '/index/init_menu', {
       mode: "cors",
       method: 'GET',
       credentials: 'include',
@@ -264,7 +264,7 @@ class Topbar extends Component {
 
                         {menu.subMenu.map((subMenu,index) => (                          
                             // <MenuItem onClick={this.handleClose} >{subMenu.menu_NAME}</MenuItem> 
-                              <Tab key={index} component={Link} to={{ pathname: subMenu.menu_NAME, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
+                              <Tab key={index} component={Link} to={{ pathname: subMenu.menu_URL, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
                         ))}    
                                      
                       </Menu1>

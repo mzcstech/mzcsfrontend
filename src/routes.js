@@ -20,7 +20,7 @@ export default props => (
           <Route exact path='/cards' component={ Cards } />
           <Route exact path='/template' component={ Template } />
           <Route exact path='/Demo' component={ Demo } />
-          {/* <Route exact path='/companyInformation' component={ companyInformation } /> */}
+          <Route exact path='/companyInformation' component={ companyInformation } />
         </Switch>
       </ScrollToTop>
     </HashRouter>
