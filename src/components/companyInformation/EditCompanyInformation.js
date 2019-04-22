@@ -13,7 +13,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-require('./styles/Template.css')
+require('./styles/CompanyInformation.css')
 class EditTemplate extends React.Component {
     constructor(props) {
         super(props);

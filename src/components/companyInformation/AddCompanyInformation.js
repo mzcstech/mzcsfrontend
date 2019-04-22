@@ -12,7 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-require('./styles/Template.css')
+require('./styles/CompanyInformation.css')
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -27,10 +27,10 @@ class AddTemplate extends React.Component {
             checkedB: false,
             TEMPLATE_TEXTAREA: '',
             TEMPLATE_CHECKBOX: "",
-            open:false
+            open: false
         };
     }
- //提示框
+    //提示框
     handleClose = (event, reason) => {
         this.setState({ open: false });
     };
@@ -44,25 +44,25 @@ class AddTemplate extends React.Component {
     handleChangeCheckbox = name => event => {
         this.setState({ [name]: event.target.checked });
         let checkedbox = this.state.TEMPLATE_CHECKBOX
-        if (checkedbox !== null && checkedbox !== "") {            
+        if (checkedbox !== null && checkedbox !== "") {
             //判断TEMPLATE_CHECKBOX是否包含当前点击选项，如果包含，则移除，如果不包含，则添加
-            if (checkedbox.indexOf(event.target.value)>=0) { 
-                checkedbox = checkedbox.replace(event.target.value+",fh,","");
+            if (checkedbox.indexOf(event.target.value) >= 0) {
+                checkedbox = checkedbox.replace(event.target.value + ",fh,", "");
                 this.setState(
                     { TEMPLATE_CHECKBOX: checkedbox }
                 )
-            } else {                
-                checkedbox=checkedbox+event.target.value+",fh,";
+            } else {
+                checkedbox = checkedbox + event.target.value + ",fh,";
                 this.setState(
                     { TEMPLATE_CHECKBOX: checkedbox }
                 )
             }
-        } else {            
-            checkedbox = event.target.value+",fh,"
+        } else {
+            checkedbox = event.target.value + ",fh,"
             this.setState(
                 { TEMPLATE_CHECKBOX: checkedbox }
-            )            
-        }       
+            )
+        }
         console.log(this.state.TEMPLATE_CHECKBOX)
     };
     // Save car and close modal form
@@ -75,14 +75,14 @@ class AddTemplate extends React.Component {
             TEMPLATE_DATETIME: this.state.TEMPLATE_DATETIME,
             TEMPLATE_RADIO: this.state.TEMPLATE_RADIO,
             TEMPLATE_TEXTAREA: this.state.TEMPLATE_TEXTAREA,
-            TEMPLATE_CHECKBOX: this.state.TEMPLATE_CHECKBOX            
+            TEMPLATE_CHECKBOX: this.state.TEMPLATE_CHECKBOX
         };
-        
+
         this.props.addTemplate(templateVo);
         this.refs.addDialog.hide();
         this.setState({
-            open:true,
-            message:'新增成功'
+            open: true,
+            message: '新增成功'
         })
     }
 
@@ -96,110 +96,25 @@ class AddTemplate extends React.Component {
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
-                    <h3 className="title">查看模板</h3>
+                    <h3 className="title">原件管理公司信息-新增</h3>
                     <form>
                         <div className="OutermostBox">
-                        <div className="tow-row">
-                            <div className="InputBox">
-                                <div className="InputBox-text">输入框:</div>
-                                <TextField className="InputBox-next" placeholder="USER_ID"
-                                    name="USER_ID" onChange={this.handleChange} />
-                            </div>                        
-                        <div className="downBox">
-                                <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
-                                <Select
-                                    className="downBox-form"
-                                    value={this.state.TEMPLATE_SELECT}
-                                    onChange={this.handleChange}
-                                    inputProps={{
-                                        name: 'TEMPLATE_SELECT',
-                                        id: 'TEMPLATE_SELECT',
-                                    }}
-                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value="下拉框1">下拉框1</MenuItem>
-                                    <MenuItem value="下拉框2">下拉框2</MenuItem>
-                                    <MenuItem value="下拉框3">下拉框3</MenuItem>
-                                </Select>
-                        </div>
-                        <div className="dateChoice">
-                            <FormLabel className="dateChoice-text">日期选择:</FormLabel>
-                            <TextField className="dateChoice-form"  type="date" defaultValue="2019-05-24" onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} />
-                        </div>
-                        <div className="dateChoice">
-                            <FormLabel className="dateChoice-text">日期时间选择:</FormLabel>
-                            <TextField className="dateChoice-form"  type="datetime-local" defaultValue="2019-05-24T10:30" onChange={this.handleChange} name="TEMPLATE_DATETIME" InputLabelProps={{ shrink: true, }} />
-                        </div>
+                            <div className="tow-row">
+                                <div className="InputBox-text">公司名称:</div>
+                                <TextField className="InputBox-next" placeholder="请输入公司名称"
+                                    name="companyName" onChange={this.handleChange} />
+                            </div>
+                            <div className="tow-row">
+                                <div className="InputBox-text">备注:</div>
 
-                        <div className="singleElection">
-                            {/* <FormControlLabel className="singleElection-text" control={<FormLabel >单选框:</FormLabel>} /> */}
-                            <div className="singleElection-text">单选框:</div>
-                            <div className="singleElection-next">
-                                <FormControlLabel control={
-                                <Radio
-                                checked={this.state.TEMPLATE_RADIO === 'a'}
-                                onChange={this.handleChange}
-                                value="a"
-                                name="TEMPLATE_RADIO"
-                                aria-label="A"
-                                />
-                            } label="A" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.TEMPLATE_RADIO === 'b'}
-                                    onChange={this.handleChange}
-                                    value="b"
-                                    name="TEMPLATE_RADIO"
-                                    aria-label="B"
-                                />} label="B" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.TEMPLATE_RADIO === 'e'}
-                                    onChange={this.handleChange}
-                                    value="e"
-                                    color="default"
-                                    name="TEMPLATE_RADIO"
-                                    aria-label="E"
-                                    icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                                    checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
-                                />} label="E" />
+                                <TextField className="textDomain-class" placeholder="备注" multiline={true} rows={2}
+                                    name="remark" onChange={this.handleChange} />
                             </div>
-                         </div>
-                         <div className="singleElection">
-                            {/* <FormControlLabel control={<FormLabel>多选框</FormLabel>} /> */}
-                            <div className="singleElection-text">多选框:</div>
-                            <div className="singleElection-next">
-                                <Checkbox
-                                checked={this.state.checkedA}
-                                onChange={this.handleChangeCheckbox('checkedA')}
-                                value="checkedA"
-                                name="checkedA"
-                            />
-                            <Checkbox
-                                checked={this.state.checkedB}
-                                onChange={this.handleChangeCheckbox('checkedB')}
-                                value="checkedB"
-                                name="checkedB"
-                                color="primary"
-                            />
+                            <div className="button">
+                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
+                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
                             </div>
-                         </div>
-                      </div>
-                        {/* <FormControlLabel control={<Checkbox checked={this.state.checkedA} onChange={this.handleChangeCheckbox('checkedA')} value="checkedA" />} label="Secondary" />
-                        <FormControlLabel control={<Checkbox checked={this.state.checkedB} onChange={this.handleChangeCheckbox('checkedB')} value="checkedB" color="primary" />} label="Primary" />
-                        */}
-                      
-                        <div className="textDomain">
-                            <TextField className="textDomain-class" label="文本域" placeholder="TEMPLATE_TEXTAREA" multiline={true} rows={2}
-                                name="TEMPLATE_TEXTAREA" onChange={this.handleChange} />
                         </div>
-                        <div className="button">
-                            <Button className="button-class"  variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
-                            <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
-                        </div>    
-                </div>
                     </form>
                 </SkyLight>
                 <div>
@@ -211,7 +126,7 @@ class AddTemplate extends React.Component {
                     onClose={this.handleClose}
                     autoHideDuration={1500}
                     message={this.state.message}
-                 />
+                />
             </div>
         );
     }
