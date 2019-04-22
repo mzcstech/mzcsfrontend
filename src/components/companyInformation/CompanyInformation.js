@@ -63,13 +63,14 @@ const styles = theme => ({
   };  
   // 新增
 addTemplate(params) {
-    let templateVo = new FormData()
+    let companyinformationVo = new FormData()
     if (params) {
         for (let key in params) {
-            templateVo.append(key, params[key])
+            companyinformationVo.append(key, params[key])
         }
     }
-    fetch(SERVER_URL + '/template/save',
+    console.log(companyinformationVo)
+    fetch(SERVER_URL + '/companyInformation/save',
         {
             mode: "cors",
             method: 'POST',
@@ -77,7 +78,7 @@ addTemplate(params) {
             headers: {
                 'Accept': 'application/json,text/plain,*/*'
             },
-            body: templateVo
+            body: companyinformationVo
         }
     )
         .then(res => this.fetchTemplate())
@@ -164,8 +165,6 @@ addTemplate(params) {
                 rowsPerPage:responseData.data.pageSize,
                 total:responseData.data.total
             });
-            console.log("this.state.data")
-           console.log(this.state.data)
         })
         .catch(err => console.error(err));
   }
@@ -259,7 +258,7 @@ addTemplate(params) {
                        </TableCell>
                         <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.companyName}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none">{n.originalListString}</TableCell>
-                        <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_SELECT}</TableCell>
+                        <TableCell className="TableCell" align="center"  padding="none">{n.originalInformation}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none">{n.remark}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none">{n.customerUsername}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none"><ViewCompanyInformation  fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>

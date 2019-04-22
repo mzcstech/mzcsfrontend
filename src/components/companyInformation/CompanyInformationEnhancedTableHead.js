@@ -9,8 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import EditCompanyInformation from './EditCompanyInformation.js';
 import ViewCompanyInformation from './ViewCompanyInformation.js';
 import Button from '@material-ui/core/Button';
-require('./styles/Template.css')
-require('./styles/EnhancedTableHead.css')
+require('./styles/CompanyInformation.css')
+require('./styles/CompanyInformationEnhancedTableHead.css')
 //第一列的标题
 {/*
 numeric:控制对应对应span内容位置
