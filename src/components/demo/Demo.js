@@ -20,7 +20,7 @@ import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js'
-require('./Template.css')
+require('./styles/Template.css')
 // 对应列表项的id
 
 //整体样式
@@ -45,8 +45,7 @@ class EnhancedTable extends React.Component {
       super(props)
       this.state = {
         selected: [],
-        data: [      
-        ],
+        data: [],
         page: 0,
         rowsPerPage: 5,
         total:0,
@@ -222,7 +221,7 @@ fetchTemplate = () => {
             <div className="QueryTemplate">
                 <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
                 <div className="QueryTemplateInto" >
-                    <QueryTemplate ></QueryTemplate>
+                    <QueryTemplate />
                 </div>
             </div>
         </Grid> 
@@ -246,7 +245,6 @@ fetchTemplate = () => {
                   // 便利显示列表页面
                   return (
                     <TableRow
-                      className=""
                       hover
                       onClicock={event => this.handleClick(event, n.tEMPLATE_ID)}
                       role="checkbox"
@@ -258,17 +256,17 @@ fetchTemplate = () => {
                       <TableCell  padding="checkbox">
                         <Checkbox checked={isSelected} />
                      </TableCell>
-                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.tEMPLATE_ID}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.uSER_ID}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_SELECT}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_DATE}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_DATETIME}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_RADIO}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_CHECKBOX}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none">{n.tEMPLATE_TEXTAREA}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"><SeeTemplate  fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>删除</Button></TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.tEMPLATE_ID}>{n.tEMPLATE_ID}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.uSER_ID}>{n.uSER_ID}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_SELECT}>{n.tEMPLATE_SELECT}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_DATE}>{n.tEMPLATE_DATE}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_DATETIME}>{n.tEMPLATE_DATETIME}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_RADIO}>{n.tEMPLATE_RADIO}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_CHECKBOX}>{n.tEMPLATE_CHECKBOX}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_TEXTAREA}>{n.tEMPLATE_TEXTAREA}</TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  ><SeeTemplate  fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  ><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
+                      <TableCell className="TableCell" align="center"  padding="none"  ><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>删除</Button></TableCell>
                     </TableRow> 
                   );  
 

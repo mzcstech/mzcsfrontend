@@ -12,7 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-require('./Template.css')
+require('./styles/Template.css')
 class AddTemplate extends React.Component {
 
     constructor(props) {

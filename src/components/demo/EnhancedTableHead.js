@@ -9,8 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import EditTemplate from './EditTemplate.js';
 import SeeTemplate from './SeeTemplate.js';
 import Button from '@material-ui/core/Button';
-
-require('./Template.css')
+require('./styles/Template.css')
 require('./styles/EnhancedTableHead.css')
 //第一列的标题
 {/*
@@ -79,16 +78,14 @@ class EnhancedTableHead extends React.Component {
               >
               {/*hover提示字符*/}
                 <Tooltip
-                  title="Sort"
+                  title={row.label}
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
               {/*hover排列箭头*/}
                   <TableSortLabel
                     className="TableSortLabel"
-                   
                     hideSortIcon={true}
-                    
                   >
                     {row.label}
                 </TableSortLabel>
@@ -105,9 +102,8 @@ class EnhancedTableHead extends React.Component {
 // 数据类型检测
 EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
+  // onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-
   rowCount: PropTypes.number.isRequired,
 };
 export default EnhancedTableHead

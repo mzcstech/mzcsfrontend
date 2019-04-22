@@ -83,20 +83,22 @@ const styles = theme => ({
 })
 
 class Topbar extends Component {
-
-  state = {
-    value: 0,
-    menuDrawer: false,
-    menus: [],
-    anchorEl: null
-  };
+  constructor(props){
+    super(props)
+    this.state = {
+      value: 0,
+      menuDrawer: false,
+      menus: [],
+      anchorEl: null
+    };
+  }
+  
   componentWillMount() {
     this.fetchTemplate();
   }
   //获取菜单
   fetchTemplate = () => {
     fetch(SERVER_URL + '/index/index', {
-
       mode: "cors",
       method: 'GET',
       credentials: 'include',
@@ -106,12 +108,10 @@ class Topbar extends Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        //console.log(responseData.data[0].subMenu);
+        // console.log(responseData.data[0].subMenu);
         this.setState({
           menus: responseData.data
         });
-        console.log(this.state.menus)
-
         //单级菜单数据回显
         responseData.data[0].subMenu.forEach(element => {
           var ele = {
@@ -120,6 +120,7 @@ class Topbar extends Component {
           ele.label = element.menu_NAME;
           ele.pathname = element.menu_URL;
           var isExist = false;
+          console.log(Menu)
           Menu.forEach(item => {
             if (item.label === ele.label) {
               isExist = true;
@@ -129,7 +130,6 @@ class Topbar extends Component {
             Menu.push(ele);//将后台返回的菜单保存到menu中
           }
         });
-
       })
       .catch(err => console.error(err));
   }
@@ -141,7 +141,7 @@ class Topbar extends Component {
     this.setState({ menuDrawer: true });
   }
 
-  mobileMenuClose = (event) => {
+  mobileMenuClose = (event) => {  
     this.setState({ menuDrawer: false });
   }
 
@@ -198,9 +198,7 @@ class Topbar extends Component {
 
     const { classes } = this.props;
     const { anchorEl } = this.state;
-
     console.log(this.state.menus);
-
     return (
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
@@ -244,7 +242,8 @@ class Topbar extends Component {
                       onChange={this.handleChange}
                     >
                       {Menu.map((item, index) => (
-                        <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
+                          <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
+
                       ))}
 
 
@@ -253,7 +252,7 @@ class Topbar extends Component {
                           aria-owns={this.state.anchorEl ? menu.menu_ID : undefined}
                           aria-haspopup="true"
                           onClick={this.handleClick.bind(this,menu.menu_ID)}
-                         >{menu.menu_NAME}</Button>                   
+                         >{menu.menu_NAME}</Button>             
                       ))}
                       
                       {this.state.menus.map((menu) => (
@@ -265,8 +264,7 @@ class Topbar extends Component {
 
                         {menu.subMenu.map((subMenu,index) => (                          
                             // <MenuItem onClick={this.handleClose} >{subMenu.menu_NAME}</MenuItem> 
-                            <Tab key={index} component={Link} to={{ pathname: subMenu.menu_URL, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
-                            
+                              <Tab key={index} component={Link} to={{ pathname: subMenu.menu_NAME, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
                         ))}    
                                      
                       </Menu1>

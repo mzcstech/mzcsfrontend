@@ -81,21 +81,21 @@ class EditTemplate extends React.Component {
                           <div className="InputBox">
                             <input type="hidden" value={this.state.templeteId} name="TEMPLATE_ID"></input>
                                 <FormLabel className="InputBox-text">输入框:</FormLabel>
-                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.USER_ID} />
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.USER_ID}  title={this.state.USER_ID}/>
                            </div>
                            <div className="InputBox">
                                 <FormLabel className="InputBox-text">下拉框:</FormLabel>
-                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_SELECT} />
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_SELECT} title={this.state.TEMPLATE_SELECT} />
                            </div>
                             <div className="InputBox">
                                 <FormLabel className="InputBox-text">日期选择:</FormLabel>
-                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATE} />
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATE} title={this.state.TEMPLATE_DATE} />
                                 {/* <FormLabel className="dateChoice-text">日期选择:</FormLabel>
                                 <TextField className="dateChoice-form" type="date" value={this.state.TEMPLATE_DATE} onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} /> */}
                             </div>
                             <div className="InputBox">
                                 <FormLabel className="InputBox-text">时间选择:</FormLabel>
-                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATETIME} />
+                                <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID"  value={this.state.TEMPLATE_DATETIME} title={this.state.TEMPLATE_DATETIME}/>
                             </div>
 
                             <div className="singleElection">

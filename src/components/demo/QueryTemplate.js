@@ -3,8 +3,11 @@ import Input  from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-require('./styles/QueryTemplate.css')
 class QueryTemplate extends Component{
+    constructor(props){
+        super(props)
+        
+    }
     render(){
         return(
             <div className="box">
