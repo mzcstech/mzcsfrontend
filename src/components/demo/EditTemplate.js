@@ -44,7 +44,7 @@ class EditTemplate extends React.Component {
     //多选框事件
     handleChangeCheckbox = name => event => {
         this.setState({ [name]: event.target.checked });
-        console.log("name:" + name + "       " + "value:" + event.target.value)
+        // console.log("name:" + name + "       " + "value:" + event.target.value)
         let checkedbox = this.state.TEMPLATE_CHECKBOX
         if (checkedbox !== null && checkedbox !== "") {            
             //判断TEMPLATE_CHECKBOX是否包含当前点击选项，如果包含，则移除，如果不包含，则添加
@@ -65,7 +65,6 @@ class EditTemplate extends React.Component {
                 { TEMPLATE_CHECKBOX: checkedbox }
             )            
         }       
-        console.log(this.state.TEMPLATE_CHECKBOX)
 
     };
     // Save car and close modal form
@@ -81,7 +80,6 @@ class EditTemplate extends React.Component {
             TEMPLATE_TEXTAREA: this.state.TEMPLATE_TEXTAREA,
             TEMPLATE_CHECKBOX:this.state.TEMPLATE_CHECKBOX
         };       
-        console.log(this.props,123)
         this.props.editTemplate(templateVo);
         this.refs.editDialog.hide();
         this.setState({
@@ -116,7 +114,6 @@ class EditTemplate extends React.Component {
                     TEMPLATE_TEXTAREA: responseData.data.template_TEXTAREA,
                     TEMPLATE_CHECKBOX:responseData.data.template_CHECKBOX
                 });                 
-                console.log(this.state.templateVo)
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })

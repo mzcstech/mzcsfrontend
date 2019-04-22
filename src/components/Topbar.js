@@ -120,7 +120,7 @@ class Topbar extends Component {
           ele.label = element.menu_NAME;
           ele.pathname = element.menu_URL;
           var isExist = false;
-          console.log(Menu)
+          // console.log(Menu)
           Menu.forEach(item => {
             if (item.label === ele.label) {
               isExist = true;
@@ -175,10 +175,10 @@ class Topbar extends Component {
 
   }
   handleClick(menu_ID,event){
-    console.log("menu_ID") 
-    console.log(event.currentTarget)   
-    console.log(menu_ID) 
-    console.log("menu_ID") 
+    // console.log("menu_ID") 
+    // console.log(event.currentTarget)   
+    // console.log(menu_ID) 
+    // console.log("menu_ID") 
     this.state.menus.forEach(element => {
       if(element.menu_ID==menu_ID){
       element.anchorEl =event.currentTarget   
@@ -198,7 +198,7 @@ class Topbar extends Component {
 
     const { classes } = this.props;
     const { anchorEl } = this.state;
-    console.log(this.state.menus);
+    // console.log(this.state.menus);
     return (
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>

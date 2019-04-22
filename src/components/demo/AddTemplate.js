@@ -63,7 +63,6 @@ class AddTemplate extends React.Component {
                 { TEMPLATE_CHECKBOX: checkedbox }
             )            
         }       
-        console.log(this.state.TEMPLATE_CHECKBOX)
     };
     // Save car and close modal form
     handleSubmit = (event) => {

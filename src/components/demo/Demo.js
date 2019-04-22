@@ -51,13 +51,41 @@ class EnhancedTable extends React.Component {
         total:0,
         message: '',
         open: false,
-        TEMPLATE_ID:''
+        TEMPLATE_ID:'',
+        NewresponseData:{}
       };
   }
- 
+  //render渲染前加载
+  componentDidMount(){
+    // console.log('componentDidMount')
+    let templateVo = new FormData()
+    templateVo.append('TEMPLATE_DATE', '2019-05-24')
+    fetch(SERVER_URL + '/template/list',
+    {
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Accept': '*/*'                  
+        },
+        body: templateVo
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+       this.setState({
+        NewresponseData:responseData.data.list
+       }) 
+    })
+    .catch(err =>{
+        console.log(err,'失败')
+    })
+  }
+
+  //组件御载时触发
   componentDidMount= () => {
+   
     this.fetchTemplate();
-}
+  }
 //提示框的显示判断
 handleClose = (event, reason) => {
   this.setState({ open: false });
@@ -86,14 +114,12 @@ addTemplate(params) {
 }
 //修改
 editTemplate(params) {
-  console.log(params)
   let templateVo = new FormData()
   if (params) {
       for (let key in params) {
           templateVo.append(key, params[key])
       }
   }
-  console.log(templateVo)
   fetch(SERVER_URL + '/template/edit',
       {
           mode: "cors",
@@ -143,6 +169,7 @@ confirmDelete = (id) => {
       ]
   })
 }
+
 //分页
 fetchTemplate = () => {
   let templateVo = new FormData();  
@@ -165,7 +192,6 @@ fetchTemplate = () => {
               rowsPerPage:responseData.data.pageSize,
               total:responseData.data.total
           });
-         console.log(this.state.data,'page')
       })
       .catch(err => console.error(err));
 }
@@ -198,7 +224,6 @@ fetchTemplate = () => {
   };
 // 页面更改时触发回调
   handleChangePage = (event, page) => {   
-    console.log(event)
     this.state.page=page;    
     this.fetchTemplate();
   };
@@ -209,6 +234,7 @@ fetchTemplate = () => {
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+   
     let linkStyle = {backgroundColor: '#c9302c',color:'#ffffff',height:'36px'}
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -221,7 +247,7 @@ fetchTemplate = () => {
             <div className="QueryTemplate">
                 <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
                 <div className="QueryTemplateInto" >
-                    <QueryTemplate />
+                    <QueryTemplate NewresponseData={this.state.NewresponseData} />
                 </div>
             </div>
         </Grid> 
@@ -233,7 +259,6 @@ fetchTemplate = () => {
               order={order}
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
-             
               rowCount={this.state.total}
             />
             <TableBody >
@@ -299,7 +324,6 @@ fetchTemplate = () => {
           nextIconButtonProps={{
             'aria-label': 'Next Page',
           }}
-          
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />

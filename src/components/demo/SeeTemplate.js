@@ -29,7 +29,8 @@ class EditTemplate extends React.Component {
             templateVo: null,
             open:false,
         };
-    }    
+    }
+ 
     //查询详情，并展示详情页
     findById = (event) => {
         event.preventDefault();
@@ -56,7 +57,7 @@ class EditTemplate extends React.Component {
                     TEMPLATE_TEXTAREA: responseData.data.template_TEXTAREA,
                     TEMPLATE_CHECKBOX:responseData.data.template_CHECKBOX
                 });                 
-                console.log(this.state.templateVo)
+                // console.log(this.state.templateVo)
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
@@ -168,6 +169,7 @@ class EditTemplate extends React.Component {
             
         );
     }
+  
 
 } 
 
