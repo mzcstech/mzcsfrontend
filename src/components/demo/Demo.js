@@ -20,7 +20,7 @@ import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js'
-require('./styles/Template.css')
+import './styles/Template.css'
 // 对应列表项的id
 
 //整体样式
@@ -56,8 +56,8 @@ class EnhancedTable extends React.Component {
       };
   }
   //render渲染前加载
-  componentDidMount(){
-    // console.log('componentDidMount')
+  componentWillMount(){
+    console.log('componentWillMount')
     let templateVo = new FormData()
     templateVo.append('TEMPLATE_DATE', '2019-05-24')
     fetch(SERVER_URL + '/template/list',
@@ -280,9 +280,9 @@ fetchTemplate = () => {
                     >
                       <TableCell  padding="checkbox">
                         <Checkbox checked={isSelected} />
-                     </TableCell>
+                      </TableCell>
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.tEMPLATE_ID}>{n.tEMPLATE_ID}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.uSER_ID}>{n.uSER_ID}</TableCell>
+                      <TableCell className="TableCell" align="center"   padding="none"  title={n.uSER_ID}>{n.uSER_ID}</TableCell>
                       <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_SELECT}>{n.tEMPLATE_SELECT}</TableCell>
                       <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_DATE}>{n.tEMPLATE_DATE}</TableCell>
                       <TableCell className="TableCell" align="center"  padding="none"  title={n.tEMPLATE_DATETIME}>{n.tEMPLATE_DATETIME}</TableCell>
@@ -294,7 +294,6 @@ fetchTemplate = () => {
                       <TableCell className="TableCell" align="center"  padding="none"  ><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>删除</Button></TableCell>
                     </TableRow> 
                   );  
-
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>

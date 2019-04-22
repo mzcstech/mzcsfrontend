@@ -1,9 +1,11 @@
 import React,{ Component }from 'react';
+import { SERVER_URL } from '../../constants.js'
 import Input  from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { SERVER_URL } from '../../constants.js'
+import Button from '@material-ui/core/Button';
+
 //模糊查询
 
 class QueryTemplate extends Component{
@@ -21,31 +23,9 @@ class QueryTemplate extends Component{
             valueInput :e.target.value
         })
     }
-  
-    // vagueQuery(){
-    //     let templateVo = new FormData()
-    //     let NewresponseData={}
-    //     templateVo.append('TEMPLATE_DATE', '2019-05-24')
-    //     fetch(SERVER_URL + '/template/list',
-    //     {
-    //         mode: "cors",
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         headers: {
-    //             'Accept': '*/*'                  
-    //         },
-    //         body: templateVo
-    //     })
-    //     .then((response) => response.json())
-    //     .then((responseData) => {
-    //         NewresponseData:responseData.data.list
-    //     })
-    //     .catch(err =>{
-    //         console.log(err,'失败')
-    //     })
-    // }
+    
     render(){
-        // console.log(this.props,'NewresponseData')
+        console.log(this.props.NewresponseData,'子组件')
         console.log(this.state.valueInput)
         // console.log(this.state.responseData,'responseData')
         return(
@@ -69,6 +49,7 @@ class QueryTemplate extends Component{
                      </Select>
                 <div className="Separate"></div>
                 <Input className="Input"  onChange={this.handValueChange} placeholder="全局搜索"/>
+                <Button  style={{background:'#61bafb',color:'#ffffff',marginLeft:'10px'}}>搜索</Button>
         </div>
         )
     }

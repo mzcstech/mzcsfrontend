@@ -141,11 +141,6 @@
         padding:0 1px;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
-        /* overflow: hidden;
-        text-overflow:ellipsis; */
-        /* white-space: nowrap; */
-    
-        /* word-break: break-all */
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
