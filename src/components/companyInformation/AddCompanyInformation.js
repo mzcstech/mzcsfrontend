@@ -2,24 +2,15 @@ import React from 'react';
 import SkyLight from 'react-skylight';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
 import Snackbar from '@material-ui/core/Snackbar';
-import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 require('./styles/CompanyInformation.css')
 class AddTemplate extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            companyName:'',
-            remark:''
+            companyName: '',
+            remark: ''
         };
     }
     //提示框
@@ -61,8 +52,8 @@ class AddTemplate extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         var templateVo = {
-            companyName:this.state.companyName,
-            remark:this.state.remark
+            companyName: this.state.companyName,
+            remark: this.state.remark
         };
 
         this.props.addTemplate(templateVo);
