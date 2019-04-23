@@ -87,14 +87,14 @@ addTemplate(params) {
   //修改
   editTemplate(params) {
     console.log(params)
-    let templateVo = new FormData()
+    let companyInformationVo = new FormData()
     if (params) {
         for (let key in params) {
-            templateVo.append(key, params[key])
+          companyInformationVo.append(key, params[key])
         }
     }
-    console.log(templateVo)
-    fetch(SERVER_URL + '/template/edit',
+    console.log(companyInformationVo)
+    fetch(SERVER_URL + '/companyInformation/edit',
         {
             mode: "cors",
             method: 'POST',
@@ -102,14 +102,14 @@ addTemplate(params) {
             headers: {
                 'Accept': 'application/json,text/plain,*/*'                   
             },
-            body: templateVo
+            body: companyInformationVo
         })
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/template/delete/' + id,
+    fetch(SERVER_URL + '/companyInformation/delete/' + id,
         {
             mode: "cors",
             method: 'DELETE',
@@ -145,9 +145,9 @@ addTemplate(params) {
   }
   //分页
   fetchTemplate = () => {      
-    let templateVo = new FormData();  
-        templateVo.append("pageNum",this.state.page+1) 
-        templateVo.append("pageSize",this.state.rowsPerPage) 
+    let companyinformationQueryVo = new FormData();  
+    companyinformationQueryVo.append("pageNum",this.state.page+1) 
+    companyinformationQueryVo.append("pageSize",this.state.rowsPerPage) 
     fetch(SERVER_URL + '/companyInformation/list', {                         
         mode: "cors",
         method: 'POST',
@@ -155,7 +155,7 @@ addTemplate(params) {
         headers: {
             'Accept': 'application/json,text/plain,*/*'
         },
-        body: templateVo
+        body: companyinformationQueryVo
     })
         .then((response) => response.json())
         .then((responseData) => {                        
@@ -165,6 +165,7 @@ addTemplate(params) {
                 rowsPerPage:responseData.data.pageSize,
                 total:responseData.data.total
             });
+            alert(this.state.page+"     "+this.state.rowsPerPage)
         })
         .catch(err => console.error(err));
   }
@@ -261,9 +262,9 @@ addTemplate(params) {
                         <TableCell className="TableCell" align="center"  padding="none">{n.originalInformation}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none">{n.remark}</TableCell>
                         <TableCell className="TableCell" align="center"  padding="none">{n.customerUsername}</TableCell>
-                        <TableCell className="TableCell" align="center"  padding="none"><ViewCompanyInformation  fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
-                        <TableCell className="TableCell" align="center"  padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
-                        <TableCell className="TableCell" align="center"  padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.tEMPLATE_ID) }}>删除</Button></TableCell>
+                        <TableCell className="TableCell" align="center"  padding="none"><ViewCompanyInformation  fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
+                        <TableCell className="TableCell" align="center"  padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
+                        <TableCell className="TableCell" align="center"  padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
                       </TableRow> 
                     );  
   
