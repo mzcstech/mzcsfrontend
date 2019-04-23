@@ -14,20 +14,21 @@ class QueryTemplate extends Component{
         this.handValueChange = this.handValueChange.bind(this)
         this.state={
             valueInput:'',
-            responseData:{}
+           
         }
     }
   
     handValueChange(e){
-        this.setState({
-            valueInput :e.target.value
+        this.setState({valueInput :e.target.value},()=>{
+            this.props.search(this.state.valueInput)
+            // console.log(this.state.valueInput)
         })
+      
+      
     }
     
     render(){
-        console.log(this.props.NewresponseData,'子组件')
-        console.log(this.state.valueInput)
-        // console.log(this.state.responseData,'responseData')
+       
         return(
             <div className="box">
                     <InputLabel style={{color:'black'}} htmlFor="age-simple">下拉框:</InputLabel>
@@ -49,7 +50,7 @@ class QueryTemplate extends Component{
                      </Select>
                 <div className="Separate"></div>
                 <Input className="Input"  onChange={this.handValueChange} placeholder="全局搜索"/>
-                <Button  style={{background:'#61bafb',color:'#ffffff',marginLeft:'10px'}}>搜索</Button>
+                
         </div>
         )
     }

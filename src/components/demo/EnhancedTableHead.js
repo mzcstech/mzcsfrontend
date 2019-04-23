@@ -9,8 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import EditTemplate from './EditTemplate.js';
 import SeeTemplate from './SeeTemplate.js';
 import Button from '@material-ui/core/Button';
-require('./styles/Template.css')
-require('./styles/EnhancedTableHead.css')
+// require('./styles/Template.css')
+// require('./styles/EnhancedTableHead.css')
 //第一列的标题
 {/*
 numeric:控制对应对应span内容位置
@@ -71,7 +71,7 @@ class EnhancedTableHead extends React.Component {
           {rows.map(
             row => (
               <TableCell
-                className="TableCell"
+                className="DomeTableCell"
                 key={row.id} 
                 align="center"
                 padding="none"
