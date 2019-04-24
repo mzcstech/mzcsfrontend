@@ -125,7 +125,7 @@ class EnhancedTable extends React.Component {
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/companyInformation/delete/' + id,
+    fetch(SERVER_URL + '/original/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
