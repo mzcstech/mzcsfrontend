@@ -10,16 +10,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
+import AddOriginal from './AddOriginal.js';
 import Topbar from '../Topbar';
-import AddCompanyInformation from './AddCompanyInformation.js';
-import EditCompanyInformation from './EditCompanyInformation.js';
-import ViewCompanyInformation from './ViewCompanyInformation.js';
-import CompanyInformationEnhancedTableHead from './CompanyInformationEnhancedTableHead.js';
+import OriginalTableHead from './OriginalTableHead';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js';
-import Original from '../original/Original.js';
+import './styles/Original.css'
 
 //整体样式
 const styles = theme => ({
@@ -51,9 +49,14 @@ class EnhancedTable extends React.Component {
       total: 0,
       message: '',
       open: false,
-      TEMPLATE_ID: ''
+      companyInformationId:this.props.location.query.companyInformationId,
+      originalQueryVo: new FormData()
     };
   }
+  
+  // componentWillUpdate =()=>{
+  //   this.state.companyInformationId=this.props.location.query.companyInformationId
+  // }
 
   componentDidMount = () => {
     this.fetchTemplate();
@@ -64,14 +67,16 @@ class EnhancedTable extends React.Component {
   };
   // 新增
   addTemplate(params) {
-    let companyinformationVo = new FormData()
+    let original = new FormData()
     if (params) {
       for (let key in params) {
-        companyinformationVo.append(key, params[key])
-      }
-    }
-    console.log(companyinformationVo)
-    fetch(SERVER_URL + '/companyInformation/save',
+        original.append(key, params[key])
+      }      
+    }   
+    console.log("original")  
+    console.log(params) 
+    console.log(original)    
+    fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
         method: 'POST',
@@ -79,11 +84,12 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: companyinformationVo
-      }
+        body: original
+      }      
     )
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
+      
   }
   //修改
   editTemplate(params) {
@@ -144,31 +150,20 @@ class EnhancedTable extends React.Component {
       ]
     })
   }
-  //跳转到原件管理List页面
-  jumpToOriginalList = (id) => {
-    //window.location.href='/#/original?companyInformationId='+id;    
-    
-    this.props.history.push({
-      pathname: '/Original',
-      query: {
-        companyInformationId: id
-      },
-    })
-  }
-
   //分页
   fetchTemplate = () => {
-    let companyinformationQueryVo = new FormData();
-    companyinformationQueryVo.append("pageNum", this.state.page + 1)
-    companyinformationQueryVo.append("pageSize", this.state.rowsPerPage)
-    fetch(SERVER_URL + '/companyInformation/list', {
+
+    this.state.originalQueryVo.append("companyInformationId", this.state.companyInformationId)
+    this.state.originalQueryVo.append("pageNum", this.state.page + 1)
+    this.state.originalQueryVo.append("pageSize", this.state.rowsPerPage)
+    fetch(SERVER_URL + '/original/list', {
       mode: "cors",
       method: 'POST',
       credentials: 'include',
       headers: {
         'Accept': 'application/json,text/plain,*/*'
       },
-      body: companyinformationQueryVo
+      body: this.state.originalQueryVo
     })
       .then((response) => response.json())
       .then((responseData) => {
@@ -230,17 +225,17 @@ class EnhancedTable extends React.Component {
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
         <div className={classes.tableWrapper}>
-          <font>原件管理公司信息</font>
+          <font>原件详情列表</font>
         </div>
         <Grid container>
-          <div className="QueryTemplate">
-            <Grid item><AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
-          </div>
+            <div className="QueryTemplate">
+                <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>                
+            </div>
         </Grid>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
-            <CompanyInformationEnhancedTableHead
+            <OriginalTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -253,30 +248,28 @@ class EnhancedTable extends React.Component {
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.tEMPLATE_ID);
+                  const isSelected = this.isSelected(n.originalId);
                   // 便利显示列表页面
                   return (
                     <TableRow
                       className=""
                       hover
-                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)}
+                      onClicock={event => this.handleClick(event, n.originalId)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.tEMPLATE_ID}
+                      key={n.originalId}
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.companyName}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalListString}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalInformation}</TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.originalName}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
 

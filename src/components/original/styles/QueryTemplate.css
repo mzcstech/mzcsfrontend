@@ -1,0 +1,19 @@
+.box{
+    display:flex;
+    align-items:center;
+}
+    .Separate{
+        border-left:2px solid #75757575; 
+        margin: 0 20px;
+        height:35px;
+    }
+    .downBox-text{
+        color: black;
+        width:70px
+    }
+    .downBox-form{
+        width:130px;
+    }
+    .botton{
+        margin-left:10px;
+    }
