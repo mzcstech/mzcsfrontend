@@ -9,6 +9,7 @@ import ScrollToTop from './components/ScrollTop'
 import Template from './components/template/Template'
 import Demo from './components/demo/Demo'
 import CompanyInformation from './components/companyInformation/CompanyInformation'
+import followUpProcess from './components/followUpProcess/FollowUpProcess'
 import Original from './components/original/Original'
 export default props => (
   <HashRouter>
@@ -22,6 +23,7 @@ export default props => (
         <Route exact path='/template' component={Template} />
         <Route exact path='/Demo' component={Demo} />
         <Route exact path='/companyInformation' component={CompanyInformation} />
+        <Route exact path='/followUpProcess' component={followUpProcess} />
         <Route exact path='/Original' component={Original} />
       </Switch>
     </ScrollToTop>
