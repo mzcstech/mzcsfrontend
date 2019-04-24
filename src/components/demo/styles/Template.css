@@ -136,7 +136,7 @@
         table-layout:fixed;
         word-break:break-all;
     }
-    .TableCell{
+    .DomeTableCell{
         width:10.5%;
         padding:0 1px;
         border-left:1px solid #EDEDED;

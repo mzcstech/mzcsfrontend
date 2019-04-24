@@ -12,7 +12,28 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-require('./styles/Template.css')
+function aa(){
+    return(<div className="downBox">
+    <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
+    <Select
+        className="downBox-form"
+        value={this.state.TEMPLATE_SELECT}
+        onChange={this.handleChange}
+        inputProps={{
+            name: 'TEMPLATE_SELECT',
+            id: 'TEMPLATE_SELECT',
+        }}
+     >
+        <MenuItem value="">
+            <em>None</em>
+        </MenuItem>
+        <MenuItem value="下拉框1">下拉框1</MenuItem>
+        <MenuItem value="下拉框2">下拉框2</MenuItem>
+        <MenuItem value="下拉框3">下拉框3</MenuItem>
+    </Select>
+</div>)
+}
+
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -104,7 +125,7 @@ class AddTemplate extends React.Component {
                                 <TextField className="InputBox-next" placeholder="USER_ID"
                                     name="USER_ID" onChange={this.handleChange} />
                             </div>                        
-                        <div className="downBox">
+                        {/* <div className="downBox">
                                 <InputLabel className="downBox-text" htmlFor="age-simple">下拉框:</InputLabel>
                                 <Select
                                     className="downBox-form"
@@ -122,7 +143,7 @@ class AddTemplate extends React.Component {
                                     <MenuItem value="下拉框2">下拉框2</MenuItem>
                                     <MenuItem value="下拉框3">下拉框3</MenuItem>
                                 </Select>
-                        </div>
+                        </div> */}
                         <div className="dateChoice">
                             <FormLabel className="dateChoice-text">日期选择:</FormLabel>
                             <TextField className="dateChoice-form"  type="date" defaultValue="2019-05-24" onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} />
