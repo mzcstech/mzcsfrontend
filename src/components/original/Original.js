@@ -44,16 +44,28 @@ class EnhancedTable extends React.Component {
       selected: [],
       data: [
       ],
-      page: 0,
+      page: 0, 
       rowsPerPage: 5,
       total: 0,
       message: '',
       open: false,
-      companyInformationId:this.props.location.query.companyInformationId,
+      companyInformationId:'',
       originalQueryVo: new FormData()
     };
   }
-  
+  componentWillMount(){
+    // console.log(typeof(this.props.location.query.companyInformationId))
+    let recvParam;
+    if(this.props.location.query != undefined){
+        recvParam = this.props.location.query.companyInformationId
+        sessionStorage.setItem('data',recvParam);
+    }else{
+        recvParam=sessionStorage.getItem('data');
+    }
+    this.setState({
+       companyInformationId:recvParam
+    })
+  }
   // componentWillUpdate =()=>{
   //   this.state.companyInformationId=this.props.location.query.companyInformationId
   // }
@@ -211,7 +223,7 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = id => this.state.selected.indexOf(id) !== -1;  
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
@@ -272,7 +284,7 @@ class EnhancedTable extends React.Component {
 
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 49 * emptyRows }}> 
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

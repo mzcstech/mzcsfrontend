@@ -78,20 +78,21 @@ class AddTemplate extends React.Component {
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
-                                <div className="InputBox-text">公司名称:</div>
-                                <TextField className="InputBox-next" placeholder="请输入公司名称"
-                                    name="companyName" onChange={this.handleChange} />
+                                <div className="InputBox">
+                                    <div className="InputBox-text">公司名称:</div>
+                                    <TextField className="InputBox-next" placeholder="请输入公司名称"
+                                        name="companyName" onChange={this.handleChange} />
+                                </div>
+                                <div className="InputBox">
+                                    <div className="InputBox-text">备注:</div>
+                                    <TextField className="InputBox-next" placeholder="备注" multiline={true} 
+                                        name="remark" onChange={this.handleChange} />
+                                </div>
                             </div>
-                            <div className="tow-row">
-                                <div className="InputBox-text">备注:</div>
-
-                                <TextField className="textDomain-class" placeholder="备注" multiline={true} rows={2}
-                                    name="remark" onChange={this.handleChange} />
-                            </div>
-                            <div className="button">
-                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
-                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
-                            </div>
+                                <div className="button">
+                                    <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
+                                    <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
+                                </div>
                         </div>
                     </form>
                 </SkyLight>

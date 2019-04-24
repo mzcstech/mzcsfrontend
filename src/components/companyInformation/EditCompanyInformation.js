@@ -83,7 +83,7 @@ class EditCompanyInformation extends React.Component {
         this.refs.editDialog.hide();
     }
     render() {
-        //alert(this.state.TEMPLATE_CHECKBOX)     
+        //alert(this.state.TEMPLATE_CHECKBOX)      
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
@@ -91,14 +91,15 @@ class EditCompanyInformation extends React.Component {
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row" >
-                                <FormLabel className="InputBox-text">公司名称：</FormLabel>
-                                <TextField className="InputBox-next" placeholder="公司名称" name="companyName"  onChange={this.handleChange} value={this.state.companyName} title="公司名称" />
-                            </div>
-
-                            <div className="textDomain">
-                                <FormLabel className="InputBox-text">备注：</FormLabel>
-                                <TextField className="textDomain-class" placeholder="remark"  onChange={this.handleChange} multiline={true} rows={2}
-                                    name="remark" value={this.state.remark} />
+                                    <div className="InputBox">
+                                        <div className="InputBox-text">公司名称:</div>
+                                        <TextField className="InputBox-next" placeholder="公司名称" name="companyName"  onChange={this.handleChange} value={this.state.companyName} title="公司名称" />
+                                    </div>
+                                    <div className="InputBox">
+                                        <div className="InputBox-text">备注:</div>
+                                        <TextField className="InputBox-next" placeholder="remark"  onChange={this.handleChange} multiline={true} 
+                                        name="remark" value={this.state.remark} />
+                                    </div>
                             </div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>

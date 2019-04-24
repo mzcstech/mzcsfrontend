@@ -34,8 +34,10 @@ class AddTemplate extends React.Component {
         );
 
     }    
+    
     // Save car and close modal form
     handleSubmit = (event) => {
+        console.log(eval,'eval')
         event.preventDefault();
         var original = {
             originalName:this.state.originalName,
@@ -51,13 +53,11 @@ class AddTemplate extends React.Component {
             message:'新增成功'
         })
     }
-
     // Cancel and close modal form
     cancelSubmit = (event) => {
         event.preventDefault();
         this.refs.addDialog.hide();
     }
-
     render() {       
         return (
             <div>
@@ -80,7 +80,7 @@ class AddTemplate extends React.Component {
                                 <Radio
                                 checked={this.state.originalHoldStatus === 'a'}
                                 onChange={this.handleChange}
-                                value="a"
+                                value="a" 
                                 name="originalHoldStatus"
                                 aria-label="A"
                                 />
@@ -111,7 +111,7 @@ class AddTemplate extends React.Component {
                         <FormControlLabel control={<Checkbox checked={this.state.checkedB} onChange={this.handleChangeCheckbox('checkedB')} value="checkedB" color="primary" />} label="Primary" />
                         */}
                       
-                        <div className="textDomain">
+                        <div className="textDomain">    
                             <TextField className="textDomain-class" label="备注" placeholder="备注" multiline={true} rows={2}
                                 name="remark" onChange={this.handleChange} />
                         </div>

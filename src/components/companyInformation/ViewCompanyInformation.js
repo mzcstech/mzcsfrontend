@@ -62,17 +62,17 @@ class ViewCompanyInformation extends React.Component {
                     <h3>原件管理公司信息-查看</h3>
                     <form>
                        <div className="OutermostBox">
-                        <div   className="tow-row" >
-                          <div className="InputBox">                            
-                                <FormLabel className="InputBox-text">公司名称：</FormLabel>
-                                <TextField className="InputBox-next" placeholder="公司名称"name="公司名称"  value={this.state.companyName}  title="公司名称"/>
-                           </div>
-                        </div>                      
-                       <div className="textDomain">
-                        <FormLabel className="InputBox-text">备注：</FormLabel>
-                            <TextField  className="textDomain-class" placeholder="remark" multiline={true} rows={2}
-                            name="备注"  value={this.state.remark}/>
-                       </div>
+                       <div className="tow-row" >
+                                <div className="InputBox">                            
+                                        <div className="InputBox-text">公司名称:</div>
+                                        <TextField className="InputBox-next" placeholder="公司名称"name="公司名称"  value={this.state.companyName}  title="公司名称"/>
+                                </div>
+                                <div className="InputBox">             
+                                    <div className="InputBox-text">备注:</div>
+                                    <TextField  className="InputBox-next" placeholder="remark" multiline={true} 
+                                    name="备注"  value={this.state.remark}/>
+                                </div>
+                       </div>     
                     </div>
                 </form>
             </SkyLight>
