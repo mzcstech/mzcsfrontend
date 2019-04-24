@@ -13,22 +13,16 @@ class QueryTemplate extends Component{
         super(props)
         this.handValueChange = this.handValueChange.bind(this)
         this.state={
-            valueInput:'',
-           
+            valueInput:null,
         }
     }
-  
     handValueChange(e){
         this.setState({valueInput :e.target.value},()=>{
-            this.props.search(this.state.valueInput)
-            // console.log(this.state.valueInput)
+            this.props.fetchTemplate(this.state.valueInput)
         })
-      
-      
     }
     
     render(){
-       
         return(
             <div className="box">
                     <InputLabel style={{color:'black'}} htmlFor="age-simple">下拉框:</InputLabel>
@@ -49,13 +43,11 @@ class QueryTemplate extends Component{
                         <MenuItem value="下拉框3">下拉框3</MenuItem>
                      </Select>
                 <div className="Separate"></div>
-                <Input className="Input"  onChange={this.handValueChange} placeholder="全局搜索"/>
+                <Input className="Input" value={this.state.valueInput}  onChange={this.handValueChange} placeholder="全局搜索"/>
                 
         </div>
         )
     }
-    componetDidMont(){
-        console.log('componetWillMont')
-    }
+    
 }
 export default QueryTemplate;

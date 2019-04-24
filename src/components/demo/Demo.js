@@ -51,68 +51,15 @@ class EnhancedTable extends React.Component {
         total:0,
         message: '',
         open: false,
-        TEMPLATE_ID:'',
-        NewresponseData:{},
-        lists:[],
-        inputVals:''
+        TEMPLATE_ID:''
       };  
-      this.search = this.search.bind(this)
+      this.fetchTemplate = this.fetchTemplate.bind(this) 
   }
-  //render渲染前加载
-  componentWillMount(){
-    let templateVo = new FormData()
-    templateVo.append('TEMPLATE_DATE', '2019-05-24')
-    fetch(SERVER_URL + '/template/list',
-    {
-        mode: "cors",
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-            'Accept': '*/*'                  
-        },
-        body: templateVo
-    })
-    .then((response) => response.json())
-    .then((responseData) => {
-       this.setState({
-        NewresponseData:responseData.data.list
-       }) 
-    })
-    .catch(err =>{
-        console.log(err,'失败')
-    })
-  }
-
   //组件御载时触发
   componentDidMount= () => {
     this.fetchTemplate();
   }
-  search(inputVal){
-    let searchData =  this.state.NewresponseData
-    let lists = []
-      for(let i = 0; i<searchData.length; i++){
-        if(searchData[i].uSER_ID.indexOf(inputVal)==0){
-           lists.push(searchData[i])
-           console.log('成功')
-        }else{
-           console.log('失败')
-        }
-      }
-      this.setState({
-        inputVals:inputVal,
-        lists:lists
-      }) 
-      console.log(inputVal,'inputVal')
-      console.log(this.state.inputVals,'inputVals')
-  }
-//回调函数
-// CallbackFunc(){
-//   if(this.state.inputVal==''){
-//     return this.state.data
-//   }else{
-//     return this.state.lists
-//   }
-// }
+
 //提示框的显示判断
 handleClose = (event, reason) => {
   this.setState({ open: false });
@@ -198,10 +145,14 @@ confirmDelete = (id) => {
 }
 
 //分页
-fetchTemplate = () => {
+fetchTemplate = (inputVal) => {
+  if(inputVal == undefined){
+     inputVal =''
+  }
   let templateVo = new FormData();  
-      templateVo.append("pageNum",this.state.page+1) 
+      templateVo.append("pageNum",this.state.page) 
       templateVo.append("pageSize",this.state.rowsPerPage) 
+      templateVo.append("queryCodition",inputVal)
   fetch(SERVER_URL + '/template/list', {
       mode: "cors",
       method: 'POST',
@@ -209,7 +160,7 @@ fetchTemplate = () => {
       headers: {
           'Accept': 'application/json,text/plain,*/*'
       },
-      body: templateVo
+      body:templateVo,
   })
       .then((response) => response.json())
       .then((responseData) => {
@@ -261,7 +212,6 @@ fetchTemplate = () => {
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
-   
     // console.log(this.state.NewresponseData,'搜索列表')
     // console.log(this.state.lists,'搜索列表')
     let linkStyle = {backgroundColor: '#c9302c',color:'#ffffff',height:'36px'}
@@ -270,13 +220,14 @@ fetchTemplate = () => {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
+      
       <Paper className={classes.root}>
       <Topbar currentPath={currentPath} />
         <Grid container>
             <div className="QueryTemplate">
                 <Grid item><AddTemplate addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
                 <div className="QueryTemplateInto" >
-                    <QueryTemplate search={this.search} NewresponseData={this.state.NewresponseData} />
+                    <QueryTemplate fetchTemplate={this.fetchTemplate} />
                 </div>
             </div>
         </Grid> 
@@ -292,7 +243,6 @@ fetchTemplate = () => {
             />
             <TableBody >
               {/* {stableSort(data, getSorting(order, orderBy)) */}
-              {/* {stableSort(this.CallbackFunc()) */}
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
@@ -311,13 +261,13 @@ fetchTemplate = () => {
                       <TableCell  padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell       className="DomeTableCell" component="th" scope="row" align="center" padding="none" title={n.tEMPLATE_ID}>{n.tEMPLATE_ID}</TableCell>
-                      <TableCell           className="DomeTableCell"  align="center"   padding="none"  title={n.uSER_ID}>{n.uSER_ID}</TableCell>
+                      <TableCell  className="DomeTableCell"  component="th" scope="row" align="center" padding="none" title={n.tEMPLATE_ID}>{n.tEMPLATE_ID}</TableCell>
+                      <TableCell  className="DomeTableCell"  align="center"   padding="none" title={n.uSER_ID}>{n.uSER_ID}</TableCell>
                       <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_SELECT}>{n.tEMPLATE_SELECT}</TableCell>
-                      <TableCell    className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_DATE}>{n.tEMPLATE_DATE}</TableCell>
-                      <TableCell className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_DATETIME}>{n.tEMPLATE_DATETIME}</TableCell>
-                      <TableCell   className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_RADIO}>{n.tEMPLATE_RADIO}</TableCell>
-                      <TableCell className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_CHECKBOX}>{n.tEMPLATE_CHECKBOX}</TableCell>
+                      <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_DATE}>{n.tEMPLATE_DATE}</TableCell>
+                      <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_DATETIME}>{n.tEMPLATE_DATETIME}</TableCell>
+                      <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_RADIO}>{n.tEMPLATE_RADIO}</TableCell>
+                      <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_CHECKBOX}>{n.tEMPLATE_CHECKBOX}</TableCell>
                       <TableCell  className="DomeTableCell"  align="center"  padding="none"  title={n.tEMPLATE_TEXTAREA}>{n.tEMPLATE_TEXTAREA}</TableCell>
                       <TableCell  className="DomeTableCell"  align="center"  padding="none"  ><SeeTemplate  fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>
                       <TableCell  className="DomeTableCell"  align="center"  padding="none"  ><EditTemplate editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={n.tEMPLATE_ID} /></TableCell>

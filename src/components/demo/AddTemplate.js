@@ -144,7 +144,6 @@ class AddTemplate extends React.Component {
                                     <MenuItem value="下拉框3">下拉框3</MenuItem>
                                 </Select>
                         </div> */}
-                        <aa></aa>
                         <div className="dateChoice">
                             <FormLabel className="dateChoice-text">日期选择:</FormLabel>
                             <TextField className="dateChoice-form"  type="date" defaultValue="2019-05-24" onChange={this.handleChange} name="TEMPLATE_DATE" InputLabelProps={{ shrink: true, }} />
