@@ -40,7 +40,8 @@ class AddTemplate extends React.Component {
         var original = {
             originalName:this.state.originalName,
             originalHoldStatus:this.state.originalHoldStatus,
-            remark:this.state.remark,          
+            remark:this.state.remark,    
+            companyInformationId:this.state. companyInformationId      
         };
         
         this.props.addTemplate(original);
@@ -57,15 +58,13 @@ class AddTemplate extends React.Component {
         this.refs.addDialog.hide();
     }
 
-    render() {
-       alert(this.state.companyInformationId)
+    render() {       
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
                     <h3 className="title">原件管理-新增</h3>
                     <form>
-                        <div className="OutermostBox">
-                         <input type='hidden' name='companyInformationId' value={this.state.companyInformationId}/> 
+                        <div className="OutermostBox">                        
                         <div className="tow-row">
                             <div className="InputBox">
                                 <div className="InputBox-text">公司名称:</div>

@@ -72,10 +72,7 @@ class EnhancedTable extends React.Component {
       for (let key in params) {
         original.append(key, params[key])
       }      
-    }   
-    console.log("original")  
-    console.log(params) 
-    console.log(original)    
+    }            
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
