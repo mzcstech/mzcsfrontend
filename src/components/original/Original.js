@@ -280,7 +280,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><LoanOriginal /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><LoanOriginal id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><BorrowOriginal /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
