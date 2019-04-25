@@ -282,7 +282,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords/></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><LoanOriginal id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><BorrowOriginal id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><OriginalConfirmed id={n.originalId}/></TableCell>
