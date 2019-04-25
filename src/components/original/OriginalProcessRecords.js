@@ -16,44 +16,48 @@ class OriginalProcessRecords extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyInformationId: this.props.companyInformationId
+            companyInformationId: this.props.id
             
         };
     }    
     //查询详情，并展示详情页
-    // findById = (event) => {
-    //     event.preventDefault();
-    //     var companyInformationId = this.state.companyInformationId;
-    //     fetch(SERVER_URL + '/companyInformation/findById/' + companyInformationId,
-    //         {
-    //             mode: "cors",
-    //             method: 'GET',
-    //             credentials: 'include',
-    //             headers: {
-    //                 'Accept': '*/*'
-    //             }
-    //         })
-    //         .then(res => res.json())
-    //         .then((responseData) => {
-    //             this.setState({
-    //                 companyInformationVo: responseData.data,
-    //                 companyName: responseData.data.companyName,
-    //                 remark: responseData.data.remark,
-    //                 companyInformationId:responseData.data.companyInformationId
-    //             });                 
-    //             console.log(this.state.templateVo)
-    //         })
-    //         .catch(err =>
-    //             this.setState({ open: true, message: 'Error when 查询详情' })
-    //         )
+    findById = (event) => {
+        console.log(this.state.companyInformationId,'挨打是大')
+        event.preventDefault();
+        var companyInformationId = this.state.companyInformationId;
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + companyInformationId,
+            {
+                mode: "cors",
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': '*/*'
+                }
+            })
+            .then((response) => response.json())
+            .then(res =>{
+                console.log(res,'OriginalProcessRecords')
+            })
+            // .then((responseData) => {
+            //     // this.setState({
+            //     //     companyInformationVo: responseData.data,
+            //     //     companyName: responseData.data.companyName,
+            //     //     remark: responseData.data.remark,
+            //     //     companyInformationId:responseData.data.companyInformationId
+            //     // });                 
+            //     console.log(this.state.responseData)
+            // })
+            .catch(err =>
+                this.setState({ open: true, message: 'Error when 查询详情' })
+            )
 
-    //     this.refs.editDialog.show();
-    // }
-    // // Cancel and close modal form
-    // cancelSubmit = (event) => {
-    //     event.preventDefault();
-    //     this.refs.editDialog.hide();
-    // }
+        this.refs.editDialog.show();
+    }
+    // Cancel and close modal form
+    cancelSubmit = (event) => {
+        event.preventDefault();
+        this.refs.editDialog.hide();
+    }
     render() {   
         // //alert(this.state.TEMPLATE_CHECKBOX)     
         return (
@@ -64,13 +68,24 @@ class OriginalProcessRecords extends React.Component {
                        <div className="OutermostBox">
                        <div className="tow-row" >
                                 <div className="InputBox">                            
-                                        <div className="InputBox-text">公司名称:</div>
-                                        <TextField className="InputBox-next" placeholder="公司名称"name="公司名称"  value={this.state.companyName}  title="公司名称"/>
+                                    <div className="InputBox-text">原件名称:</div>
+                                    <TextField className="InputBox-next" name="原件名称"  value={this.state.companyName}  title="原件名称"/>
                                 </div>
-                                <div className="InputBox">             
-                                    <div className="InputBox-text">备注:</div>
-                                    <TextField  className="InputBox-next" placeholder="remark" multiline={true} 
-                                    name="备注"  value={this.state.remark}/>
+                                <div className="InputBox">                            
+                                    <div className="InputBox-text">原件持有人:</div>
+                                    <TextField className="InputBox-next"name="原件持有人"  value={this.state.companyName}  title="原件持有人"/>
+                                </div>
+                                <div className="InputBox">                            
+                                    <div className="InputBox-text">借出时间:</div>
+                                    <TextField className="InputBox-next"name="借出时间"  value={this.state.companyName}  title="借出时间"/>
+                                </div>
+                                <div className="InputBox">                            
+                                    <div className="InputBox-text">借入人:</div>
+                                    <TextField className="InputBox-next"name="借入人"  value={this.state.companyName}  title="借入人"/>
+                                </div>
+                                <div className="InputBox">                            
+                                    <div className="InputBox-text">借入时间:</div>
+                                    <TextField className="InputBox-next"name="借入时间"  value={this.state.companyName}  title="借入时间"/>
                                 </div>
                        </div>     
                     </div>
