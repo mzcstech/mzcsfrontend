@@ -87,7 +87,8 @@ class EnhancedTable extends React.Component {
       for (let key in params) {
         original.append(key, params[key])
       }      
-    }            
+    }   
+    console.log(params)         
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
@@ -277,7 +278,7 @@ class EnhancedTable extends React.Component {
                       </TableCell>
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><LoanOriginal /></TableCell>

@@ -18,7 +18,8 @@ class AddTemplate extends React.Component {
             originalHoldStatus:'',
             remark:'',
             open:false,
-            companyInformationId:this.props.companyInformationId
+            companyInformationId:this.props.companyInformationId,
+            singleElectionData:[],
         };
     }
  //提示框
@@ -29,12 +30,15 @@ class AddTemplate extends React.Component {
         this.setState(
             { [event.target.name]: event.target.value }
         );
-
+            
     }    
-    
+    handleChangeRodio = (event) => {
+        this.setState(
+            { originalHoldStatus: event.target.value }
+        );
+    }      
     // Save car and close modal form
     handleSubmit = (event) => {
-        console.log(eval,'eval')
         event.preventDefault();
         var original = {
             originalName:this.state.originalName,
@@ -42,7 +46,6 @@ class AddTemplate extends React.Component {
             remark:this.state.remark,    
             companyInformationId:this.state. companyInformationId      
         };
-        
         this.props.addTemplate(original);
         this.refs.addDialog.hide();
         this.setState({
@@ -55,7 +58,6 @@ class AddTemplate extends React.Component {
         event.preventDefault();
         this.refs.addDialog.hide();
     }
-    //原件状态获取
     componentWillMount(){
         fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_HOLD_STATUS',
         {
@@ -67,12 +69,21 @@ class AddTemplate extends React.Component {
           },
         }
       )
+        .then((response) => response.json())
         .then(res =>{
-            console.log(res,'res')
+            this.setState({
+                singleElectionData:res.data
+            })
         })
         .catch(err => console.error(err,'err'))
     }
-    render() {      
+   
+    render() {   
+        console.log(this.state.singleElectionData)
+        // for(var index=0;index<this.state.singleElectionData.length;index++) {
+        //     console.log(this.state.singleElectionData[index])
+        // }
+        
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
@@ -90,32 +101,21 @@ class AddTemplate extends React.Component {
                             {/* <FormControlLabel className="singleElection-text" control={<FormLabel >单选框:</FormLabel>} /> */}
                             <div className="singleElection-text">持有状态:</div>
                             <div className="singleElection-next">
-                                <FormControlLabel control={
-                                <Radio
-                                checked={this.state.originalHoldStatus === 'a'}
-                                onChange={this.handleChange}
-                                value="a" 
-                                name="originalHoldStatus"
-                                aria-label="A"
-                                />
-                            } label="A" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.originalHoldStatus === 'b'}
-                                    onChange={this.handleChange}
-                                    value="b"
-                                    name="originalHoldStatus"
-                                    aria-label="B"
-                                />} label="B" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.originalHoldStatus === 'e'}
-                                    onChange={this.handleChange}
-                                    value="e"
-                                    color="default"
-                                    name="originalHoldStatus"
-                                    aria-label="E"
-                                />} label="E" />
+                                {this.state.singleElectionData.map(item=>{
+                                    
+                                    return (
+                                        <FormControlLabel control={
+                                        <Radio
+                                            checked={this.state.originalHoldStatus  === item.bianma}
+                                            key={item.dictionariesId}
+                                            onChange={this.handleChangeRodio}
+                                            value={item.bianma}
+                                            name={item.bianma}
+                                            aria-label={item.name}
+                                        />} label={item.name} />
+                                        )
+                                    })  
+                                }
                             </div>
                          </div>                         
                       </div>
