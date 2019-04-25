@@ -10,14 +10,14 @@ import Input from '@material-ui/core/Input';
 class LoanOriginal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {     
-            originalId:this.props.id,      
+        this.state = {
+            originalId: this.props.id,
             open: false,
             originalOutTo: '',
             userList: [],
-            companyName:'',
-            originalName:'',
-            originalHolder:''
+            companyName: '',
+            originalName: '',
+            originalHolder: ''
 
         };
     }
@@ -29,47 +29,88 @@ class LoanOriginal extends React.Component {
     //提示框
     handleClose = (event, reason) => {
         this.setState({ open: false });
-    };    
-    // Save car and close modal form
-    handleSubmit = (event) => {
+    };
+
+    //驳回
+    handleSubmitReject = (event) => {
         event.preventDefault();
-        var original = {            
+        var original = {
             originalOutTo: this.state.originalOutTo,
-            companyName:this.state.companyName,
-            originalName:this.state.originalName,
-            originalHolder:this.state.originalHolder,
-            originalId:this.state.originalId
+            companyName: this.state.companyName,
+            originalName: this.state.originalName,
+            originalHolder: this.state.originalHolder,
+            originalId: this.state.originalId
         };
-        this.loanOut(original);
+        this.loanOutReject(original);
         this.refs.editDialog.hide();
         this.setState({
             open: true,
-            message: '借出，待确认'
+            message: 'success'
         })
     }
-
-    loanOut(params) {
+    loanOutReject(params) {
         console.log(params)
         let original = new FormData()
         if (params) {
-          for (let key in params) {
-            original.append(key, params[key])
-          }
+            for (let key in params) {
+                original.append(key, params[key])
+            }
         }
         console.log(original)
-        fetch(SERVER_URL + '/original/loanOut',
-          {
-            mode: "cors",
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-              'Accept': 'application/json,text/plain,*/*'
-            },
-            body: original
-          })
-          .then(res => this.props.fetchTemplate())
-          .catch(err => console.error(err))
-      }
+        fetch(SERVER_URL + '/original/reject',
+            {
+                mode: "cors",
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json,text/plain,*/*'
+                },
+                body: original
+            })
+            .then(res => this.props.fetchTemplate())
+            .catch(err => console.error(err))
+    }
+
+    //确认
+    handleSubmit = (event) => {
+        event.preventDefault();
+        var original = {
+            originalOutTo: this.state.originalOutTo,
+            companyName: this.state.companyName,
+            originalName: this.state.originalName,
+            originalHolder: this.state.originalHolder,
+            originalId: this.state.originalId
+        };
+        this.loanOutConfirmed(original);
+        this.refs.editDialog.hide();
+        this.setState({
+            open: true,
+            message: 'success'
+        })
+    }
+
+    loanOutConfirmed(params) {
+        console.log(params)
+        let original = new FormData()
+        if (params) {
+            for (let key in params) {
+                original.append(key, params[key])
+            }
+        }
+        console.log(original)
+        fetch(SERVER_URL + '/original/loanOutConfirmed',
+            {
+                mode: "cors",
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json,text/plain,*/*'
+                },
+                body: original
+            })
+            .then(res => this.props.fetchTemplate())
+            .catch(err => console.error(err))
+    }
 
     findAllUser(params) {
         let user = new FormData()
@@ -92,7 +133,7 @@ class LoanOriginal extends React.Component {
             .then((res) => {
                 this.setState({
                     userList: res.data
-                });                
+                });
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取User列表' })
@@ -100,7 +141,7 @@ class LoanOriginal extends React.Component {
     }
 
     //根据输入的姓名过滤userList
-    searchUser= (event) => {
+    searchUser = (event) => {
         console.log(event.value)
 
     }
@@ -108,7 +149,7 @@ class LoanOriginal extends React.Component {
     findById = (event) => {
         this.findAllUser(event);
         event.preventDefault();
-        var originalId = this.state.originalId; 
+        var originalId = this.state.originalId;
         fetch(SERVER_URL + '/original/findById/' + originalId,
             {
                 mode: "cors",
@@ -122,9 +163,9 @@ class LoanOriginal extends React.Component {
             .then((res) => {
                 this.setState({
                     originalOutTo: res.data.originalOutTo,
-                    companyName:res.data.companyName,
-                     originalName:res.data.originalName,
-                    originalHolder:res.data.originalHolder
+                    companyName: res.data.companyName,
+                    originalName: res.data.originalName,
+                    originalHolder: res.data.originalHolder
                 });
             })
             .catch(err =>
@@ -144,7 +185,7 @@ class LoanOriginal extends React.Component {
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
-                    <h3>借出</h3>
+                    <h3>确认页面</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row" >
@@ -153,41 +194,28 @@ class LoanOriginal extends React.Component {
                                     <FormLabel className="InputBox-text">公司名称:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="companyName" disabled='true' name="companyName" onChange={this.handleChange} value={this.state.companyName} />
                                 </div>
-                                <div className="InputBox">                                   
+                                <div className="InputBox">
                                     <FormLabel className="InputBox-text">原件名称:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="originalName" disabled='true' name="originalName" onChange={this.handleChange} value={this.state.originalName} />
                                 </div>
-                                <div className="InputBox">                                    
+                                <div className="InputBox">
                                     <FormLabel className="InputBox-text">当前原件持有人:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="originalHolder" disabled='true' name="originalHolder" onChange={this.handleChange} value={this.state.originalHolder} />
                                 </div>
-                                <div className="InputBox">                                   
+                                <div className="InputBox">
                                     <FormLabel className="InputBox-text">借出对象:</FormLabel>
-                                    
-                                    <NativeSelect                                        
-                                        native
-                                        value={this.state.originalOutTo}
-                                        onChange={this.handleChange}
-                                        name='originalOutTo' 
-                                        input={<Input name="name" id="name" />}
-                                        >
-                                        <option value="" /> 
-                                        {this.state.userList.map(item => {
-                                            return (<option value={item.username}>{item.name}</option>)
-                                        })
-                                        }
-                                    </NativeSelect>
-
+                                    <TextField className="InputBox-next" placeholder="originalHolder" disabled='true' name="originalHolder" onChange={this.handleChange} value={this.state.originalOutTo} />
                                 </div>
                             </div>
                             <div className="button" style={{ position: 'absolute,botton:20px' }}>
-                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>借出</Button>
+                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>确认</Button>
+                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmitReject}>驳回</Button>
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
                             </div>
                         </div>
                     </form>
                 </SkyLight>
-                <Button variant="contained" color="primary" onClick={this.findById}>借出</Button>
+                <Button variant="contained" color="primary" onClick={this.findById}>确认</Button>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
                     open={this.state.open}
