@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 
-class LoanOriginal extends React.Component {
+class BorrowOriginal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -131,7 +131,7 @@ class LoanOriginal extends React.Component {
         return (
             <div>
                 <SkyLight  hideOnOverlayClicked ref="editDialog">
-                    <h3>借出</h3>
+                    <h3>借入</h3>
                     <form>
                        <div className="OutermostBox">
                         <div   className="tow-row" >
@@ -152,18 +152,18 @@ class LoanOriginal extends React.Component {
                            </div>
                            <div className="InputBox">
                             <input type="hidden" value={this.state.templeteId} name="TEMPLATE_ID"></input>
-                            <FormLabel className="InputBox-text">借出对象:</FormLabel>
+                            <FormLabel className="InputBox-text">借入对象:</FormLabel>
                             <TextField className="InputBox-next" placeholder="USER_ID"name="USER_ID" onChange={this.handleChange} value={this.state.USER_ID} />
                            </div>
                         </div>
                        <div className="button" style={{position:'absolute,botton:20px'}}>
-                           <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>借出</Button>
+                           <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>借入</Button>
                            <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
                         </div>
                     </div>
                 </form>
             </SkyLight>
-            <Button  variant="contained" color="primary"   onClick={this.findById}>借出</Button>
+            <Button  variant="contained" color="primary"   onClick={this.findById}>借入</Button>
             <Snackbar
                  style={{ width: 300, color: 'green' }}
                  open={this.state.open}
@@ -178,4 +178,4 @@ class LoanOriginal extends React.Component {
 
 } 
 
-export default LoanOriginal;
+export default BorrowOriginal;

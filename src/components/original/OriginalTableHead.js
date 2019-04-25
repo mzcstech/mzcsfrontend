@@ -41,8 +41,15 @@ const rows = [
         id: 'updatePagebutton',
         numeric: false,
         disablePadding: false,
+        label: '借入',
+        Cell: ({ row }) =>
+            (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
+    },
+    {
+        id: 'updatePagebutton',
+        numeric: false,
+        disablePadding: false,
         label: '查看',
-
         Cell: ({ row }) =>
             (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
     },

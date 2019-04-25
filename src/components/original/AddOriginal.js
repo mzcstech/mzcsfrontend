@@ -1,17 +1,14 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
+import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
 import Snackbar from '@material-ui/core/Snackbar';
 import Radio from '@material-ui/core/Radio';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+
 require('./styles/Original.css')
 class AddTemplate extends React.Component {
     constructor(props) {
@@ -58,7 +55,24 @@ class AddTemplate extends React.Component {
         event.preventDefault();
         this.refs.addDialog.hide();
     }
-    render() {       
+    //原件状态获取
+    componentWillMount(){
+        fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_HOLD_STATUS',
+        {
+          mode: "cors",
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            "Accept": "*/*"
+          },
+        }
+      )
+        .then(res =>{
+            console.log(res,'res')
+        })
+        .catch(err => console.error(err,'err'))
+    }
+    render() {      
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
@@ -101,8 +115,6 @@ class AddTemplate extends React.Component {
                                     color="default"
                                     name="originalHoldStatus"
                                     aria-label="E"
-                                    icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                                    checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                                 />} label="E" />
                             </div>
                          </div>                         
