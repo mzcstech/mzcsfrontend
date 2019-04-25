@@ -33,6 +33,14 @@ const rows = [
         id: 'updatePagebutton',
         numeric: false,
         disablePadding: false,
+        label: '借出',
+        Cell: ({ row }) =>
+            (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
+    },
+    {
+        id: 'updatePagebutton',
+        numeric: false,
+        disablePadding: false,
         label: '查看',
 
         Cell: ({ row }) =>
@@ -52,7 +60,6 @@ const rows = [
         numeric: false,
         disablePadding: false,
         label: '删除',
-        width: 70,
         Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>删除</Button>)
     }
 ];

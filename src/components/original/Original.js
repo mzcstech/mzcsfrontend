@@ -1,6 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Topbar from '../Topbar';
+import LoanOriginal from './LoanOriginal'
+import OriginalTableHead from './OriginalTableHead';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,8 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddOriginal from './AddOriginal.js';
-import Topbar from '../Topbar';
-import OriginalTableHead from './OriginalTableHead';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -53,6 +54,7 @@ class EnhancedTable extends React.Component {
       originalQueryVo: new FormData()
     };
   }
+  // 保存id
   componentWillMount(){
     // console.log(typeof(this.props.location.query.companyInformationId))
     let recvParam;
@@ -161,7 +163,6 @@ class EnhancedTable extends React.Component {
   }
   //分页
   fetchTemplate = () => {
-
     this.state.originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     this.state.originalQueryVo.append("pageNum", this.state.page + 1)
     this.state.originalQueryVo.append("pageSize", this.state.rowsPerPage)
@@ -278,6 +279,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><LoanOriginal /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
