@@ -161,6 +161,9 @@
     .TableCell:nth-last-child(5){
         width:4%;
     }
+    .TableCell:nth-last-child(6){
+        width:4%;
+    }
         .TableSortLabel{
             border:1px solid red;
             font-size:16px;

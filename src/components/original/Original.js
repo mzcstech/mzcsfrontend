@@ -5,6 +5,7 @@ import Topbar from '../Topbar';
 import LoanOriginal from './LoanOriginal'
 import BorrowOriginal from './BorrowOriginal'
 import OriginalTableHead from './OriginalTableHead';
+import OriginalProcessRecords from './OriginalProcessRecords';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -280,13 +281,13 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      {/* <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell> */}
+                      <TableCell className="TableCell" align="center" padding="none"> <OriginalProcessRecords/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><LoanOriginal /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><BorrowOriginal /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
-
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}> 
