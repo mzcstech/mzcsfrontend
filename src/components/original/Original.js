@@ -16,6 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddOriginal from './AddOriginal.js';
+import OriginalConfirmed from './OriginalConfirmed.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -284,6 +285,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><LoanOriginal id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><BorrowOriginal /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalConfirmed id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
