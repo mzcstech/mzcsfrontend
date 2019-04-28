@@ -88,8 +88,9 @@
             line-height:60px;
         }
         .singleElection-next{
+            display:flex;
             text-align:left;
-            width:70%;
+            width:100%;
             height:60px;
             line-height:60px;
         }
@@ -152,6 +153,15 @@
         width:4%;
     }
     .TableCell:nth-last-child(3){
+        width:4%;
+    }
+    .TableCell:nth-last-child(4){
+        width:4%;
+    }
+    .TableCell:nth-last-child(5){
+        width:4%;
+    }
+    .TableCell:nth-last-child(6){
         width:4%;
     }
         .TableSortLabel{

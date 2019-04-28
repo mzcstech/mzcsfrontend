@@ -1,6 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Topbar from '../Topbar';
+import LoanOriginal from './LoanOriginal'
+import BorrowOriginal from './BorrowOriginal'
+import OriginalTableHead from './OriginalTableHead';
+import OriginalProcessRecords from './OriginalProcessRecords';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,8 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
 import AddOriginal from './AddOriginal.js';
-import Topbar from '../Topbar';
-import OriginalTableHead from './OriginalTableHead';
+import OriginalConfirmed from './OriginalConfirmed.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -44,16 +48,29 @@ class EnhancedTable extends React.Component {
       selected: [],
       data: [
       ],
-      page: 0,
+      page: 0, 
       rowsPerPage: 5,
       total: 0,
       message: '',
       open: false,
-      companyInformationId:this.props.location.query.companyInformationId,
+      companyInformationId:'',
       originalQueryVo: new FormData()
     };
   }
-  
+  // 保存id
+  componentWillMount(){
+    // console.log(typeof(this.props.location.query.companyInformationId))
+    let recvParam;
+    if(this.props.location.query != undefined){
+        recvParam = this.props.location.query.companyInformationId
+        sessionStorage.setItem('data',recvParam);
+    }else{
+        recvParam=sessionStorage.getItem('data');
+    }
+    this.setState({
+       companyInformationId:recvParam
+    })
+  }
   // componentWillUpdate =()=>{
   //   this.state.companyInformationId=this.props.location.query.companyInformationId
   // }
@@ -72,7 +89,8 @@ class EnhancedTable extends React.Component {
       for (let key in params) {
         original.append(key, params[key])
       }      
-    }            
+    }   
+    console.log(params)         
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
@@ -113,7 +131,7 @@ class EnhancedTable extends React.Component {
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/companyInformation/delete/' + id,
+    fetch(SERVER_URL + '/original/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -149,7 +167,6 @@ class EnhancedTable extends React.Component {
   }
   //分页
   fetchTemplate = () => {
-
     this.state.originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     this.state.originalQueryVo.append("pageNum", this.state.page + 1)
     this.state.originalQueryVo.append("pageSize", this.state.rowsPerPage)
@@ -211,7 +228,7 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = id => this.state.selected.indexOf(id) !== -1;  
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
@@ -263,16 +280,18 @@ class EnhancedTable extends React.Component {
                       </TableCell>
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId}/></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><LoanOriginal id={n.originalId}/></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><BorrowOriginal id={n.originalId}/></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalConfirmed id={n.originalId}/></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
-
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 49 * emptyRows }}> 
                   <TableCell colSpan={6} />
                 </TableRow>
               )}

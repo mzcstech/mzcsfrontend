@@ -1,17 +1,14 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
+import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
 import Snackbar from '@material-ui/core/Snackbar';
 import Radio from '@material-ui/core/Radio';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
+
 require('./styles/Original.css')
 class AddTemplate extends React.Component {
     constructor(props) {
@@ -21,7 +18,8 @@ class AddTemplate extends React.Component {
             originalHoldStatus:'',
             remark:'',
             open:false,
-            companyInformationId:this.props.companyInformationId
+            companyInformationId:this.props.companyInformationId,
+            singleElectionData:[],
         };
     }
  //提示框
@@ -32,8 +30,13 @@ class AddTemplate extends React.Component {
         this.setState(
             { [event.target.name]: event.target.value }
         );
-
+            
     }    
+    handleChangeRodio = (event) => {
+        this.setState(
+            { originalHoldStatus: event.target.value }
+        );
+    }      
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +46,6 @@ class AddTemplate extends React.Component {
             remark:this.state.remark,    
             companyInformationId:this.state. companyInformationId      
         };
-        
         this.props.addTemplate(original);
         this.refs.addDialog.hide();
         this.setState({
@@ -51,14 +53,37 @@ class AddTemplate extends React.Component {
             message:'新增成功'
         })
     }
-
     // Cancel and close modal form
     cancelSubmit = (event) => {
         event.preventDefault();
         this.refs.addDialog.hide();
     }
-
-    render() {       
+    componentWillMount(){
+        fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_HOLD_STATUS',
+        {
+          mode: "cors",
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            "Accept": "*/*"
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then(res =>{
+            this.setState({
+                singleElectionData:res.data
+            })
+        })
+        .catch(err => console.error(err,'err'))
+    }
+   
+    render() {   
+        console.log(this.state.singleElectionData)
+        // for(var index=0;index<this.state.singleElectionData.length;index++) {
+        //     console.log(this.state.singleElectionData[index])
+        // }
+        
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
@@ -76,34 +101,21 @@ class AddTemplate extends React.Component {
                             {/* <FormControlLabel className="singleElection-text" control={<FormLabel >单选框:</FormLabel>} /> */}
                             <div className="singleElection-text">持有状态:</div>
                             <div className="singleElection-next">
-                                <FormControlLabel control={
-                                <Radio
-                                checked={this.state.originalHoldStatus === 'a'}
-                                onChange={this.handleChange}
-                                value="a"
-                                name="originalHoldStatus"
-                                aria-label="A"
-                                />
-                            } label="A" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.originalHoldStatus === 'b'}
-                                    onChange={this.handleChange}
-                                    value="b"
-                                    name="originalHoldStatus"
-                                    aria-label="B"
-                                />} label="B" />
-                                <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.originalHoldStatus === 'e'}
-                                    onChange={this.handleChange}
-                                    value="e"
-                                    color="default"
-                                    name="originalHoldStatus"
-                                    aria-label="E"
-                                    icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                                    checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
-                                />} label="E" />
+                                {this.state.singleElectionData.map(item=>{
+                                    
+                                    return (
+                                        <FormControlLabel control={
+                                        <Radio
+                                            checked={this.state.originalHoldStatus  === item.bianma}
+                                            key={item.dictionariesId}
+                                            onChange={this.handleChangeRodio}
+                                            value={item.bianma}
+                                            name={item.bianma}
+                                            aria-label={item.name}
+                                        />} label={item.name} />
+                                        )
+                                    })  
+                                }
                             </div>
                          </div>                         
                       </div>
@@ -111,7 +123,7 @@ class AddTemplate extends React.Component {
                         <FormControlLabel control={<Checkbox checked={this.state.checkedB} onChange={this.handleChangeCheckbox('checkedB')} value="checkedB" color="primary" />} label="Primary" />
                         */}
                       
-                        <div className="textDomain">
+                        <div className="textDomain">    
                             <TextField className="textDomain-class" label="备注" placeholder="备注" multiline={true} rows={2}
                                 name="remark" onChange={this.handleChange} />
                         </div>

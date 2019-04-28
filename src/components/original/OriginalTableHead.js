@@ -19,7 +19,7 @@ disablePadding：控制padding
 const rows = [
     { id: 'companyName', numeric: false, disablePadding: true, label: '原件名称' },
     { id: 'originalListString', numeric: true, disablePadding: false, label: '当前持有人' },
-    { id: 'tEMPLATE_SELECT', numeric: true, disablePadding: false, label: '信息' },
+    { id: 'tEMPLATE_SELECT', numeric: true, disablePadding: false, label: '持有状态' },
     { id: 'remark', numeric: true, disablePadding: false, label: '备注' },
     {
         id: 'updatePagebutton',
@@ -33,8 +33,23 @@ const rows = [
         id: 'updatePagebutton',
         numeric: false,
         disablePadding: false,
+        label: '借出',
+        Cell: ({ row }) =>
+            (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
+    },
+    {
+        id: 'updatePagebutton',
+        numeric: false,
+        disablePadding: false,
+        label: '借入',
+        Cell: ({ row }) =>
+            (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
+    },
+    {
+        id: 'updatePagebutton',
+        numeric: false,
+        disablePadding: false,
         label: '查看',
-
         Cell: ({ row }) =>
             (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
     },
@@ -52,7 +67,6 @@ const rows = [
         numeric: false,
         disablePadding: false,
         label: '删除',
-        width: 70,
         Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.tEMPLATE_ID) }}>删除</Button>)
     }
 ];

@@ -216,11 +216,11 @@ fetchTemplate = (inputVal) => {
     // console.log(this.state.lists,'搜索列表')
     let linkStyle = {backgroundColor: '#c9302c',color:'#ffffff',height:'36px'}
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page, inputVal,lists} = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page,} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
-      
+
       <Paper className={classes.root}>
       <Topbar currentPath={currentPath} />
         <Grid container>

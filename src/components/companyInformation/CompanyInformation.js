@@ -142,7 +142,7 @@ class EnhancedTable extends React.Component {
           label: '否',
         }
       ]
-    })
+    }) 
   }
   //跳转到原件管理List页面
   jumpToOriginalList = (id) => {
