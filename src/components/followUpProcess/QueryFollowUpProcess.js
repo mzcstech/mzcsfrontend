@@ -34,7 +34,6 @@ class QueryTemplate extends Component {
     }
 
     handleChange = (event) => {
-        console.log(event.target.value)
         this.setState(
             { [event.target.name]: event.target.value }
         );
@@ -50,16 +49,7 @@ class QueryTemplate extends Component {
     render() {
         return (
             <div className="box">
-                <InputLabel style={{ color: 'black' }} htmlFor="age-simple">下拉框:</InputLabel>
-                <Select>
-                    <MenuItem value="">
-                        <em>None</em>
-                    </MenuItem>
-                    <MenuItem value="下拉框1">下拉框1</MenuItem>
-                    <MenuItem value="下拉框2">下拉框2</MenuItem>
-                    <MenuItem value="下拉框3">下拉框3</MenuItem>
-                </Select>
-                <div className="Separate"></div>
+                
                 <Input className="Input" onChange={this.handValueChange} placeholder="全局搜索" />
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
                 <div className="singleElection-text">业务类型:</div>

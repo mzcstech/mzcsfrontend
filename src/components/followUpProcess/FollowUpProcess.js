@@ -33,7 +33,6 @@ const styles = theme => ({
 });
 function stableSort(array) {
   const stabilizedThis = array.map((el, index) => [el, index]);
-  console.log(stabilizedThis.map(el => el[0]))
   return stabilizedThis.map(el => el[0]);
 }
 class EnhancedTable extends React.Component {
@@ -43,7 +42,7 @@ class EnhancedTable extends React.Component {
       selected: [],
       data: [],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       total: 0,
       message: '',
       open: false,
@@ -125,7 +124,6 @@ class EnhancedTable extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData.data)
         this.setState({
           data: responseData.data.list,
           page: responseData.data.pageNum - 1,
@@ -206,7 +204,7 @@ class EnhancedTable extends React.Component {
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  // 便利显示列表页面
+                  // 遍历显示列表页面
                   return (
                     <TableRow
                       hover
@@ -214,7 +212,6 @@ class EnhancedTable extends React.Component {
                       role="checkbox"
                       key={n.procInstId}
                     >
-                      <TableCell className="TableCell" align="center" padding="none" title={n.procInstId}>{n.procInstId}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.contractDate}>{n.contractDate}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.signPerson}>{n.signPerson}</TableCell>

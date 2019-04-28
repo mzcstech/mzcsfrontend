@@ -57,11 +57,10 @@ class ViewFollowUpProcess extends React.Component {
         this.refs.editDialog.hide();
     }
     render() {   
-        const {processVoList} = this.state;
-        //alert(this.state.TEMPLATE_CHECKBOX)     
+        const {processVoList} = this.state;   
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="editDialog">
+                <SkyLight hideOnOverlayClicked ref="editDialog" overlayStyles>
                     <h3>查看流程记录</h3>
                     <Table  aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
@@ -97,7 +96,7 @@ class ViewFollowUpProcess extends React.Component {
             </TableBody>
           </Table>
             </SkyLight>
-            <Button  variant="contained" color="primary"  style={{ 'margin':'10px,0',background:'#31b0d5' }} onClick={this.findByProcInstId}>查看</Button>
+            <Button  variant="contained" color="primary"  style={{ 'margin':'10px,0',background:'#31b0d5' }} onClick={this.findByProcInstId}>流程信息</Button>
             <Snackbar
                  style={{ width: 100, color: 'green' }}
                  open={this.state.open}
