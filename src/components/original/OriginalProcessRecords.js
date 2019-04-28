@@ -36,7 +36,22 @@ class OriginalProcessRecords extends React.Component {
         this.setState({OriginalId:recvParam},()=>{
         var OriginalId = this.props.OriginalId;
         fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',
-            {
+
+    // // 保存id
+    // componentWillMount(){
+    //     let recvParam;
+    //     if(this.props.location.query != undefined){
+    //         recvParam = this.props.location.query.companyInformationId
+    //         sessionStorage.setItem('data',recvParam);
+    //     }else{
+    //         recvParam=sessionStorage.getItem('data');
+    //     }
+    //     this.setState({
+    //         OriginalId:recvParam
+    //     })
+    //   }
+    //查询详情，并展示详情页
+    
                 mode: "cors",
                 method: 'GET',
                 credentials: 'include',

@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Topbar from '../Topbar';
 import LoanOriginal from './LoanOriginal'
@@ -49,7 +48,7 @@ class EnhancedTable extends React.Component {
       data: [
       ],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       total: 0,
       message: '',
       open: false,
@@ -61,7 +60,7 @@ class EnhancedTable extends React.Component {
   componentWillMount() {
     // console.log(typeof(this.props.location.query.companyInformationId))
     let recvParam;
-    if (this.props.location.query != undefined) {
+    if (this.props.location.query !== undefined) {
       recvParam = this.props.location.query.companyInformationId
       sessionStorage.setItem('data', recvParam);
     } else {
@@ -166,7 +165,7 @@ class EnhancedTable extends React.Component {
     })
   }
   //分页
-  fetchTemplate = () => {
+  fetchTemplate = () => {   
     let originalQueryVo = new FormData();
     originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     originalQueryVo.append("pageNum", this.state.page + 1)
@@ -296,23 +295,23 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpOriginalProcessRecords(n.originalId) }}>查看</Button></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
-                          <LoanOriginal id={n.originalId} />
+                          <LoanOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
                             <Button size="small"  style={linkReadonlyStyle}  color="primary  " variant="text" disabled="true">借出</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanInAuthorized ? (
-                          <BorrowOriginal id={n.originalId} />
+                          <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutConfirmed ? (
-                          <OriginalConfirmed id={n.originalId} />
+                          <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
-                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">确认</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>

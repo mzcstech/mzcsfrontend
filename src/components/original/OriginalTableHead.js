@@ -49,7 +49,7 @@ const rows = [
         id: 'updatePagebutton',
         numeric: false,
         disablePadding: false,
-        label: '修改',
+        label: '确认',
 
         Cell: ({ row }) =>
             (<EditOriginal editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)

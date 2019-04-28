@@ -9,10 +9,17 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+
 function stableSort(array) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     return stabilizedThis.map(el => el[0]);
-  }
+}
 
 
 class ViewFollowUpProcess extends React.Component {
@@ -21,11 +28,13 @@ class ViewFollowUpProcess extends React.Component {
         this.state = {
             procInstId: this.props.procInstId,
             processVoList: [],
-            open:false,
+            open: false,
+            fullWidth: true,
+            maxWidth: '600sm',
         };
     }
-    
- 
+
+
     //查询详情，并展示详情页
     findByProcInstId = (event) => {
         event.preventDefault();
@@ -43,74 +52,79 @@ class ViewFollowUpProcess extends React.Component {
             .then((responseData) => {
                 this.setState({
                     processVoList: responseData.data
-                });                 
+                });
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
 
-        this.refs.editDialog.show();
+        this.setOpen(true);
     }
-    // Cancel and close modal form
-    cancelSubmit = (event) => {
-        event.preventDefault();
-        this.refs.editDialog.hide();
+
+    handleClickOpen = (event) => {
+        this.setOpen(true);
     }
-    render() {   
-        const {processVoList} = this.state;
-        //alert(this.state.TEMPLATE_CHECKBOX)     
+
+    handleClose = (event) => {
+        this.setOpen(false);
+    }
+    setOpen = (event) => {
+        this.setState({ open: event }, () => {
+        })
+    }
+    render() {
+        const processVoList = this.state.processVoList
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="editDialog">
-                    <h3>查看流程记录</h3>
-                    <Table  aria-labelledby="tableTitle">
-            {/* 头列表页组件展示 */}
-            <TableHead>
-                <TableRow>
-                <TableCell className="TableCell" align="center"   padding="none" title="序号">序号</TableCell>
-                      <TableCell className="TableCell" align="center"   padding="none"  title="任务节点">任务节点</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title="办理人">办理人</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title="审批开始时间">审批开始时间</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title="审批结束时间">审批结束时间</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title="用时">用时</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title="审批意见">审批意见</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody >
-              {stableSort(processVoList)
-                .map(n => {
-                  // 便利显示列表页面
-                  return (
-                    <TableRow>
-                      <TableCell className="TableCell" align="center"   padding="none" title={n.procInstId}>{n.procInstId}</TableCell>
-                      <TableCell className="TableCell" align="center"   padding="none"  title={n.actName}>{n.actName}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.assignee}>{n.assignee}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.startTime}>{n.startTime}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.endTime}>{n.endTime}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.durationCN}>{n.durationCN}</TableCell>
-                      <TableCell className="TableCell" align="center"  padding="none"  title={n.text}>{n.text}</TableCell>
-                    
-                    </TableRow> 
-                  );  
-                })}
-              
-            </TableBody>
-          </Table>
-            </SkyLight>
-            <Button  variant="contained" color="primary"  style={{ 'margin':'10px,0',background:'#31b0d5' }} onClick={this.findByProcInstId}>查看</Button>
-            <Snackbar
-                 style={{ width: 100, color: 'green' }}
-                 open={this.state.open}
-                 onClose={this.handleClose}
-                 autoHideDuration={1500}
-                 message={this.state.message}
-                 />
-        </div>
-            
+                {/* <SkyLight hideOnOverlayClicked ref="editDialog" overlayStyles> */}
+                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth={this.state.fullWidth}
+                    maxWidth={this.state.maxWidth} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title" onClose={this.handleClose}>查看流程记录</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell className="TableCell" align="center" padding="none" title="任务节点">任务节点</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="办理人">办理人</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="审批开始时间">审批开始时间</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="审批结束时间">审批结束时间</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="用时">用时</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="审批意见">审批意见</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody >
+                                {stableSort(processVoList)
+                                    .map(n => {
+                                        // 便利显示列表页面
+                                        return (
+                                            <TableRow>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.actName}>{n.actName}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.assignee}>{n.assignee}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.startTime}>{n.startTime}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.endTime}>{n.endTime}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.durationCN}>{n.durationCN}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.text}>{n.text}</TableCell>
+
+                                            </TableRow>
+                                        );
+                                    })}
+
+                            </TableBody>
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }}>
+                            关闭
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+                <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findByProcInstId}>流程信息</Button>
+            </div>
+
         );
     }
-  
 
-} 
+
+}
 
 export default ViewFollowUpProcess;

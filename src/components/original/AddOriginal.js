@@ -5,8 +5,6 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 require('./styles/Original.css')
@@ -92,8 +90,8 @@ class AddTemplate extends React.Component {
                         <div className="OutermostBox">                        
                         <div className="tow-row">
                             <div className="InputBox">
-                                <div className="InputBox-text">公司名称:</div>
-                                <TextField className="InputBox-next" placeholder="公司名称"
+                                <div className="InputBox-text">原件名称:</div>
+                                <TextField className="InputBox-next" placeholder="原件名称"
                                     name="originalName" onChange={this.handleChange} />
                             </div>            
 
