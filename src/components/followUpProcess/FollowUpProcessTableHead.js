@@ -4,11 +4,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
-import EditFollowUpProcess from './EditFollowUpProcess.js';
 import SeeFollowUpProcess from './SeeFollowUpProcess.js';
-import Button from '@material-ui/core/Button';
 require('./styles/FollowUpProcess.css')
 require('./styles/EnhancedTableHead.css')
 //第一列的标题
