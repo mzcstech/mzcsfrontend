@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Topbar from '../Topbar';
 import LoanOriginal from './LoanOriginal'
@@ -49,7 +48,7 @@ class EnhancedTable extends React.Component {
       data: [
       ],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       total: 0,
       message: '',
       open: false,
@@ -61,7 +60,7 @@ class EnhancedTable extends React.Component {
   componentWillMount() {
     // console.log(typeof(this.props.location.query.companyInformationId))
     let recvParam;
-    if (this.props.location.query != undefined) {
+    if (this.props.location.query !== undefined) {
       recvParam = this.props.location.query.companyInformationId
       sessionStorage.setItem('data', recvParam);
     } else {

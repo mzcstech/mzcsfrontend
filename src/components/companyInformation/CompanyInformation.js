@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -19,7 +18,6 @@ import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js';
-import Original from '../original/Original.js';
 
 //整体样式
 const styles = theme => ({
@@ -47,7 +45,7 @@ class EnhancedTable extends React.Component {
       data: [
       ],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 10,
       total: 0,
       message: '',
       open: false,
