@@ -153,6 +153,7 @@ class LoanOriginal extends React.Component {
                                     <FormLabel className="InputBox-text">公司名称:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="companyName" disabled='true' name="companyName" onChange={this.handleChange} value={this.state.companyName} />
                                 </div>
+                                
                                 <div className="InputBox">                                   
                                     <FormLabel className="InputBox-text">原件名称:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="originalName" disabled='true' name="originalName" onChange={this.handleChange} value={this.state.originalName} />

@@ -15,7 +15,6 @@ disablePadding：控制padding
 */}
 
 const rows = [
-  { id: 'procInstId', numeric: true, disablePadding: false, label: '流程实例' },
   { id: 'companyName', numeric: true, disablePadding: false, label: '公司名称' },
   { id: 'contractDate', numeric: true, disablePadding: false, label: '签单时间' },
   { id: 'signPerson', numeric: true, disablePadding: false, label: '签单人' },
@@ -27,7 +26,7 @@ const rows = [
     id: 'updatePagebutton',
     numeric: false,
     disablePadding: false,
-    label: '查看',
+    label: '操作',
 
     Cell: ({ row }) =>
       (<SeeFollowUpProcess fetchFollowUpProcess={this.fetchFollowUpProcess} templeteId={row.tEMPLATE_ID} ></SeeFollowUpProcess>)
