@@ -26,16 +26,16 @@ class OriginalProcessRecords extends React.Component {
     }    
     // 保存id
     componentWillMount(){
-        let recvParam;
-        if(this.props.location.query != undefined){
-            recvParam = this.props.location.query.OriginalId
-            sessionStorage.setItem('data',recvParam);
-        }else{
-            recvParam=sessionStorage.getItem('data');
-        }
-        this.setState({OriginalId:recvParam},()=>{
-        var OriginalId = this.props.OriginalId;
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',
+        // let recvParam;
+        // if(this.props.location.query != undefined){
+        //     recvParam = this.props.location.query.OriginalId
+        //     sessionStorage.setItem('data',recvParam);
+        // }else{
+        //     recvParam=sessionStorage.getItem('data');
+        // }
+        // this.setState({OriginalId:recvParam},()=>{
+        // var OriginalId = this.props.OriginalId;
+    
 
     // // 保存id
     // componentWillMount(){
@@ -51,7 +51,7 @@ class OriginalProcessRecords extends React.Component {
     //     })
     //   }
     //查询详情，并展示详情页
-    
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',{
                 mode: "cors",
                 method: 'GET',
                 credentials: 'include',
@@ -68,7 +68,6 @@ class OriginalProcessRecords extends React.Component {
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
-        })
       }
     render() {      
         return (
