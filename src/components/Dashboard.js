@@ -180,7 +180,7 @@ class Dashboard extends Component {
                   <div className={classes.block}>
                     <Typography variant="h6" gutterBottom>Dashboard</Typography>
                     <Typography variant="body1">
-                      Adjust and play with our sliders.
+                      Adjust and play with our sliders.123
                     </Typography>
                   </div>
                   <div>

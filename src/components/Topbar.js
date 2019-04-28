@@ -16,18 +16,14 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Menu from './Menu';
 import Button from '@material-ui/core/Button';
 import Menu1 from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { SERVER_URL } from '../constants.js';
-import MenuList from '@material-ui/core/MenuList';
 const logo = require('../images/logo.svg');
-
 const styles = theme => ({
   appBar: {
     position: 'relative',
     boxShadow: 'none',
     borderBottom: `1px solid ${theme.palette.grey['100']}`,
     backgroundColor: 'white',
-
   },
   inline: {
     display: 'inline'
@@ -153,9 +149,6 @@ class Topbar extends Component {
     if (this.props.currentPath === '/home') {
       return 0
     }
-    if (this.props.currentPath === '/dashboard') {
-      return 1
-    }
     if (this.props.currentPath === '/signup') {
       return 2
     }
@@ -243,10 +236,7 @@ class Topbar extends Component {
                     >
                       {Menu.map((item, index) => (
                           <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
-
                       ))}
-
-
                       {this.state.menus.map((menu) => (
                         <Button
                           aria-owns={this.state.anchorEl ? menu.menu_ID : undefined}
