@@ -36,7 +36,6 @@
       overflowX: 'auto',
     },
   });
-
   function stableSort(array) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     return stabilizedThis.map(el => el[0]);
@@ -114,6 +113,7 @@
         for (let key in params) {
           companyInformationVo.append(key, params[key])
         }
+
       }
       console.log(companyInformationVo)
       fetch(SERVER_URL + '/companyInformation/edit',
@@ -177,6 +177,7 @@
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
+<<<<<<< HEAD
         body: this.state.originalQueryVo
       })
         .then((response) => response.json())
@@ -189,6 +190,80 @@
           });
         })
         .catch(err => console.error(err));
+=======
+        body: companyInformationVo
+      })
+      .then(res => this.fetchTemplate())
+      .catch(err => console.error(err))
+  }
+  //删除
+  onDelClick = (id) => {
+    fetch(SERVER_URL + '/original/delete/' + id,
+      {
+        mode: "cors",
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Accept': '*/*'
+        }
+      })
+      // fetch(SERVER_URL + 'cars/')
+      .then(res => {
+        this.setState({ open: true, message: '删除成功' });
+        this.fetchTemplate()
+      })
+      .catch(err => {
+        this.setState({ open: true, message: 'Error when deleting' });
+        console.error(err)
+      })
+  }
+  //确认是否删除
+  confirmDelete = (id) => {
+    confirmAlert({
+      message: '确认是否删除?' + id,
+      buttons: [
+        {
+          label: '是',
+          onClick: () => this.onDelClick(id)
+        },
+        {
+          label: '否',
+        }
+      ]
+    })
+  }
+  //分页
+  fetchTemplate = () => {
+    let originalQueryVo = new FormData();
+    originalQueryVo.append("companyInformationId", this.state.companyInformationId)
+    originalQueryVo.append("pageNum", this.state.page + 1)
+    originalQueryVo.append("pageSize", this.state.rowsPerPage)
+    fetch(SERVER_URL + '/original/list', {
+      mode: "cors",
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json,text/plain,*/*'
+      },
+      body: originalQueryVo
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        this.setState({
+          data: responseData.data.list,
+          page: responseData.data.pageNum - 1,
+          rowsPerPage: responseData.data.pageSize,
+          total: responseData.data.total
+        });
+      })
+      .catch(err => console.error(err));
+  }
+  //clickbox相关函数
+  handleSelectAllClick = event => {
+    if (event.target.checked) {
+      this.setState(state => ({ selected: state.data.map(n => n.originalId) }));
+      return;
+>>>>>>> 76e06855beec8ee387896d619ba5a1b8c74363fc
     }
     //clickbox相关函数
     handleSelectAllClick = event => {
@@ -240,6 +315,7 @@
         },
       })
     }
+<<<<<<< HEAD
     render() {
       let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
       const { classes } = this.props;
@@ -306,6 +382,107 @@
                     <TableCell colSpan={6} />
                   </TableRow>
                 )}
+=======
+    this.setState({ selected: newSelected });
+  };
+  // 页面更改时触发回调
+  handleChangePage = (event, page) => {
+    console.log(event)
+    this.state.page = page;
+    this.fetchTemplate();
+  };
+  // 每页的行数更改时触发回调
+  handleChangeRowsPerPage = event => {
+    this.state.rowsPerPage = event.target.value;
+    this.fetchTemplate();
+  };
+  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  render() {
+    let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
+    let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#ffffff', height: '36px' }
+    const { classes } = this.props;
+    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
+    const currentPath = this.props.location.pathname;
+    return (
+      <Paper className={classes.root}>
+        <Topbar currentPath={currentPath} />
+        <div className={classes.tableWrapper}>
+          <font>原件详情列表</font>
+        </div>
+        <Grid container>
+          <div className="QueryTemplate">
+            <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
+          </div>
+        </Grid>
+        <div className={classes.tableWrapper}>
+          <Table className={classes.table} aria-labelledby="tableTitle">
+            {/* 头列表页组件展示 */}
+            <OriginalTableHead
+              numSelected={selected.length}
+              order={order}
+              orderBy={orderBy}
+              onSelectAllClick={this.handleSelectAllClick}
+
+              rowCount={this.state.total}
+            />
+            <TableBody >
+              {/* {stableSort(data, getSorting(order, orderBy)) */}
+              {stableSort(data)
+                .slice(0, rowsPerPage)
+                .map(n => {
+                  const isSelected = this.isSelected(n.originalId);
+                  // 便利显示列表页面
+                  return (
+                    <TableRow
+                      className=""
+                      hover
+                      onClicock={event => this.handleClick(event, n.originalId)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.originalId}
+                      selected={isSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
+                      </TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.originalName}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">
+                        {n.hasLoanOutAuthorized ? (
+                          <LoanOriginal id={n.originalId} />
+                        ) : (
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借出</Button>
+                          )}
+                      </TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">
+                        {n.hasLoanInAuthorized ? (
+                          <BorrowOriginal id={n.originalId} />
+                        ) : (
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
+                          )}
+                      </TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">
+                        {n.hasLoanOutConfirmed ? (
+                          <OriginalConfirmed id={n.originalId} />
+                        ) : (
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
+                          )}
+                      </TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow style={{ height: 49 * emptyRows }}>
+                  <TableCell colSpan={6} />
+                </TableRow>
+              )}
+>>>>>>> 76e06855beec8ee387896d619ba5a1b8c74363fc
 
               </TableBody>
               <Snackbar

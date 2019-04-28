@@ -7,50 +7,51 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+
 
 //模糊查询
 
 class QueryTemplate extends Component {
     constructor(props) {
         super(props)
-        this.handValueChange = this.handValueChange.bind(this)
+        this.handleProcessUrl = this.handleProcessUrl.bind(this)
+        this.handleChange = this.handleChange.bind(this);
+        this.handValueChange = this.handValueChange.bind(this);
         this.state = {
             valueInput: '',
-            processUrl: '',
-            responseData: {}
+            responseData: {},
+            processUrl:'/commerce/listProcessByUser'
         }
     }
 
+    //根据选择业务类型跳转页面
+    handleProcessUrl (event){
+        this.setState({processUrl: event.target.value});
+        if(event.target){       
+            this.props.handleUrl(event.target.value)
+        }
+        
+    }
+
     handleChange = (event) => {
+        console.log(event.target.value)
         this.setState(
             { [event.target.name]: event.target.value }
         );
     }
 
     handValueChange(e) {
-        this.setState({
-            valueInput: e.target.value
-        })
+        this.setState({valueInput: e.target.value});
+        if(e.target){       
+            this.props.handleValue(e.target.value)
+        }
     }
 
     render() {
-        console.log(this.props.NewresponseData, '子组件')
-        console.log(this.state.valueInput)
-        // console.log(this.state.responseData,'responseData')
         return (
             <div className="box">
                 <InputLabel style={{ color: 'black' }} htmlFor="age-simple">下拉框:</InputLabel>
-                <Select
-                    className="downBox-form"
-                    // value={this.state.TEMPLATE_SELECT}
-                    onChange={this.handleChange}
-                    inputProps={{
-                        name: 'TEMPLATE_SELECT',
-                        id: 'TEMPLATE_SELECT',
-                    }}
-                >
+                <Select>
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
@@ -66,8 +67,8 @@ class QueryTemplate extends Component {
                     <FormControlLabel control={
                         <Radio
                             checked={this.state.processUrl === '/commerce/listProcessByUser'}
-                            onChange={this.handleChange}
-                            value="commerce"
+                            onChange={this.handleProcessUrl}
+                            value="/commerce/listProcessByUser"
                             name="processUrl"
                             aria-label="工商注册"
                         />
@@ -75,24 +76,22 @@ class QueryTemplate extends Component {
                     <FormControlLabel control={
                         <Radio
                             checked={this.state.processUrl === '/tally/listProcessByUser'}
-                            onChange={this.handleChange}
-                            value="tally"
+                            onChange={this.handleProcessUrl}
+                            value="/tally/listProcessByUser"
                             name="processUrl"
                             aria-label="代理记账"
                         />} label="代理记账" />
                     <FormControlLabel control={
                         <Radio
                             checked={this.state.processUrl === '/gShangChange/listProcessByUser'}
-                            onChange={this.handleChange}
-                            value="gShangChange"
+                            onChange={this.handleProcessUrl}
+                            value="/gShangChange/listProcessByUser"
                             color="default"
                             name="processUrl"
                             aria-label="工商变更"
-                            icon={<RadioButtonUncheckedIcon fontSize="small" />}
-                            checkedIcon={<RadioButtonCheckedIcon fontSize="small" />}
                         />} label="工商变更" />
                 </div>
-                <Button style={{ background: '#61bafb', color: '#ffffff', marginLeft: '10px' }}>搜索</Button>
+                <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '10px' }}>搜索</Button>
             </div>
         )
     }
