@@ -85,7 +85,7 @@ class LoanOriginal extends React.Component {
         this.refs.editDialog.hide();
         this.setState({
             open: true,
-            message: 'success'
+            message: '成功'
         })
     }
 
