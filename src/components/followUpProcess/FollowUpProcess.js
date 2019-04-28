@@ -72,28 +72,28 @@ class EnhancedTable extends React.Component {
 
   }
   //render渲染前加载
-  componentWillMount() {
-    let templateVo = new FormData()
-    fetch(SERVER_URL + this.props.proc,
-      {
-        mode: "cors",
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Accept': '*/*'
-        },
-        body: templateVo
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          NewresponseData: responseData.data.list
-        })
-      })
-      .catch(err => {
-        console.log(err, '失败')
-      })
-  }
+  // componentWillMount() {
+  //   let templateVo = new FormData()
+  //   fetch(SERVER_URL + this.state.processUrl,
+  //     {
+  //       mode: "cors",
+  //       method: 'POST',
+  //       credentials: 'include',
+  //       headers: {
+  //         'Accept': '*/*'
+  //       },
+  //       body: templateVo
+  //     })
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //       this.setState({
+  //         NewresponseData: responseData.data.list
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.log(err, '失败')
+  //     })
+  // }
 
 
   //组件御载时触发
