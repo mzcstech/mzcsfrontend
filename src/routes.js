@@ -11,6 +11,8 @@ import Demo from './components/demo/Demo'
 import CompanyInformation from './components/companyInformation/CompanyInformation'
 import followUpProcess from './components/followUpProcess/FollowUpProcess'
 import Original from './components/original/Original'
+import OriginalProcessRecords from './components/original/OriginalProcessRecords'
+
 export default props => (
   <HashRouter>
     <ScrollToTop>
@@ -25,6 +27,9 @@ export default props => (
         <Route exact path='/companyInformation' component={CompanyInformation} />
         <Route exact path='/followUpProcess' component={followUpProcess} />
         <Route exact path='/Original' component={Original} />
+        <Route exact path='/OriginalProcessRecords' component={OriginalProcessRecords} />
+        
+       
       </Switch>
     </ScrollToTop>
   </HashRouter>
