@@ -10,54 +10,32 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Dialog from '@material-ui/core/Dialog';
 //整体样式
-const styles = theme => ({
-    root: {
-      width: '100%',
-      marginTop: theme.spacing.unit * 3,
-    },
-    table: {
-      minWidth: 1020,
-    },
-    tableWrapper: {
-      overflowX: 'auto',
-    },
-  });
-  function stableSort(array) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    return stabilizedThis.map(el => el[0]);
-  }
 class OriginalProcessRecords extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             OriginalId:'',
+            data:[],
             originalFromUsername:'',
             originalFromTime:'',
             originalFromUsername:'',
             originalOutTime:'',
-
-            
         };
     }    
     // 保存id
     componentWillMount(){
         let recvParam;
         if(this.props.location.query != undefined){
-            recvParam = this.props.location.query.companyInformationId
+            recvParam = this.props.location.query.OriginalId
             sessionStorage.setItem('data',recvParam);
         }else{
             recvParam=sessionStorage.getItem('data');
         }
-        this.setState({
-            OriginalId:recvParam
-        })
-      }
-    //查询详情，并展示详情页
-    findById = (event) => {
-        event.preventDefault();
-        var OriginalId = this.state.OriginalId;
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + OriginalId,
+        this.setState({OriginalId:recvParam},()=>{
+        var OriginalId = this.props.OriginalId;
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',
             {
                 mode: "cors",
                 method: 'GET',
@@ -68,30 +46,16 @@ class OriginalProcessRecords extends React.Component {
             })
             .then((response) => response.json())
             .then(res =>{
-                console.log(res.data.list,'OriginalProcessRecords')
+                this.setState({data:res.data.list},()=>{
+                    
+                })
             })
-            // .then((responseData) => {
-            //     // this.setState({
-            //     //     companyInformationVo: responseData.data,
-            //     //     companyName: responseData.data.companyName,
-            //     //     remark: responseData.data.remark,
-            //     //     companyInformationId:responseData.data.companyInformationId
-            //     // });                 
-            //     console.log(this.state.responseData)
-            // })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
-
-        this.refs.editDialog.show();
-    }
-    // Cancel and close modal form
-    cancelSubmit = (event) => {
-        event.preventDefault();
-        this.refs.editDialog.hide();
-    }
+        })
+      }
     render() {      
-       
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
@@ -127,14 +91,7 @@ class OriginalProcessRecords extends React.Component {
                     </div>
                 </form>
             </SkyLight>
-            <Button  variant="contained" color="primary"  style={{ 'margin':'10px,0',background:'#31b0d5' }} onClick={this.findById}>查看</Button>
-            <Snackbar
-                 style={{ width: 300, color: 'green' }}
-                 open={this.state.open}
-                 onClose={this.handleClose}
-                 autoHideDuration={1500}
-                 message={this.state.message}
-                 />
+        
              </div>
             
         );
