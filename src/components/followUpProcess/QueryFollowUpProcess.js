@@ -81,7 +81,7 @@ class QueryTemplate extends Component {
                             aria-label="工商变更"
                         />} label="工商变更" />
                 </div>
-                <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '10px' }}>搜索</Button>
+                <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '20px' }}>搜索</Button>
             </div>
         )
     }
