@@ -3,16 +3,7 @@ import SkyLight from 'react-skylight';
 import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
 import Snackbar from '@material-ui/core/Snackbar';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 require('./styles/CompanyInformation.css')
 class EditCompanyInformation extends React.Component {
     constructor(props) {

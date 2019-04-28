@@ -40,19 +40,19 @@ class OriginalProcessRecords extends React.Component {
             
         };
     }    
-    // 保存id
-    componentWillMount(){
-        let recvParam;
-        if(this.props.location.query != undefined){
-            recvParam = this.props.location.query.companyInformationId
-            sessionStorage.setItem('data',recvParam);
-        }else{
-            recvParam=sessionStorage.getItem('data');
-        }
-        this.setState({
-            OriginalId:recvParam
-        })
-      }
+    // // 保存id
+    // componentWillMount(){
+    //     let recvParam;
+    //     if(this.props.location.query != undefined){
+    //         recvParam = this.props.location.query.companyInformationId
+    //         sessionStorage.setItem('data',recvParam);
+    //     }else{
+    //         recvParam=sessionStorage.getItem('data');
+    //     }
+    //     this.setState({
+    //         OriginalId:recvParam
+    //     })
+    //   }
     //查询详情，并展示详情页
     findById = (event) => {
         event.preventDefault();
