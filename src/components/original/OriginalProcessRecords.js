@@ -10,22 +10,54 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-
-
+//整体样式
+const styles = theme => ({
+    root: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+    },
+    table: {
+      minWidth: 1020,
+    },
+    tableWrapper: {
+      overflowX: 'auto',
+    },
+  });
+  function stableSort(array) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    return stabilizedThis.map(el => el[0]);
+  }
 class OriginalProcessRecords extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyInformationId: this.props.id
+            OriginalId:'',
+            originalFromUsername:'',
+            originalFromTime:'',
+            originalFromUsername:'',
+            originalOutTime:'',
+
             
         };
     }    
+    // 保存id
+    componentWillMount(){
+        let recvParam;
+        if(this.props.location.query != undefined){
+            recvParam = this.props.location.query.companyInformationId
+            sessionStorage.setItem('data',recvParam);
+        }else{
+            recvParam=sessionStorage.getItem('data');
+        }
+        this.setState({
+            OriginalId:recvParam
+        })
+      }
     //查询详情，并展示详情页
     findById = (event) => {
-        console.log(this.state.companyInformationId,'挨打是大')
         event.preventDefault();
-        var companyInformationId = this.state.companyInformationId;
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + companyInformationId,
+        var OriginalId = this.state.OriginalId;
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + OriginalId,
             {
                 mode: "cors",
                 method: 'GET',
@@ -36,7 +68,7 @@ class OriginalProcessRecords extends React.Component {
             })
             .then((response) => response.json())
             .then(res =>{
-                console.log(res,'OriginalProcessRecords')
+                console.log(res.data.list,'OriginalProcessRecords')
             })
             // .then((responseData) => {
             //     // this.setState({
@@ -58,8 +90,8 @@ class OriginalProcessRecords extends React.Component {
         event.preventDefault();
         this.refs.editDialog.hide();
     }
-    render() {   
-        // //alert(this.state.TEMPLATE_CHECKBOX)     
+    render() {      
+       
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
@@ -86,6 +118,10 @@ class OriginalProcessRecords extends React.Component {
                                 <div className="InputBox">                            
                                     <div className="InputBox-text">借入时间:</div>
                                     <TextField className="InputBox-next"name="借入时间"  value={this.state.companyName}  title="借入时间"/>
+                                </div>
+                                <div className="InputBox">                            
+                                    {/* <div className="InputBox-text"></div>
+                                    <TextField className="InputBox-next"name="借入时间"  value={this.state.companyName}  title="借入时间"/> */}
                                 </div>
                        </div>     
                     </div>
