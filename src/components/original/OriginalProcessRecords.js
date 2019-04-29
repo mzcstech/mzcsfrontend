@@ -11,103 +11,108 @@ import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
-//整体样式
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+function stableSort(array) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    return stabilizedThis.map(el => el[0]);
+}  
 class OriginalProcessRecords extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             OriginalId:'',
             data:[],
-            originalFromUsername:'',
-            originalFromTime:'',
-            originalFromUsername:'',
-            originalOutTime:'',
+            open: false,
+            fullWidth: true,
+            maxWidth: '600sm',
         };
-    }    
+    }  
+    
     // 保存id
     componentWillMount(){
-        // let recvParam;
-        // if(this.props.location.query != undefined){
-        //     recvParam = this.props.location.query.OriginalId
-        //     sessionStorage.setItem('data',recvParam);
-        // }else{
-        //     recvParam=sessionStorage.getItem('data');
-        // }
-        // this.setState({OriginalId:recvParam},()=>{
-        // var OriginalId = this.props.OriginalId;
-    
-
-    // // 保存id
-    // componentWillMount(){
-    //     let recvParam;
-    //     if(this.props.location.query != undefined){
-    //         recvParam = this.props.location.query.companyInformationId
-    //         sessionStorage.setItem('data',recvParam);
-    //     }else{
-    //         recvParam=sessionStorage.getItem('data');
-    //     }
-    //     this.setState({
-    //         OriginalId:recvParam
-    //     })
-    //   }
-    //查询详情，并展示详情页
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',{
-                mode: "cors",
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Accept': '*/*'
-                }
-            })
-            .then((response) => response.json())
-            .then(res =>{
-                this.setState({data:res.data.list},()=>{
-                    
-                })
-            })
-            .catch(err =>
-                this.setState({ open: true, message: 'Error when 查询详情' })
-            )
+        this.setState({
+            OriginalId:this.props.id
+        })
       }
+      findByProcInstId = (event) => {
+        let OriginalId = this.state.OriginalId
+        event.preventDefault();
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + OriginalId,{
+            mode: "cors",
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': '*/*'
+            }
+        })
+        .then((response) => response.json())
+        .then(res =>{
+            this.setState({data:res.data.list},()=>{
+            })
+        })
+        .catch(err =>
+            this.setState({ open: true, message: 'Error when 查询详情' })
+        )
+         this.setOpen(true);
+        }
+        handleClickOpen = (event) => {
+            this.setOpen(true);
+        }
+
+        handleClose = (event) => {
+            this.setOpen(false);
+        }
+        setOpen = (event) => {
+            this.setState({ open: event }, () => {
+            })
+        }
     render() {      
+        const data = this.state.data
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="editDialog">
-                    <h3>原件管理公司信息-查看</h3>
-                    <form>
-                       <div className="OutermostBox">
-                       <div className="tow-row" >
-                                <div className="InputBox">                            
-                                    <div className="InputBox-text">原件名称:</div>
-                                    <TextField className="InputBox-next" name="原件名称"  value={this.state.companyName}  title="原件名称"/>
-                                </div>
-                                <div className="InputBox">                            
-                                    <div className="InputBox-text">原件持有人:</div>
-                                    <TextField className="InputBox-next"name="原件持有人"  value={this.state.companyName}  title="原件持有人"/>
-                                </div>
-                                <div className="InputBox">                            
-                                    <div className="InputBox-text">借出时间:</div>
-                                    <TextField className="InputBox-next"name="借出时间"  value={this.state.companyName}  title="借出时间"/>
-                                </div>
-                                <div className="InputBox">                            
-                                    <div className="InputBox-text">借入人:</div>
-                                    <TextField className="InputBox-next"name="借入人"  value={this.state.companyName}  title="借入人"/>
-                                </div>
-                                <div className="InputBox">                            
-                                    <div className="InputBox-text">借入时间:</div>
-                                    <TextField className="InputBox-next"name="借入时间"  value={this.state.companyName}  title="借入时间"/>
-                                </div>
-                                <div className="InputBox">                            
-                                    {/* <div className="InputBox-text"></div>
-                                    <TextField className="InputBox-next"name="借入时间"  value={this.state.companyName}  title="借入时间"/> */}
-                                </div>
-                       </div>     
-                    </div>
-                </form>
-            </SkyLight>
-        
+                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth={this.state.fullWidth}
+                    maxWidth={this.state.maxWidth} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title" onClose={this.handleClose}>查看流程记录</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell className="TableCell" align="center" padding="none" title="原件名称">原件名称</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="借出时间">借出时间</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="借入人">借入人</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="借入时间">借入时间</TableCell>
+                                    <TableCell className="TableCell" align="center" padding="none" title="状态">状态</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody >
+                                {stableSort(data)
+                                    .map(n => {
+                                        // 便利显示列表页面
+                                        return (
+                                            <TableRow>
+                                                <TableCell className="TableCell" align="center" padding="none" title={this.props.originalName}>{this.props.originalName}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.originalFromUsername}>{n.originalFromUsername}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.originalOutTime}>{n.originalOutTime}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.originalOutUsername}>{n.originalOutUsername}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.originalFromTime}>{n.originalFromTime}</TableCell>
+                                                <TableCell className="TableCell" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        </DialogContentText>
+                    </DialogContent>
+                </Dialog>
+                 <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findByProcInstId}>查看</Button>
              </div>
-            
         );
     }
 

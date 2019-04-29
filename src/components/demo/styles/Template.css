@@ -77,19 +77,22 @@
         .singleElection{
             margin:0 auto;
             display:flex;   
+          
             width:45%;
             height:60px;
         }
         .singleElection-text{
+            
             text-align:right;
             padding-right:20px;
-            width:29%;
+            width:15%;
             height:60px;
             line-height:60px;
         }
         .singleElection-next{
+         
             text-align:left;
-            width:70%;
+            width:66%;
             height:60px;
             line-height:60px;
         }

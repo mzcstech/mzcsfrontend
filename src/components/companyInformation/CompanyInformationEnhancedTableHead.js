@@ -76,7 +76,7 @@ class EnhancedTableHead extends React.Component {
                     {rows.map(
                         row => (
                             <TableCell
-                                className="TableCell"
+                                className="TableCellCUM"
                                 key={row.id}
                                 align="center"
                                 padding="none"

@@ -1,9 +1,11 @@
 import React from 'react';
+
 import PropTypes from 'prop-types';
 import Topbar from '../Topbar';
 import LoanOriginal from './LoanOriginal'
 import BorrowOriginal from './BorrowOriginal'
 import OriginalTableHead from './OriginalTableHead';
+import OriginalProcessRecords from './OriginalProcessRecords';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -19,7 +21,6 @@ import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js';
-import OriginalProcessRecords from './OriginalProcessRecords';
 import './styles/Original.css'
 
 //整体样式
@@ -48,7 +49,7 @@ class EnhancedTable extends React.Component {
       data: [
       ],
       page: 0,
-      rowsPerPage: 10,
+      rowsPerPage: 5,
       total: 0,
       message: '',
       open: false,
@@ -60,7 +61,7 @@ class EnhancedTable extends React.Component {
   componentWillMount() {
     // console.log(typeof(this.props.location.query.companyInformationId))
     let recvParam;
-    if (this.props.location.query !== undefined) {
+    if (this.props.location.query != undefined) {
       recvParam = this.props.location.query.companyInformationId
       sessionStorage.setItem('data', recvParam);
     } else {
@@ -165,7 +166,7 @@ class EnhancedTable extends React.Component {
     })
   }
   //分页
-  fetchTemplate = () => {   
+  fetchTemplate = () => {
     let originalQueryVo = new FormData();
     originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     originalQueryVo.append("pageNum", this.state.page + 1)
@@ -229,15 +230,6 @@ class EnhancedTable extends React.Component {
     this.fetchTemplate();
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-  // 跳转流转记录
-  jumpOriginalProcessRecords = (id) => {
-    this.props.history.push({
-      pathname: '/OriginalProcessRecords',
-      query: {
-        OriginalId: id
-      },
-    })
-  }
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
@@ -292,26 +284,26 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpOriginalProcessRecords(n.originalId) }}>查看</Button></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
-                          <LoanOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <LoanOriginal id={n.originalId} />
                         ) : (
                             <Button size="small"  style={linkReadonlyStyle}  color="primary  " variant="text" disabled="true">借出</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanInAuthorized ? (
-                          <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <BorrowOriginal id={n.originalId} />
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutConfirmed ? (
-                          <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <OriginalConfirmed id={n.originalId} />
                         ) : (
-                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">确认</Button>
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>

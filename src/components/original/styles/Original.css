@@ -138,14 +138,38 @@
         table-layout:fixed;
         word-break:break-all;
     }
-    .TableCell{
-        width:10.5%;
+    .TableCellCUM{
+        width:20%;
         padding:0 1px;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    .TableCellCUM:nth-last-child(1){
+        width:4%;
+    }
+    .TableCellCUM:nth-last-child(2){
+        width:4%;
+    }
+    .TableCellCUM:nth-last-child(3){
+        width:4%;
+    }
+    .TableCellCUM:nth-last-child(4){
+        width:4%;
+    }
+    .TableCell{
+        width:19%;
+        padding:0 1px;
+        border-left:1px solid #EDEDED;
+        border-right:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .TableCellfive{
+        width:5%;
     }
     .TableCell:nth-last-child(1){
         width:4%;
@@ -162,9 +186,9 @@
     .TableCell:nth-last-child(5){
         width:4%;
     }
-    .TableCell:nth-last-child(6){
-        width:4%;
-    }
+ 
+   
+   
         .TableSortLabel{
             border:1px solid red;
             font-size:16px;

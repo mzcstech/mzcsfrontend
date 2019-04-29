@@ -147,14 +147,13 @@
         text-overflow: ellipsis;
     }
     .TableCell{
-        width:10.5%;
+        width:20.5%;
         padding:0 1px;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-
     }
     .DomeTableCell:nth-last-child(1){
         width:4%;

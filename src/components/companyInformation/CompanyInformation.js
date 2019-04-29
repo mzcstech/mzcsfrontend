@@ -18,7 +18,7 @@ import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js';
-
+import './styles/CompanyInformation.css'
 //整体样式
 const styles = theme => ({
   root: {
@@ -265,16 +265,16 @@ class EnhancedTable extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
+                        <Checkbox checked={isSelected} /> 
                       </TableCell>
-                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.companyName}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalListString}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalInformation}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
+                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none">{n.companyName}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">{n.originalListString}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">{n.originalInformation}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">{n.remark}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
 
