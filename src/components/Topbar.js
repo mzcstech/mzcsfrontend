@@ -17,7 +17,7 @@ import Menu from './Menu';
 import Button from '@material-ui/core/Button';
 import Menu1 from '@material-ui/core/Menu';
 import { SERVER_URL } from '../constants.js';
-const logo = require('../images/logo.svg');
+const logo = require('../images/LOGO.png');
 const styles = theme => ({
   appBar: {
     position: 'relative',
@@ -200,17 +200,15 @@ class Topbar extends Component {
               <div className={classes.inline}>
                 <Typography variant="h6" color="inherit" noWrap>
                   <Link to='/' className={classes.link}>
-                    <img width={20} src={logo} alt="" />
-                    <span className={classes.tagline}>Material Sense</span>
+                    <img width={18} src={logo} alt="" />
+                    <span className={classes.tagline}>诚信宏OA内控系统</span>
                   </Link>
                 </Typography>
-              </div>
+              </div>  
               {!this.props.noTabs && (
                 <React.Fragment>
                   <div className={classes.productLogo}>
-                    <Typography>
-                      A material UI Template
-                        </Typography>
+                   
                   </div>
                   <div className={classes.iconContainer}>
                     <IconButton onClick={this.mobileMenuOpen} className={classes.iconButton} color="inherit" aria-label="Menu">
@@ -218,7 +216,7 @@ class Topbar extends Component {
                     </IconButton>
                   </div>
                   <div className={classes.tabContainer}>
-                    <SwipeableDrawer anchor="right" open={this.state.menuDrawer} onClose={this.mobileMenuClose} onOpen={this.mobileMenuOpen}>
+                    {/* <SwipeableDrawer anchor="right" open={this.state.menuDrawer} onClose={this.mobileMenuClose} onOpen={this.mobileMenuOpen}>
                       <AppBar title="Menu" />
                       <List>
                         {Menu.map((item, index) => (
@@ -227,22 +225,25 @@ class Topbar extends Component {
                           </ListItem>
                         ))}
                       </List>
-                    </SwipeableDrawer>
+                    </SwipeableDrawer> */}
                     <Tabs
                       value={this.current() || this.state.value}
                       indicatorColor="primary"
                       textColor="primary"
                       onChange={this.handleChange}
                     >
-                      {Menu.map((item, index) => (
+                      {/* {Menu.map((item, index) => (
                           <Tab key={index} component={Link} to={{ pathname: item.pathname, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={item.label} />
-                      ))}
+                      ))} */}
+                      {/* 便利一级菜单 */}  
                       {this.state.menus.map((menu) => (
-                        <Button
-                          aria-owns={this.state.anchorEl ? menu.menu_ID : undefined}
-                          aria-haspopup="true"
-                          onClick={this.handleClick.bind(this,menu.menu_ID)}
-                         >{menu.menu_NAME}</Button>             
+                          <Tab
+                            label={menu.menu_NAME}
+                            classes={{ root: classes.tabItem }}
+                            aria-owns={this.state.anchorEl ? menu.menu_ID : undefined}
+                            aria-haspopup="true"
+                            onClick={this.handleClick.bind(this,menu.menu_ID)}
+                          ></Tab>    
                       ))}
                       
                       {this.state.menus.map((menu) => (

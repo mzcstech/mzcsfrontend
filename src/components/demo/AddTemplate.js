@@ -206,6 +206,9 @@ class AddTemplate extends React.Component {
                             />
                             </div>
                          </div>
+                         <div className="dateChoice">
+        
+                        </div>
                       </div>
                         {/* <FormControlLabel control={<Checkbox checked={this.state.checkedA} onChange={this.handleChangeCheckbox('checkedA')} value="checkedA" />} label="Secondary" />
                         <FormControlLabel control={<Checkbox checked={this.state.checkedB} onChange={this.handleChangeCheckbox('checkedB')} value="checkedB" color="primary" />} label="Primary" />

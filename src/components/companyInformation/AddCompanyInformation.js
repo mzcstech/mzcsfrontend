@@ -3,6 +3,7 @@ import SkyLight from 'react-skylight';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
+// import { Input } from 'material-ui-icons';
 require('./styles/CompanyInformation.css')
 class AddTemplate extends React.Component {
 
@@ -10,7 +11,8 @@ class AddTemplate extends React.Component {
         super(props);
         this.state = {
             companyName: '',
-            remark: ''
+            remark: '',
+           
         };
     }
     //提示框
@@ -50,18 +52,23 @@ class AddTemplate extends React.Component {
     };
     // Save car and close modal form
     handleSubmit = (event) => {
+        console.log()
         event.preventDefault();
-        var templateVo = {
-            companyName: this.state.companyName,
-            remark: this.state.remark
-        };
+        if(this.state.companyName != ''){
+            var templateVo = {
+                companyName: this.state.companyName,
+                remark: this.state.remark
+            };
+            this.props.addTemplate(templateVo);
+            this.refs.addDialog.hide();
+            this.setState({
+                open: true,
+                message: '新增成功'
+            })
+        }else{
 
-        this.props.addTemplate(templateVo);
-        this.refs.addDialog.hide();
-        this.setState({
-            open: true,
-            message: '新增成功'
-        })
+        }
+       
     }
 
     // Cancel and close modal form
@@ -81,7 +88,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="InputBox-text">公司名称:</div>
                                     <TextField className="InputBox-next" placeholder="请输入公司名称"
-                                        name="companyName" onChange={this.handleChange} />
+                                      ref="name"   name="companyName" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
                                     <div className="InputBox-text">备注:</div>

@@ -37,19 +37,14 @@ class OriginalProcessRecords extends React.Component {
     
     // 保存id
     componentWillMount(){
-        // let recvParam;
-        // if(this.props.location.query != undefined){
-        //     recvParam = this.props.location.query.OriginalId
-        //     sessionStorage.setItem('data',recvParam);
-        // }else{
-        //     recvParam=sessionStorage.getItem('data');
-        // }
-        // this.setState({OriginalId:recvParam},()=>{
-        // var OriginalId = this.props.OriginalId;
+        this.setState({
+            OriginalId:this.props.id
+        })
       }
       findByProcInstId = (event) => {
+        let OriginalId = this.state.OriginalId
         event.preventDefault();
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + '1f34588a6367488682df918ba73b7905',{
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + OriginalId,{
             mode: "cors",
             method: 'GET',
             credentials: 'include',
@@ -59,7 +54,6 @@ class OriginalProcessRecords extends React.Component {
         })
         .then((response) => response.json())
         .then(res =>{
-            console.log(res.data.list)
             this.setState({data:res.data.list},()=>{
             })
         })
@@ -80,7 +74,6 @@ class OriginalProcessRecords extends React.Component {
             })
         }
     render() {      
-        console.log(this.props.originalName)
         const data = this.state.data
         return (
             <div>
