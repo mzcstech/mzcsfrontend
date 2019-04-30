@@ -28,6 +28,7 @@
             font-size:17px;
         }
         .InputBox .InputBox-next{
+          
             width:70%;
             height:60px;
             line-height:60px;
@@ -158,6 +159,15 @@
     }
     .TableCellCUM:nth-last-child(4){
         width:4%;
+    }
+    .TableCellProcessRecordsTop{
+        padding:0 2px;
+        border-top:2px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        border-right:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .TableCell{
         width:18%;

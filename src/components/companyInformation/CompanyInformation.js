@@ -17,6 +17,9 @@ import CompanyInformationEnhancedTableHead from './CompanyInformationEnhancedTab
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import { SERVER_URL } from '../../constants.js';
 import './styles/CompanyInformation.css'
 //整体样式
@@ -129,7 +132,7 @@ class EnhancedTable extends React.Component {
   //确认是否删除
   confirmDelete = (id) => {
     confirmAlert({
-      message: '确认是否删除?' + id,
+      message: '确认是否删除?',
       buttons: [
         {
           label: '是',
@@ -219,6 +222,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
+    let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
@@ -226,9 +230,13 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
-        <div className={classes.tableWrapper}>
-          <font>原件管理公司信息</font>
-        </div>
+        <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
+            <Toolbar>
+              <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
+                原件详情列表
+              </Typography>
+            </Toolbar>
+        </AppBar> 
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
@@ -261,16 +269,12 @@ class EnhancedTable extends React.Component {
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.tEMPLATE_ID}
-                      selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} /> 
-                      </TableCell>
                       <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>

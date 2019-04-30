@@ -56,10 +56,13 @@ class AddTemplate extends React.Component {
                 originalHoldStatus:this.state.originalHoldStatus,
                 remark:this.state.remark,    
                 companyInformationId:this.state. companyInformationId      
-            };
+            }; 
             this.props.addTemplate(original);
             this.refs.addDialog.hide();
             this.setState({
+                originalName:'',
+                originalHoldStatus:'',
+                remark:'',
                 open:true,
                 message:'新增成功'
              })
@@ -101,11 +104,10 @@ class AddTemplate extends React.Component {
                             <div className="InputBox">
                                 <div className="InputBox-text">原件名称:</div>
                                 <TextField className="InputBox-next" placeholder="原件名称"
-                                  error={this.state.error}  name="originalName" onChange={this.handleChange} />
+                                  error={this.state.error}  value={this.state.originalName} name="originalName" onChange={this.handleChange} />
                             </div>            
 
                         <div className="singleElection">
-                            {/* <FormControlLabel className="singleElection-text" control={<FormLabel >单选框:</FormLabel>} /> */}
                             <div className="singleElection-text">持有状态:</div>
                             <div className="singleElection-next">
                                 {this.state.singleElectionData.map(item=>{
@@ -132,7 +134,7 @@ class AddTemplate extends React.Component {
                       
                         <div className="textDomain">    
                             <TextField className="textDomain-class" label="备注" placeholder="备注" multiline={true} rows={2}
-                                name="remark" onChange={this.handleChange} />
+                                name="remark" value={this.state.remark} onChange={this.handleChange} />
                         </div>
                         <div className="button">
                             <Button className="button-class"  variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>

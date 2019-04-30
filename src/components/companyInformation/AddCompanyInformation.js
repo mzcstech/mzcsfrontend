@@ -93,11 +93,11 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="InputBox-text">公司名称:</div>
                                     <TextField className="InputBox-next" placeholder="请输入公司名称"
-                                     error={this.state.error}  ref="companyName"  name="companyName" onChange={this.handleChange} />
+                                     error={this.state.error}  value={this.state.companyName} ref="companyName"  name="companyName" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
                                     <div className="InputBox-text">备注:</div>
-                                    <TextField className="InputBox-next" placeholder="备注" multiline={true} 
+                                    <TextField className="InputBox-next"  value={this.state.remark} placeholder="备注" multiline={true} 
                                         name="remark" onChange={this.handleChange} />
                                 </div>
                             </div>

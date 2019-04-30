@@ -84,12 +84,12 @@ class OriginalProcessRecords extends React.Component {
                     <DialogContentText>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell className="TableCell" align="center" padding="none" title="原件名称">原件名称</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="借出时间">借出时间</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="借入人">借入人</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="借入时间">借入时间</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="状态">状态</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="原件名称">原件名称</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借出时间">借出时间</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借入人">借入人</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借入时间">借入时间</TableCell>
+                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="状态">状态</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody >

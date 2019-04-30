@@ -66,13 +66,7 @@ class EnhancedTableHead extends React.Component {
         return (
             <TableHead>
                 <TableRow  >
-                    <TableCell padding="checkbox" className="TableCellCheckbox">
-                        <Checkbox
-                            indeterminate={numSelected > 0 && numSelected < rowCount}
-                            checked={numSelected === rowCount}
-                            onChange={onSelectAllClick}
-                        />
-                    </TableCell>
+                  
                     {rows.map(
                         row => (
                             <TableCell

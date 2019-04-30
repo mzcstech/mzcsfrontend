@@ -81,7 +81,7 @@ class EditOriginal extends React.Component {
                 this.setState({ open: true, message: 'Error when 修改详情' })
             )
 
-         this.refs.addDialog.show();
+         this.refs.addDialog.show(); 
     }
     editTemplate = (event) => {
         event.preventDefault();

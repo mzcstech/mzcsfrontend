@@ -21,6 +21,9 @@ import OriginalConfirmed from './OriginalConfirmed.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import { SERVER_URL } from '../../constants.js';
 import './styles/Original.css'
 
@@ -109,6 +112,7 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
+
     let companyInformationVo = new FormData()
     if (params) {
       for (let key in params) {
@@ -125,12 +129,14 @@ class EnhancedTable extends React.Component {
         },
         body: companyInformationVo
       })      
-      .then(res => this.fetchTemplate())
+       .then(res =>{
+        this.fetchTemplate()
+      })
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/original/delete/' + id,
+    fetch(SERVER_URL + '/original/delete/',
       {
         mode: "cors",
         method: 'DELETE',
@@ -152,7 +158,7 @@ class EnhancedTable extends React.Component {
   //确认是否删除
   confirmDelete = (id) => {
     confirmAlert({
-      message: '确认是否删除?' + id,
+      message: '确认是否删除?',
       buttons: [
         {
           label: '是',
@@ -239,9 +245,16 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
-        <div className={classes.tableWrapper}>
+        {/* <div className={classes.tableWrapper}>
           <font>原件详情列表</font>
-        </div>
+        </div> */}
+        <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
+            <Toolbar>
+              <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
+                原件详情列表
+              </Typography>
+            </Toolbar>
+        </AppBar> 
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
@@ -255,7 +268,6 @@ class EnhancedTable extends React.Component {
               order={order}
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
-
               rowCount={this.state.total}
             />
             <TableBody >
@@ -276,9 +288,7 @@ class EnhancedTable extends React.Component {
                       key={n.originalId}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
+                    
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>
