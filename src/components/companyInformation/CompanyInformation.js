@@ -145,13 +145,14 @@ class EnhancedTable extends React.Component {
     }) 
   }
   //跳转到原件管理List页面
-  jumpToOriginalList = (id) => {
+  jumpToOriginalList = (id,name) => {
     //window.location.href='/#/original?companyInformationId='+id;    
     
     this.props.history.push({
       pathname: '/Original',
       query: {
-        companyInformationId: id
+        companyInformationId: id,
+        companyName:name
       },
     })
   }
@@ -233,7 +234,7 @@ class EnhancedTable extends React.Component {
         <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
             <Toolbar>
               <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
-                原件详情列表
+               公司原件信息列表
               </Typography>
             </Toolbar>
         </AppBar> 
@@ -274,7 +275,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId,n.companyName) }}>原件管理</Button></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>

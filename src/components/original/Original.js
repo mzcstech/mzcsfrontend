@@ -57,22 +57,27 @@ class EnhancedTable extends React.Component {
       total: 0,
       message: '',
       open: false,
-      companyInformationId: ''
-
+      companyInformationId: '',
+      companyName:''
     };
   }
   // 保存id
   componentWillMount() {
-    // console.log(typeof(this.props.location.query.companyInformationId))
+    console.log(this.props.location.query)
     let recvParam;
+    let CdCompanyName;
     if (this.props.location.query != undefined) {
       recvParam = this.props.location.query.companyInformationId
-      sessionStorage.setItem('data', recvParam);
+      CdCompanyName = this.props.location.query.companyName
+      sessionStorage.setItem('id', recvParam);
+      sessionStorage.setItem('name', CdCompanyName);
     } else {
-      recvParam = sessionStorage.getItem('data');
+      recvParam = sessionStorage.getItem('id');
+      CdCompanyName = sessionStorage.getItem('name');
     }
     this.setState({
-      companyInformationId: recvParam
+      companyInformationId: recvParam,
+      companyName :CdCompanyName
     })
   }
   // componentWillUpdate =()=>{
@@ -129,14 +134,13 @@ class EnhancedTable extends React.Component {
         },
         body: companyInformationVo
       })      
-       .then(res =>{
-        this.fetchTemplate()
+       .then(res =>{ this.fetchTemplate()
       })
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/original/delete/',
+    fetch(SERVER_URL + '/original/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -237,6 +241,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
+   
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -251,13 +256,15 @@ class EnhancedTable extends React.Component {
         <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
             <Toolbar>
               <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
-                原件详情列表
+                原件详情列表 : {this.state.companyName}
               </Typography>
+              
             </Toolbar>
         </AppBar> 
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
+           
           </div>
         </Grid>
         <div className={classes.tableWrapper}>
@@ -287,13 +294,12 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.originalId}
                       selected={isSelected}
-                    >
-                    
+                    > 
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><EditOriginal editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" ><EditOriginal   editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
@@ -308,7 +314,7 @@ class EnhancedTable extends React.Component {
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true" >借入</Button>
                           )}
-                      </TableCell>
+                      </TableCell>  
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutConfirmed ? (
                           <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate}/>

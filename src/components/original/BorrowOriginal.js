@@ -122,17 +122,17 @@ class LoanOriginal extends React.Component {
                                 <div className="InputBox">
                                     <input type="hidden" value={this.state.originalId} name="originalId"></input>
                                     <FormLabel className="InputBox-text">公司名称:</FormLabel>
-                                    <TextField className="InputBox-next"  placeholder="companyName" disabled='true' name="companyName" onChange={this.handleChange} value={this.state.companyName} />
+                                    <TextField className="InputBox-next"  placeholder="companyName"  name="companyName"  value={this.state.companyName} />
                                 </div>
                                 <div className="InputBox">                                   
                                     <FormLabel className="InputBox-text">原件名称:</FormLabel>
-                                    <TextField className="InputBox-next"  placeholder="originalName" disabled='true' name="originalName" onChange={this.handleChange} value={this.state.originalName} />
+                                    <TextField className="InputBox-next"  placeholder="originalName"  name="originalName"  value={this.state.originalName} />
                                 </div>
                                 <div className="InputBox">                                    
                                     <FormLabel className="InputBox-text">当前原件持有人:</FormLabel>
-                                    <TextField className="InputBox-next"   placeholder="originalHolder" disabled='true' name="originalHolder" onChange={this.handleChange} value={this.state.originalHolder} />
+                                    <TextField className="InputBox-next"   placeholder="originalHolder" name="originalHolder"  value={this.state.originalHolder} />
                                 </div>
-                                <div className="InputBox">                                    
+                                <div className="InputBox">                                     
                                     
                                 </div>
                                

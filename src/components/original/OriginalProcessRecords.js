@@ -32,6 +32,8 @@ class OriginalProcessRecords extends React.Component {
             open: false,
             fullWidth: true,
             maxWidth: '600sm',
+            Snackbaropen:false,
+            message:''
         };
     }  
     
@@ -60,7 +62,12 @@ class OriginalProcessRecords extends React.Component {
         .catch(err =>
             this.setState({ open: true, message: 'Error when 查询详情' })
         )
-         this.setOpen(true);
+         if( this.state.data.length > 0){
+            this.setOpen(true);
+         }else{
+            this.setState({ Snackbaropen: true, message: '本条数据无流转记录' })
+         }
+
         }
         handleClickOpen = (event) => {
             this.setOpen(true);
@@ -73,7 +80,12 @@ class OriginalProcessRecords extends React.Component {
             this.setState({ open: event }, () => {
             })
         }
-    render() {      
+        //提示框的显示判断
+        handleClose = (event, reason) => {
+         this.setState({ Snackbaropen: false });
+        };
+    render() {     
+   
         const data = this.state.data
         return (
             <div>
@@ -112,7 +124,15 @@ class OriginalProcessRecords extends React.Component {
                     </DialogContent>
                 </Dialog>
                  <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findByProcInstId}>查看</Button>
+                 <Snackbar
+              style={{ width: 300, color: 'green' }}
+              open={this.state.Snackbaropen}
+              onClose={this.handleClose}
+              autoHideDuration={1500}
+              message={this.state.message}
+          />
              </div>
+             
         );
     }
 

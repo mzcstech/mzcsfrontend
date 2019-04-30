@@ -6,7 +6,9 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import Radio from '@material-ui/core/Radio';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import FormLabel from '@material-ui/core/FormLabel';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Input from '@material-ui/core/Input';
 require('./styles/Original.css')
 class AddTemplate extends React.Component {
     constructor(props) {
@@ -18,7 +20,8 @@ class AddTemplate extends React.Component {
             open:false,
             companyInformationId:this.props.companyInformationId,
             singleElectionData:[],
-            error:false
+            error:false,
+            userList:[]
         };
     }
  //提示框
@@ -86,13 +89,37 @@ class AddTemplate extends React.Component {
       )
         .then((response) => response.json())
         .then(res =>{
+            console.log(res,123)
             this.setState({
                 singleElectionData:res.data
             })
         })
         .catch(err => console.error(err,'err'))
+        this.findByName()
     }
-   
+    findByName= () => {
+        var originalId = this.state.originalId;
+        fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_TYPE',
+            {
+                mode: "cors",
+                method: 'GET',
+                credentials: 'include',
+                // bianma:'ORIGINAL_TYPE',
+                headers: {
+                    'Accept': '*/*'
+                }
+            })
+            .then(res => res.json())
+            .then((responseData) => {
+               
+                this.setState({ 
+                    userList: responseData.data
+                });
+            })
+            .catch(err =>
+                this.setState({ open: true, message: 'Error when 修改详情' })
+            )
+    }
     render() {    
         return (
             <div>
@@ -102,11 +129,21 @@ class AddTemplate extends React.Component {
                         <div className="OutermostBox">                        
                         <div className="tow-row">
                             <div className="InputBox">
-                                <div className="InputBox-text">原件名称:</div>
-                                <TextField className="InputBox-next" placeholder="原件名称"
-                                  error={this.state.error}  value={this.state.originalName} name="originalName" onChange={this.handleChange} />
+                                <FormLabel className="InputBox-text">原件名称:</FormLabel>
+                                <NativeSelect      
+                                    style={{ width:'70%'}}
+                                    value={this.state.originalName}
+                                    onChange={this.handleChange}
+                                    name='originalName' 
+                                    input={<Input name="name" id="name" />}
+                                    >
+                                    <option value="" /> 
+                                    {this.state.userList.map(item => {
+                                        return (<option value={item.name}>{item.name}</option>)
+                                    })
+                                    }
+                                </NativeSelect>
                             </div>            
-
                         <div className="singleElection">
                             <div className="singleElection-text">持有状态:</div>
                             <div className="singleElection-next">

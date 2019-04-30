@@ -6,6 +6,9 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import FormLabel from '@material-ui/core/FormLabel';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Input from '@material-ui/core/Input';
 class EditOriginal extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +19,8 @@ class EditOriginal extends React.Component {
             open:false,
             originalId:this.props.id,
             singleElectionData:[],
-            error:false
+            error:false,
+            userList:[]
         };
     }
     //提示框
@@ -48,17 +52,42 @@ class EditOriginal extends React.Component {
       )
         .then((response) => response.json())
         .then(res =>{
+            console.log(res)
             this.setState({
                 singleElectionData:res.data
+                
             })
         })
         .catch(err => console.error(err,'err'))
+        this.findByName()
+    }
+    //获取下拉框
+    findByName= () => {
+        fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_TYPE',
+            {
+                mode: "cors",
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': '*/*'
+                }
+            })
+            .then(res => res.json())
+            .then((responseData) => {
+               
+                this.setState({ 
+                    userList: responseData.data
+                });
+            })
+            .catch(err =>
+                this.setState({ open: true, message: 'Error when 修改详情' })
+            )
     }
     // Cancel and close modal form
     findById = (event) => {
         event.preventDefault();
         var originalId = this.state.originalId;
-        console.log(originalId)
+       
         fetch(SERVER_URL + '/original/findById/' + originalId,
             {
                 mode: "cors",
@@ -70,7 +99,7 @@ class EditOriginal extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-                console.log(responseData)
+                console.log(responseData,'responseData')
                 this.setState({ 
                     originalName: responseData.data.originalName,
                     originalHoldStatus:responseData.data.originalHoldStatus ,
@@ -80,7 +109,7 @@ class EditOriginal extends React.Component {
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 修改详情' })
             )
-
+         
          this.refs.addDialog.show(); 
     }
     editTemplate = (event) => {
@@ -104,17 +133,32 @@ class EditOriginal extends React.Component {
         this.refs.addDialog.hide();
     }
     render() {    
+        let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
                     <h3 className="title">原件管理-修改</h3>
                     <form>
-                        <div className="OutermostBox">                        
+                        <div className="OutermostBox">                         
                         <div className="tow-row">
                             <div className="InputBox">
-                                <div className="InputBox-text">原件名称:</div>
-                                <TextField className="InputBox-next" placeholder="原件名称"
-                                  error={this.state.error} value={this.state.originalName}  name="originalName" onChange={this.handleChange} />
+                                {/* <TextField className="InputBox-next" placeholder="原件名称"
+                                  error={this.state.error} value={this.state.originalName}  name="originalName" onChange={this.handleChange} /> */}
+                                    <FormLabel className="InputBox-text">原件名称:</FormLabel>
+                                    <NativeSelect      
+                                        style={{ width:'70%'}}                                  
+                                        native
+                                        value={this.state.originalName}
+                                        onChange={this.handleChange}
+                                        name='originalName' 
+                                        input={<Input name="originalName" id="originalName" />}
+                                        >
+                                        <option value="" /> 
+                                        {this.state.userList.map(item => {
+                                            return (<option value={item.name} >{item.name}</option>)
+                                        })
+                                        }
+                                    </NativeSelect>
                             </div>            
 
                         <div className="singleElection">
@@ -150,7 +194,7 @@ class EditOriginal extends React.Component {
                     </form>
                 </SkyLight>
                 <div>
-                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.findById}>修改</Button>
+                    <Button style={linkStyletwo} variant="contained" color="primary" onClick={this.findById} >修改</Button>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
