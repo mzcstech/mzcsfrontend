@@ -96,7 +96,7 @@
             line-height:60px;
         }
         .singleElection-next{
-            
+            position: relative;
             text-align:left;
             width:70%;
             height:60px;
@@ -170,11 +170,12 @@
     }
     .Grid{
         position: relative;
-        top:5%;
+        top:0;
         left:0;
         display: inline-block;
     }
-    .Avatar{
-        position: absolute;
-        display: inline-block;
+    .number{
+        margin-top:10px;
+        margin-left:-10px;
+        margin-right:15px;
     }
