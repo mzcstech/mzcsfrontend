@@ -18,6 +18,7 @@ class AddTemplate extends React.Component {
             open:false,
             companyInformationId:this.props.companyInformationId,
             singleElectionData:[],
+            error:false
         };
     }
  //提示框
@@ -38,18 +39,31 @@ class AddTemplate extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-        var original = {
-            originalName:this.state.originalName,
-            originalHoldStatus:this.state.originalHoldStatus,
-            remark:this.state.remark,    
-            companyInformationId:this.state. companyInformationId      
-        };
-        this.props.addTemplate(original);
-        this.refs.addDialog.hide();
-        this.setState({
-            open:true,
-            message:'新增成功'
-        })
+        if(this.state.originalName == '' ){
+            this.setState({
+                error:true,
+                open:true,
+                message:'请填写原件名'
+             })
+        }else if( this.state.originalHoldStatus ==''){
+            this.setState({
+                open:true,
+                message:'请选择持有状态'
+             })
+        }else{
+            var original = {
+                originalName:this.state.originalName,
+                originalHoldStatus:this.state.originalHoldStatus,
+                remark:this.state.remark,    
+                companyInformationId:this.state. companyInformationId      
+            };
+            this.props.addTemplate(original);
+            this.refs.addDialog.hide();
+            this.setState({
+                open:true,
+                message:'新增成功'
+             })
+        }
     }
     // Cancel and close modal form
     cancelSubmit = (event) => {
@@ -76,12 +90,7 @@ class AddTemplate extends React.Component {
         .catch(err => console.error(err,'err'))
     }
    
-    render() {   
-        console.log(this.state.singleElectionData)
-        // for(var index=0;index<this.state.singleElectionData.length;index++) {
-        //     console.log(this.state.singleElectionData[index])
-        // }
-        
+    render() {    
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="addDialog">
@@ -92,7 +101,7 @@ class AddTemplate extends React.Component {
                             <div className="InputBox">
                                 <div className="InputBox-text">原件名称:</div>
                                 <TextField className="InputBox-next" placeholder="原件名称"
-                                    name="originalName" onChange={this.handleChange} />
+                                  error={this.state.error}  name="originalName" onChange={this.handleChange} />
                             </div>            
 
                         <div className="singleElection">

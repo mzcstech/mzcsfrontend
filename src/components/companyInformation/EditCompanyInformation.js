@@ -30,7 +30,6 @@ class EditCompanyInformation extends React.Component {
             remark: this.state.remark,
             companyInformationId: this.state.companyInformationId
         };
-        console.log(this.props, 123)
         this.props.editTemplate(companyInformationVo);
         this.refs.editDialog.hide();
         this.setState({
@@ -74,7 +73,6 @@ class EditCompanyInformation extends React.Component {
         this.refs.editDialog.hide();
     }
     render() {
-        //alert(this.state.TEMPLATE_CHECKBOX)      
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
@@ -108,7 +106,6 @@ class EditCompanyInformation extends React.Component {
                     message={this.state.message}
                 />
             </div>
-
         );
     }
 

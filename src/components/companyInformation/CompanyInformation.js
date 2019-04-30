@@ -92,7 +92,6 @@ class EnhancedTable extends React.Component {
         companyInformationVo.append(key, params[key])
       }
     }
-    console.log(companyInformationVo)
     fetch(SERVER_URL + '/companyInformation/edit',
       {
         mode: "cors",
@@ -267,17 +266,16 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} /> 
                       </TableCell>
-                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none">{n.companyName}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">{n.originalListString}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">{n.originalInformation}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">{n.remark}</TableCell>
+                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId) }}>原件管理</Button></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
                     </TableRow>
                   );
-
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>

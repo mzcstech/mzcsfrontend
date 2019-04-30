@@ -6,6 +6,7 @@ import LoanOriginal from './LoanOriginal'
 import BorrowOriginal from './BorrowOriginal'
 import OriginalTableHead from './OriginalTableHead';
 import OriginalProcessRecords from './OriginalProcessRecords';
+import EditOriginal from './EditOriginal'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -108,15 +109,13 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
-    console.log(params)
     let companyInformationVo = new FormData()
     if (params) {
       for (let key in params) {
         companyInformationVo.append(key, params[key])
       }
-    }
-    console.log(companyInformationVo)
-    fetch(SERVER_URL + '/companyInformation/edit',
+    }   
+    fetch(SERVER_URL + '/original/edit',
       {
         mode: "cors",
         method: 'POST',
@@ -125,7 +124,7 @@ class EnhancedTable extends React.Component {
           'Accept': 'application/json,text/plain,*/*'
         },
         body: companyInformationVo
-      })
+      })      
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
   }
@@ -280,10 +279,11 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none">{n.originalName}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHolder}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.originalHoldStatus}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none">{n.remark}</TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"><EditOriginal editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
@@ -303,7 +303,7 @@ class EnhancedTable extends React.Component {
                         {n.hasLoanOutConfirmed ? (
                           <OriginalConfirmed id={n.originalId} />
                         ) : (
-                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">确认</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>

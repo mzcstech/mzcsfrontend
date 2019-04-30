@@ -25,6 +25,14 @@ const rows = [
         id: 'updatePagebutton',
         numeric: false,
         disablePadding: false,
+        label: '修改',
+        Cell: ({ row }) =>
+            (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)
+    },
+    {
+        id: 'updatePagebutton',
+        numeric: false,
+        disablePadding: false,
         label: '流转记录',
         Cell: ({ row }) =>
             (<ViewOriginal fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewOriginal>)

@@ -12,7 +12,7 @@ class AddTemplate extends React.Component {
         this.state = {
             companyName: '',
             remark: '',
-           
+            error:false
         };
     }
     //提示框
@@ -48,12 +48,9 @@ class AddTemplate extends React.Component {
                 { TEMPLATE_CHECKBOX: checkedbox }
             )
         }
-        console.log(this.state.TEMPLATE_CHECKBOX)
     };
     // Save car and close modal form
     handleSubmit = (event) => {
-        console.log()
-        event.preventDefault();
         if(this.state.companyName != ''){
             var templateVo = {
                 companyName: this.state.companyName,
@@ -62,25 +59,33 @@ class AddTemplate extends React.Component {
             this.props.addTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
+                companyName:'',
+                remark:'',
+                error:false,
                 open: true,
                 message: '新增成功'
             })
         }else{
-
-        }
-       
+            this.setState({
+                error:true,
+                open: true,
+                message: '请填写公司名称'
+            })
+        }  
     }
-
     // Cancel and close modal form
     cancelSubmit = (event) => {
+        this.setState({
+            error:false,
+        })
         event.preventDefault();
         this.refs.addDialog.hide();
     }
-
     render() {
+       
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="addDialog">
+                <SkyLight style={{position:'relative'}} hideOnOverlayClicked ref="addDialog">
                     <h3 className="title">原件管理公司信息-新增</h3>
                     <form>
                         <div className="OutermostBox">
@@ -88,7 +93,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="InputBox-text">公司名称:</div>
                                     <TextField className="InputBox-next" placeholder="请输入公司名称"
-                                      ref="name"   name="companyName" onChange={this.handleChange} />
+                                     error={this.state.error}  ref="companyName"  name="companyName" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
                                     <div className="InputBox-text">备注:</div>

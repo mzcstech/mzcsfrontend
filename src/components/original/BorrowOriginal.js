@@ -48,6 +48,7 @@ class LoanOriginal extends React.Component {
 
     loanOut(params) {
         console.log(params)
+       
         let original = new FormData()
         if (params) {
           for (let key in params) {
@@ -93,7 +94,7 @@ class LoanOriginal extends React.Component {
                 this.setState({
                     originalOutTo: res.data.originalOutTo,
                     companyName:res.data.companyName,
-                     originalName:res.data.originalName,
+                    originalName:res.data.originalName,
                     originalHolder:res.data.originalHolder
                 });
             })
