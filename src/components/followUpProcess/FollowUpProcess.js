@@ -208,9 +208,9 @@ class EnhancedTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClicock={event => this.handleClick(event, n.procInstId)}
+                      onClicock={event => this.handleClick(event, n.excutionId)}
                       role="checkbox"
-                      key={n.procInstId}
+                      key={n.excutionId}
                     >
                       <TableCell className="TableCell" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.contractDate}>{n.contractDate}</TableCell>

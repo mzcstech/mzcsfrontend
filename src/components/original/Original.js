@@ -287,21 +287,21 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
-                          <LoanOriginal id={n.originalId} />
+                          <LoanOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
                             <Button size="small"  style={linkReadonlyStyle}  color="primary  " variant="text" disabled="true">借出</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanInAuthorized ? (
-                          <BorrowOriginal id={n.originalId} />
+                          <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
-                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">借入</Button>
+                            <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true" >借入</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutConfirmed ? (
-                          <OriginalConfirmed id={n.originalId} />
+                          <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate}/>
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">确认</Button>
                           )}

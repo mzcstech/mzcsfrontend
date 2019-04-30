@@ -30,7 +30,7 @@ class ViewFollowUpProcess extends React.Component {
             processVoList: [],
             open: false,
             fullWidth: true,
-            maxWidth: '600sm',
+            maxWidth: 'xl',
         };
     }
 
