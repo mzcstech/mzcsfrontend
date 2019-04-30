@@ -12,6 +12,12 @@
         display: flex;
         flex-wrap:wrap
     }
+    .QueryFollowUpProcessInto{
+        width: 500px;;
+    }
+        .Input{
+            widows: 100px;
+        }
         .InputBox{
             margin:0 auto;
             display:flex;
@@ -80,7 +86,9 @@
             width:45%;
             height:60px;
         }
+    
         .singleElection-text{
+         
             text-align:right;
             padding-right:20px;
             width:29%;
@@ -88,10 +96,13 @@
             line-height:60px;
         }
         .singleElection-next{
+            
             text-align:left;
             width:70%;
             height:60px;
             line-height:60px;
+            
+            
         }
         .textDomain{
             margin:0 auto;
@@ -136,22 +147,18 @@
         table-layout:fixed;
         word-break:break-all;
     }
-    .TableCell{
+    .FollowTableCell{
+
         width:10.5%;
         padding:0 1px;
+        border-top:2px solid #EDEDED;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .TableCell:nth-last-child(1){
-        width:4%;
-    }
-    .TableCell:nth-last-child(2){
-        width:4%;
-    }
-    .TableCell:nth-last-child(3){
+    .FollowTableCell:nth-last-child(1){
         width:4%;
     }
         .TableSortLabel{
@@ -160,4 +167,14 @@
         }
     .TableRow{
         border:1px solid red;
+    }
+    .Grid{
+        position: relative;
+        top:5%;
+        left:0;
+        display: inline-block;
+    }
+    .Avatar{
+        position: absolute;
+        display: inline-block;
     }

@@ -49,7 +49,8 @@ class EnhancedTable extends React.Component {
       procInstId: '',
       NewresponseData: {},
       valueInput: '',
-      processUrl: '/commerce/listProcessByUser'
+      processUrl: '/commerce/listProcessByUser',
+      map:[]
     };
   }
   //根据选择业务类型跳转页面
@@ -124,8 +125,10 @@ class EnhancedTable extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
+       
         this.setState({
           data: responseData.data.list,
+          map:responseData.data.map,
           page: responseData.data.pageNum - 1,
           rowsPerPage: responseData.data.pageSize,
           total: responseData.data.total
@@ -173,7 +176,6 @@ class EnhancedTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
-
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -185,7 +187,7 @@ class EnhancedTable extends React.Component {
         <Grid container>
           <div className="QueryFollowUpProcess">
             <div className="QueryFollowUpProcessInto" >
-              <QueryFollowUpProcess handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
+              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
             </div>
           </div>
         </Grid>
@@ -219,7 +221,7 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none" title={n.businessTypes}>{n.businessTypes}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.actName}>{n.actName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.actAssignee}>{n.actAssignee}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"  ><SeeFollowUpProcess fetchFollowUpProcess={this.fetchFollowUpProcess} procInstId={n.procInstId} /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"  ><SeeFollowUpProcess  fetchFollowUpProcess={this.fetchFollowUpProcess} procInstId={n.procInstId} /></TableCell>
                     </TableRow>
                   );
                 })}

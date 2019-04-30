@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
+import Avatar from '@material-ui/core/Avatar';
+
+import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
-
+import './styles/FollowUpProcess.css'
 
 //模糊查询
 
@@ -20,7 +21,7 @@ class QueryTemplate extends Component {
         this.state = {
             valueInput: '',
             responseData: {},
-            processUrl:'/commerce/listProcessByUser'
+            processUrl:'/commerce/listProcessByUser',
         }
     }
 
@@ -45,24 +46,27 @@ class QueryTemplate extends Component {
             this.props.handleValue(e.target.value)
         }
     }
-
+   
     render() {
+        console.log(this.props.map)
         return (
             <div className="box">
-                
-                <Input className="Input" onChange={this.handValueChange} placeholder="全局搜索" />
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
                 <div className="singleElection-text">业务类型:</div>
                 <div className="singleElection-next">
                     <FormControlLabel control={
-                        <Radio
+                        <Radio  
                             checked={this.state.processUrl === '/commerce/listProcessByUser'}
                             onChange={this.handleProcessUrl}
                             value="/commerce/listProcessByUser"
                             name="processUrl"
                             aria-label="工商注册"
                         />
+                        
                     } label="工商注册" />
+                         <Grid className="Grid"  >
+                             <Avatar className="Avatar" style={{height:'22px',width:'22px',background:'red'}}></Avatar>
+                         </Grid>
                     <FormControlLabel control={
                         <Radio
                             checked={this.state.processUrl === '/tally/listProcessByUser'}
@@ -71,17 +75,23 @@ class QueryTemplate extends Component {
                             name="processUrl"
                             aria-label="代理记账"
                         />} label="代理记账" />
+                        <Grid className="Grid"  >
+                             <Avatar  className="Avatar" style={{height:'22px',width:'22px',background:'red'}}>W</Avatar>
+                         </Grid>
                     <FormControlLabel control={
                         <Radio
                             checked={this.state.processUrl === '/gShangChange/listProcessByUser'}
                             onChange={this.handleProcessUrl}
                             value="/gShangChange/listProcessByUser"
-                            color="default"
                             name="processUrl"
                             aria-label="工商变更"
                         />} label="工商变更" />
+                        <Grid className="Grid"  >
+                             <Avatar className="Avatar" style={{height:'22px',width:'22px',background:'red'}}>W</Avatar>
+                        </Grid>
                 </div>
-                <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '20px' }}>搜索</Button>
+                <Input style={{position:'absolute',right:'30px'}} className="Input" onChange={this.handValueChange} placeholder="公司名称搜索" />
+                {/* <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '20px' }}>搜索</Button> */}
             </div>
         )
     }

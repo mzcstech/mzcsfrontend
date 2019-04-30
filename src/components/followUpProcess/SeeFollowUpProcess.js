@@ -14,7 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import './styles/FollowUpProcess.css'
 
 function stableSort(array) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -104,7 +104,6 @@ class ViewFollowUpProcess extends React.Component {
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.endTime}>{n.endTime}</TableCell>
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.durationCN}>{n.durationCN}</TableCell>
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.text}>{n.text}</TableCell>
-
                                             </TableRow>
                                         );
                                     })}
@@ -113,7 +112,7 @@ class ViewFollowUpProcess extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }}>
+                        <Button onClick={this.handleClose}  style={{ 'margin': '10px,0', background: '#31b0d5',color:'#ffffff' }}>
                             关闭
                         </Button>
                     </DialogActions>

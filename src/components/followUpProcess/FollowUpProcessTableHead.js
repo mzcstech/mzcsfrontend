@@ -6,8 +6,8 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import SeeFollowUpProcess from './SeeFollowUpProcess.js';
-require('./styles/FollowUpProcess.css')
-require('./styles/EnhancedTableHead.css')
+import './styles/FollowUpProcess.css'
+
 //第一列的标题
 {/*
 numeric:控制对应对应span内容位置
@@ -43,7 +43,7 @@ class EnhancedTableHead extends React.Component {
           {rows.map(
             row => (
               <TableCell
-                className="TableCell"
+                className="FollowTableCell"
                 key={row.id}
                 align="center"
                 padding="none"
