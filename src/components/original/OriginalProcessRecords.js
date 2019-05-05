@@ -67,9 +67,8 @@ class OriginalProcessRecords extends React.Component {
          }else{
             this.setState({ Snackbaropen: true, message: '本条数据无流转记录' })
          }
-
         }
-        handleClickOpen = (event) => {
+        handleClickOpen = (event) => { 
             this.setOpen(true);
         }
 
@@ -81,7 +80,7 @@ class OriginalProcessRecords extends React.Component {
             })
         }
         //提示框的显示判断
-        handleClose = (event, reason) => {
+        automaticClose = (event, reason) => {
          this.setState({ Snackbaropen: false });
         };
     render() {     
@@ -95,15 +94,15 @@ class OriginalProcessRecords extends React.Component {
                     <DialogContent>
                     <DialogContentText>
                             <TableHead>
-                                <TableRow>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="原件名称">原件名称</TableCell>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借出时间">借出时间</TableCell>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借入人">借入人</TableCell>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="借入时间">借入时间</TableCell>
-                                    <TableCell className="TableCellProcessRecordsTop" align="center" padding="none" title="状态">状态</TableCell>
+                                <TableRow >
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="原件名称">原件名称</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="借出时间">借出时间</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="借入人">借入人</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="借入时间">借入时间</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="状态">状态</TableCell>
                                 </TableRow>
-                            </TableHead>
+                            </TableHead>    
                             <TableBody >
                                 {stableSort(data)
                                     .map(n => {
@@ -122,12 +121,17 @@ class OriginalProcessRecords extends React.Component {
                             </TableBody>
                         </DialogContentText>
                     </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose}  style={{ 'margin': '10px,0', background: '#303F9F',color:'#ffffff' }}>
+                            关闭
+                        </Button>
+                    </DialogActions>
                 </Dialog>
                  <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findByProcInstId}>查看</Button>
                  <Snackbar
               style={{ width: 300, color: 'green' }}
               open={this.state.Snackbaropen}
-              onClose={this.handleClose}
+              onClose={this.automaticClose}
               autoHideDuration={1500}
               message={this.state.message}
           />

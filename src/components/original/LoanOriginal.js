@@ -123,7 +123,7 @@ class LoanOriginal extends React.Component {
                 this.setState({
                     originalOutTo: res.data.originalOutTo,
                     companyName:res.data.companyName,
-                     originalName:res.data.originalName,
+                    originalName:res.data.originalName,
                     originalHolder:res.data.originalHolder
                 });
             })
@@ -164,7 +164,6 @@ class LoanOriginal extends React.Component {
                                 </div>
                                 <div className="InputBox">                                   
                                     <FormLabel className="InputBox-text">借出对象:</FormLabel>
-                                    
                                     <NativeSelect    
                                         style={{width:'70%'}}                                    
                                         native

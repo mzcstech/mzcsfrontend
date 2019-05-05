@@ -83,6 +83,7 @@
             height:60px;
         }
         .singleElection-text{
+            font-size:16px;
             text-align:right;
             padding-right:20px;
             width:29%;
@@ -90,6 +91,8 @@
             line-height:60px;
         }
         .singleElection-next{
+           
+            white-space:nowrap;
             display:flex;
             text-align:left;
             width:100%;

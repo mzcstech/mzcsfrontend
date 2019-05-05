@@ -7,6 +7,7 @@ import BorrowOriginal from './BorrowOriginal'
 import OriginalTableHead from './OriginalTableHead';
 import OriginalProcessRecords from './OriginalProcessRecords';
 import EditOriginal from './EditOriginal'
+
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -258,13 +259,13 @@ class EnhancedTable extends React.Component {
               <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
                 原件详情列表 : {this.state.companyName}
               </Typography>
-              
+             
             </Toolbar>
         </AppBar> 
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
-           
+            
           </div>
         </Grid>
         <div className={classes.tableWrapper}>

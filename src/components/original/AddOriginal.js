@@ -52,7 +52,7 @@ class AddTemplate extends React.Component {
             this.setState({
                 open:true,
                 message:'请选择持有状态'
-             })
+             }) 
         }else{
             var original = {
                 originalName:this.state.originalName,

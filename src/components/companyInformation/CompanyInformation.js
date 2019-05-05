@@ -13,6 +13,7 @@ import Topbar from '../Topbar';
 import AddCompanyInformation from './AddCompanyInformation.js';
 import EditCompanyInformation from './EditCompanyInformation.js';
 import ViewCompanyInformation from './ViewCompanyInformation.js';
+import QueryCompanyInformationl from './QueryCompanyInformationl'
 import CompanyInformationEnhancedTableHead from './CompanyInformationEnhancedTableHead.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
@@ -158,10 +159,18 @@ class EnhancedTable extends React.Component {
   }
 
   //分页
-  fetchTemplate = () => {
+  fetchTemplate = (companyName,originalHolder,originalOutStatus) => {
+    if(companyName == undefined && originalHolder == undefined && originalOutStatus == undefined){
+       companyName      =''
+       originalHolder   =''
+       originalOutStatus=''
+    }
     let companyinformationQueryVo = new FormData();
     companyinformationQueryVo.append("pageNum", this.state.page + 1)
     companyinformationQueryVo.append("pageSize", this.state.rowsPerPage)
+    companyinformationQueryVo.append("companyName",companyName)
+    companyinformationQueryVo.append("originalHolder",originalHolder)
+    companyinformationQueryVo.append("originalOutStatus",originalOutStatus)
     fetch(SERVER_URL + '/companyInformation/list', {
       mode: "cors",
       method: 'POST',
@@ -236,6 +245,9 @@ class EnhancedTable extends React.Component {
               <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
                公司原件信息列表
               </Typography>
+              <div className="QueryTemplateInto" >
+                  <QueryCompanyInformationl fetchTemplate={this.fetchTemplate} />
+             </div>
             </Toolbar>
         </AppBar> 
         <Grid container>

@@ -52,11 +52,11 @@ class EnhancedTable extends React.Component {
       processUrl: '/commerce/listProcessByUser',
       map:[]
     };
-  }
+  }  
   //根据选择业务类型跳转页面
   handleUrl = (val) => {
-    // this.state.processUrl = val
     this.setState({ processUrl: val }, () => {
+      this.state.page = 0
       this.fetchTemplate()
     })
   }
@@ -109,33 +109,34 @@ class EnhancedTable extends React.Component {
 
 
   //分页
-  fetchTemplate = () => {
-    let followUpVo = new FormData();
-    followUpVo.append("pageNum", this.state.page + 1)
-    followUpVo.append("pageSize", this.state.rowsPerPage)
-    followUpVo.append("companyName", this.state.valueInput)
-    fetch(SERVER_URL + this.state.processUrl, {
-      mode: "cors",
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json,text/plain,*/*'
-      },
-      body: followUpVo
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-       
-        this.setState({
-          data: responseData.data.list,
-          map:responseData.data.map,
-          page: responseData.data.pageNum - 1,
-          rowsPerPage: responseData.data.pageSize,
-          total: responseData.data.total
-        });
+  fetchTemplate = (processUrl) => {
+      let followUpVo = new FormData();
+      followUpVo.append("pageNum", this.state.page + 1)
+      followUpVo.append("pageSize", this.state.rowsPerPage)
+      followUpVo.append("companyName", this.state.valueInput)
+      fetch(SERVER_URL + this.state.processUrl, {
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json,text/plain,*/*'
+        },
+        body: followUpVo
       })
-      .catch(err => console.error(err));
-  }
+        .then((response) => response.json())
+        .then((responseData) => {
+          console.log(responseData)
+          this.setState({
+            data: responseData.data.list,
+            map:responseData.data.map,
+            page: responseData.data.pageNum - 1,
+            rowsPerPage: responseData.data.pageSize,
+            total: responseData.data.total
+          });
+        })
+        .catch(err => console.error(err));
+    }
+
   //clickbox相关函数
   handleSelectAllClick = event => {
     if (event.target.checked) {

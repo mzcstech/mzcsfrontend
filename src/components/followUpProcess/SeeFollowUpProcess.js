@@ -62,17 +62,18 @@ class ViewFollowUpProcess extends React.Component {
     }
 
     handleClickOpen = (event) => {
-        this.setOpen(true);
+        this.setOpen(true); 
     }
 
     handleClose = (event) => {
         this.setOpen(false);
+        
     }
     setOpen = (event) => {
         this.setState({ open: event }, () => {
         })
     }
-    render() {
+    render() { 
         const processVoList = this.state.processVoList
         return (
             <div>
@@ -83,13 +84,13 @@ class ViewFollowUpProcess extends React.Component {
                     <DialogContent>
                         <DialogContentText>
                             <TableHead>
-                                <TableRow>
-                                    <TableCell className="TableCell" align="center" padding="none" title="任务节点">任务节点</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="办理人">办理人</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="审批开始时间">审批开始时间</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="审批结束时间">审批结束时间</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="用时">用时</TableCell>
-                                    <TableCell className="TableCell" align="center" padding="none" title="审批意见">审批意见</TableCell>
+                                <TableRow >
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="任务节点">任务节点</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="办理人">办理人</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="审批开始时间">审批开始时间</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="审批结束时间">审批结束时间</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="用时">用时</TableCell>
+                                    <TableCell style={{color:'black',fontSize:'16px',borderTop:'2px solid #EDEDED'}} className="TableCell" align="center" padding="none" title="审批意见">审批意见</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody >
@@ -112,7 +113,7 @@ class ViewFollowUpProcess extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose}  style={{ 'margin': '10px,0', background: '#31b0d5',color:'#ffffff' }}>
+                        <Button onClick={this.handleClose}  style={{ 'margin': '10px,0', background: '#303F9F',color:'#ffffff' }}>
                             关闭
                         </Button>
                     </DialogActions>
@@ -121,7 +122,7 @@ class ViewFollowUpProcess extends React.Component {
             </div>
 
         );
-    }
+    }   
 
 
 }

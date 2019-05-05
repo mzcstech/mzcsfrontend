@@ -9,6 +9,7 @@ import Radio from '@material-ui/core/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
+
 class EditOriginal extends React.Component {
     constructor(props) {
         super(props);
@@ -88,7 +89,7 @@ class EditOriginal extends React.Component {
         event.preventDefault();
         var originalId = this.state.originalId;
        
-        fetch(SERVER_URL + '/original/findById/' + originalId,
+        fetch(SERVER_URL + '/original/findById/' + originalId, 
             {
                 mode: "cors",
                 method: 'GET',

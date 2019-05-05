@@ -207,7 +207,7 @@ fetchTemplate = (inputVal) => {
   };
 // 每页的行数更改时触发回调
   handleChangeRowsPerPage = event => {    
-    this.state.rowsPerPage=event.target.value;
+    this.state.rowsPerPage=event.target.value; 
     this.fetchTemplate();
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;

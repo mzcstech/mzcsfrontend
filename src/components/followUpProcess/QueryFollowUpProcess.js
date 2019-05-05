@@ -36,7 +36,7 @@ class QueryTemplate extends Component {
         }
         
     }
-
+ 
     handleChange = (event) => {
         this.setState(
             { [event.target.name]: event.target.value }
@@ -51,8 +51,6 @@ class QueryTemplate extends Component {
     }
   
     render() {
-       
-        console.log(this.props.map)
         return (
             <div className="box">
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
