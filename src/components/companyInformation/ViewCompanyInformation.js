@@ -11,7 +11,6 @@ class ViewCompanyInformation extends React.Component {
         super(props);
         this.state = {
             companyInformationId: this.props.companyInformationId
-            
         };
     }    
     //查询详情，并展示详情页
@@ -35,7 +34,7 @@ class ViewCompanyInformation extends React.Component {
                     remark: responseData.data.remark,
                     companyInformationId:responseData.data.companyInformationId
                 });                 
-                console.log(this.state.templateVo)
+            
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
@@ -49,7 +48,7 @@ class ViewCompanyInformation extends React.Component {
         this.refs.editDialog.hide();
     }
     render() {   
-        //alert(this.state.TEMPLATE_CHECKBOX)     
+        // alert(this.state.companyInformationId)     
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">

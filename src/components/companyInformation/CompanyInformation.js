@@ -21,6 +21,7 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
 import { SERVER_URL } from '../../constants.js';
 import './styles/CompanyInformation.css'
 //整体样式
@@ -46,24 +47,80 @@ class EnhancedTable extends React.Component {
     super(props)
     this.state = {
       selected: [],
-      data: [
-      ],
+      data: [],
       page: 0,
       rowsPerPage: 10,
       total: 0,
       message: '',
       open: false,
-      TEMPLATE_ID: ''
+      TEMPLATE_ID: '',
+      companyInformationgetCount:[],
+      display_holdCount:'none',
+      display_loanInCount:'none',
+      display_outgoingCount:'none',
+      display_toBeConfirmedCount:'none',
     };
   }
-
+  componentWillMount(){
+     this.companyInformationGetCount()
+  }
   componentDidMount = () => {
     this.fetchTemplate();
+    this.showhide()
   }
   //提示框的显示判断
   handleClose = (event, reason) => {
     this.setState({ open: false });
   };
+  //显示提示数量
+  companyInformationGetCount(){
+    fetch(SERVER_URL + '/companyInformation/getCount',
+    {
+      mode: "cors",
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json,text/plain,*/*'
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then(res =>{
+      this.setState({companyInformationgetCount :res.data},()=>{
+      if(this.state.companyInformationgetCount.holdCount != 0){
+        this.setState({display_holdCount:'flex'},()=>{
+        })
+      }else{
+        this.setState({display_holdCount:'none'},()=>{
+        })
+       }
+      if(this.state.companyInformationgetCount.outgoingCount != 0){
+        this.setState({display_outgoingCount:'flex'},()=>{
+        })
+      }else{
+        this.setState({display_outgoingCount:'none'},()=>{
+        })
+      }
+      if(this.state.companyInformationgetCount.loanInCount != 0){
+        this.setState({display_loanInCount:'flex'},()=>{
+        })
+      }else{
+      this.setState({display_loanInCount:'none'},()=>{
+      })
+       }
+      if(this.state.companyInformationgetCount.toBeConfirmedCount != 0){
+        this.setState({display_toBeConfirmedCount:'flex'},()=>{
+        })
+      
+      }else{
+        this.setState({display_toBeConfirmedCount:'none'},()=>{
+        })
+      }
+      })
+    })
+    .catch(err => console.error(err))
+   }
+
   // 新增
   addTemplate(params) {
     let companyinformationVo = new FormData()
@@ -160,6 +217,9 @@ class EnhancedTable extends React.Component {
 
   //分页
   fetchTemplate = (companyName,originalHolder,originalOutStatus) => {
+    this.setState({
+      data:[]
+    })
     if(companyName == undefined && originalHolder == undefined && originalOutStatus == undefined){
        companyName      =''
        originalHolder   =''
@@ -229,8 +289,18 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
+  //提示数字信息显示判断
+  showhide(){
+    
+  }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+    // alert(this.state.display_toBeConfirmedCount)
+    let companyInformationgetCount = this.state.companyInformationgetCount
+    let display_holdCount          = this.state.display_holdCount
+    let display_outgoingCount      = this.state.display_outgoingCount
+    let display_loanInCount        = this.state.display_loanInCount
+    let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
@@ -253,7 +323,25 @@ class EnhancedTable extends React.Component {
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
+          <div className="QueryTemplateInto" >
+                <div style={{display:display_holdCount}} className="QueryTemplateIntoNumber">
+                    <div>持有原件数量</div>
+                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.holdCount} max={99} color="secondary"></Badge>  
+                </div>
+                <div style={{display:display_outgoingCount}}  className="QueryTemplateIntoNumber">
+                    <div>出库中数量</div>
+                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.outgoingCount} max={99} color="secondary"></Badge>  
+                </div>
+                <div style={{display:display_loanInCount}}  className="QueryTemplateIntoNumber">
+                    <div>待借入数量</div>
+                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.loanInCount} max={99} color="secondary"></Badge>  
+                </div>
+                <div style={{display:display_toBeConfirmedCount}}  className="QueryTemplateIntoNumber">
+                    <div>需确认条数</div>
+                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.toBeConfirmedCount} max={99} color="secondary"></Badge>  
+                </div>
           </div>
+        </div>
         </Grid>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -263,7 +351,6 @@ class EnhancedTable extends React.Component {
               order={order}
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
-
               rowCount={this.state.total}
             />
             <TableBody >

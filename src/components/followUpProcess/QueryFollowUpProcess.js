@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Input from '@material-ui/core/Input';
-import Avatar from '@material-ui/core/Avatar';
-
-import Grid from '@material-ui/core/Grid';
-import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
-import MailIcon from '@material-ui/icons/Mail';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import './styles/FollowUpProcess.css'

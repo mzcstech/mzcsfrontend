@@ -25,6 +25,8 @@ import Grid from '@material-ui/core/Grid';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
 import { SERVER_URL } from '../../constants.js';
 import './styles/Original.css'
 
@@ -255,8 +257,12 @@ class EnhancedTable extends React.Component {
           <font>原件详情列表</font>
         </div> */}
         <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
-            <Toolbar>
-              <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
+            <Toolbar style={{paddingLeft:'10px'}}>
+              <Fab href="http://localhost:3000/#/companyInformation"  size="small" variant="extended" color="primary" aria-label="Add" style={{background:'#2196F3'}}>
+                <NavigationIcon className={classes.extendedIcon} />
+                返回
+              </Fab>
+              <Typography style={{paddingLeft:'40px'}} variant="h7" color="inherit" noWrap>
                 原件详情列表 : {this.state.companyName}
               </Typography>
              

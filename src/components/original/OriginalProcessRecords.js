@@ -39,14 +39,10 @@ class OriginalProcessRecords extends React.Component {
     
     // 保存id
     componentWillMount(){
-        this.setState({
-            OriginalId:this.props.id
-        })
-      }
-      findByProcInstId = (event) => {
-        let OriginalId = this.state.OriginalId
-        event.preventDefault();
-        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + OriginalId,{
+        // this.setState({
+        //     OriginalId:this.props.id
+        // })
+        fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + this.props.id,{
             mode: "cors",
             method: 'GET',
             credentials: 'include',
@@ -62,6 +58,11 @@ class OriginalProcessRecords extends React.Component {
         .catch(err =>
             this.setState({ open: true, message: 'Error when 查询详情' })
         )
+      }
+      findByProcInstId = () => {
+        // let OriginalId = this.state.OriginalId
+        // event.preventDefault();
+        
          if( this.state.data.length > 0){
             this.setOpen(true);
          }else{

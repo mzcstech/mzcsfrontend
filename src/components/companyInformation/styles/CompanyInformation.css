@@ -125,7 +125,6 @@
             }
 
     .QueryTemplate{
-       
         position: relative;
         display:flex;
         align-items:center;
@@ -134,9 +133,20 @@
         border-bottom:3px solid #E5E5E5;
     }
         .QueryTemplateInto{
+            display:flex;
+            align-items:center;
             position: absolute;
             right:20px;
         }
+            .QueryTemplateIntoNumber{
+                display:block;
+                margin-left:25px; 
+                height:100%;
+                align-items:center;
+            }
+            .Badgenumber{
+            margin-left:20px;
+            }
     table{
         table-layout:fixed;
         word-break:break-all;
@@ -184,4 +194,4 @@
     .TableRow{
         border:1px solid red;
     }
-    
+   

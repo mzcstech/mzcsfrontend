@@ -87,11 +87,11 @@ class QueryCompanyInformationl extends Component{
     render(){
         return(
             <div className="box">
-                <Input className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
+                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
                 <div className="Separate"></div>
                 <InputLabel  style={{color:'black'}} >借出对象:</InputLabel>
                     <NativeSelect    
-                      
+                        style={{textAlign:'center',width:'175px'}}
                         native
                         value={this.state.originalHolder}
                         onChange={this.handoriginalHolderChange}
@@ -106,24 +106,24 @@ class QueryCompanyInformationl extends Component{
                   </NativeSelect>
                 <div className="Separate"></div>
                 <InputLabel style={{color:'black'}} htmlFor="age-simple">流转状态:</InputLabel>
-                <Select
-                    style={{textAlign:'center'}}
+                <NativeSelect
+                    style={{textAlign:'center',width:'175px'}}
+                    native
                     className="downBox-form"
                     value={this.state.originalOutStatus}
                     onChange={this.handoriginalOutStatusChange}
-                    inputProps={{
-                        name: 'TEMPLATE_SELECT',
-                        id: 'TEMPLATE_SELECT',
-                    }}
+                    name='originalOutStatus' 
+                    input={<Input name="name" id="name"  />}
                 >
+                    <option value="" /> 
                     {
                         this.state.singleElectionData.map(item=>{
                             return(
-                                <MenuItem value={item.bianma}>{item.name}</MenuItem>
+                                <option value={item.bianma}>{item.name}</option>
                             )
                         })
                     }
-                </Select>
+                </NativeSelect>
                 <div className="Separate"></div>
                 <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
         </div>
