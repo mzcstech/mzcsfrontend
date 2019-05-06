@@ -37,7 +37,7 @@ class OriginalProcessRecords extends React.Component {
     }  
     
     // 保存id
-    componentWillMount(){
+      findByProcInstId = () => {
         fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + this.props.id,{
             mode: "cors",
             method: 'GET',
@@ -49,18 +49,17 @@ class OriginalProcessRecords extends React.Component {
         .then((response) => response.json())
         .then(res =>{
             this.setState({data:res.data.list},()=>{
+                if( this.state.data.length > 0){
+                    this.setOpen(true);
+                }else{
+                this.setState({ Snackbaropen: true, message: '本条数据无流转记录' })
+                }
             })
         })
         .catch(err =>
             this.setState({ open: true, message: 'Error when 查询详情' })
         )
-      }
-      findByProcInstId = () => {
-         if( this.state.data.length > 0){
-            this.setOpen(true);
-         }else{
-            this.setState({ Snackbaropen: true, message: '本条数据无流转记录' })
-         }
+        
         }
         handleClickOpen = (event) => { 
             this.setOpen(true);
@@ -78,7 +77,6 @@ class OriginalProcessRecords extends React.Component {
          this.setState({ Snackbaropen: false });
         };
     render() {     
-   
         const data = this.state.data
         return (
             <div>

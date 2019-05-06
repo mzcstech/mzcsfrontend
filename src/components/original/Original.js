@@ -182,6 +182,7 @@ class EnhancedTable extends React.Component {
   }
   //分页
   fetchTemplate = () => {
+  
     let originalQueryVo = new FormData();
     originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     originalQueryVo.append("pageNum", this.state.page + 1)

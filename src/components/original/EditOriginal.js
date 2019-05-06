@@ -88,7 +88,6 @@ class EditOriginal extends React.Component {
     findById = (event) => {
         event.preventDefault();
         var originalId = this.state.originalId;
-       
         fetch(SERVER_URL + '/original/findById/' + originalId, 
             {
                 mode: "cors",
@@ -96,7 +95,7 @@ class EditOriginal extends React.Component {
                 credentials: 'include',
                 headers: {
                     'Accept': '*/*'
-                }
+            }
             })
             .then(res => res.json())
             .then((responseData) => {
