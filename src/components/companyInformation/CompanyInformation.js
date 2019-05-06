@@ -146,6 +146,7 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
+    
     console.log(params)
     let companyInformationVo = new FormData()
     if (params) {
@@ -357,7 +358,7 @@ class EnhancedTable extends React.Component {
               {/* {stableSort(data, getSorting(order, orderBy)) */}
               {stableSort(data)
                 .slice(0, rowsPerPage)
-                .map(n => {
+                .map(n => { 
                   const isSelected = this.isSelected(n.tEMPLATE_ID);
                   // 便利显示列表页面
                   return (

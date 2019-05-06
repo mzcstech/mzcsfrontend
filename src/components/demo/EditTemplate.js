@@ -20,7 +20,7 @@ class EditTemplate extends React.Component {
         this.state = {
             templeteId: this.props.templeteId,
             USER_ID: '',
-            TEMPLATE_SELECT: '',
+            TEMPLATE_SELECT: '', 
             TEMPLATE_DATE: '2019-05-24',
             TEMPLATE_DATETIME: '2019-05-24T10:30',
             TEMPLATE_RADIO: '',

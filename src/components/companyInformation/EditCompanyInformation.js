@@ -62,7 +62,7 @@ class EditCompanyInformation extends React.Component {
                 console.log(this.state.templateVo)
             })
             .catch(err =>
-                this.setState({ open: true, message: 'Error when 查询详情' })
+                this.setState({ open: true, message: 'Error when 查询详情' }) 
             )
 
         this.refs.editDialog.show();

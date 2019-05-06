@@ -63,6 +63,7 @@ class EnhancedTable extends React.Component {
       companyInformationId: '',
       companyName:''
     };
+    this.editTemplate = this.editTemplate.bind(this)
   }
   // 保存id
   componentWillMount() {
@@ -120,7 +121,6 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
-
     let companyInformationVo = new FormData()
     if (params) {
       for (let key in params) {
@@ -137,12 +137,14 @@ class EnhancedTable extends React.Component {
         },
         body: companyInformationVo
       })      
-       .then(res =>{ this.fetchTemplate()
+      .then(res => {
+        this.fetchTemplate()
       })
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
+    
     fetch(SERVER_URL + '/original/delete/' + id,
       {
         mode: "cors",
@@ -155,6 +157,7 @@ class EnhancedTable extends React.Component {
       // fetch(SERVER_URL + 'cars/')
       .then(res => {
         this.setState({ open: true, message: '删除成功' });
+        
         this.fetchTemplate()
       })
       .catch(err => {

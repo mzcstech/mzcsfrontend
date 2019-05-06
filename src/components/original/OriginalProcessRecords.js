@@ -27,7 +27,6 @@ class OriginalProcessRecords extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            OriginalId:'',
             data:[],
             open: false,
             fullWidth: true,
@@ -39,9 +38,6 @@ class OriginalProcessRecords extends React.Component {
     
     // 保存id
     componentWillMount(){
-        // this.setState({
-        //     OriginalId:this.props.id
-        // })
         fetch(SERVER_URL + '/originalprocessrecords/list?originalId=' + this.props.id,{
             mode: "cors",
             method: 'GET',
@@ -60,9 +56,6 @@ class OriginalProcessRecords extends React.Component {
         )
       }
       findByProcInstId = () => {
-        // let OriginalId = this.state.OriginalId
-        // event.preventDefault();
-        
          if( this.state.data.length > 0){
             this.setOpen(true);
          }else{

@@ -33,19 +33,27 @@ class LoanOriginal extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-        var original = {            
-            originalOutTo: this.state.originalOutTo,
-            companyName:this.state.companyName,
-            originalName:this.state.originalName,
-            originalHolder:this.state.originalHolder,
-            originalId:this.state.originalId
-        };
-        this.loanOut(original);
-        this.refs.editDialog.hide();
-        this.setState({
-            open: true,
-            message: '借出，待确认'
-        })
+        if(this.state.originalOutTo === null){
+            this.setState({
+                open: true,
+                message: '请选择借出对象'
+          })
+        }else{
+            var original = {            
+                originalOutTo: this.state.originalOutTo,
+                companyName:this.state.companyName,
+                originalName:this.state.originalName,
+                originalHolder:this.state.originalHolder,
+                originalId:this.state.originalId
+            };
+        
+            this.loanOut(original);
+            this.refs.editDialog.hide();
+            this.setState({
+                open: true,
+                message: '借出，待确认'
+            })
+        }
     }
 
     loanOut(params) {
