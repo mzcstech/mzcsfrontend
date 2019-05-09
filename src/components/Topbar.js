@@ -105,9 +105,8 @@ class Topbar extends Component {
       .then((response) => response.json())
       .then((responseData) => {
         // console.log(responseData.data[0].subMenu);
-        this.setState({
-          menus: responseData.data
-        });
+        this.setState({menus: responseData.data},()=>{
+        })
         //单级菜单数据回显
         responseData.data[0].subMenu.forEach(element => {
           var ele = {
@@ -169,7 +168,7 @@ class Topbar extends Component {
   }
   handleClick(menu_ID,event){
     // console.log("menu_ID") 
-    // console.log(event.currentTarget)   
+    console.log(event.currentTarget,'currentTarget')    
     // console.log(menu_ID) 
     // console.log("menu_ID") 
     this.state.menus.forEach(element => {
@@ -178,7 +177,7 @@ class Topbar extends Component {
     }  
     });
     this.setState({ anchorEl: event.currentTarget });
-    
+   
   };
 
   handleClose = () => {
@@ -188,11 +187,11 @@ class Topbar extends Component {
     this.setState({ anchorEl: null });
   };
   render() {
-
     const { classes } = this.props;
     const { anchorEl } = this.state;
     // console.log(this.state.menus);
     return (
+      
       <AppBar position="absolute" color="default" className={classes.appBar}>
         <Toolbar>
           <Grid container spacing={24} alignItems="baseline">
@@ -208,11 +207,12 @@ class Topbar extends Component {
               {!this.props.noTabs && (
                 <React.Fragment>
                   <div className={classes.productLogo}>
-                   
+                  
                   </div>
                   <div className={classes.iconContainer}>
                     <IconButton onClick={this.mobileMenuOpen} className={classes.iconButton} color="inherit" aria-label="Menu">
                       <MenuIcon />
+                  
                     </IconButton>
                   </div>
                   <div className={classes.tabContainer}>
@@ -252,12 +252,10 @@ class Topbar extends Component {
                         anchorEl={menu.anchorEl}
                         open={Boolean(menu.anchorEl)}
                         onClose={this.handleClose} >
-
                         {menu.subMenu.map((subMenu,index) => (                          
                             // <MenuItem onClick={this.handleClose} >{subMenu.menu_NAME}</MenuItem> 
                               <Tab key={index} component={Link} to={{ pathname: subMenu.menu_URL, search: this.props.location.search }} classes={{ root: classes.tabItem }} label={subMenu.menu_NAME} />
-                        ))}    
-                                     
+                        ))}        
                       </Menu1>
                     ))}
 

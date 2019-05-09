@@ -6,8 +6,7 @@ import LoanOriginal from './LoanOriginal'
 import BorrowOriginal from './BorrowOriginal'
 import OriginalTableHead from './OriginalTableHead';
 import OriginalProcessRecords from './OriginalProcessRecords';
-import EditOriginal from './EditOriginal'
-
+import EditOriginal from './EditOriginal';
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -61,13 +60,13 @@ class EnhancedTable extends React.Component {
       message: '',
       open: false,
       companyInformationId: '',
-      companyName:''
+      companyName:'',
+      href:''
     };
     this.editTemplate = this.editTemplate.bind(this)
   }
   // 保存id
-  componentWillMount() {
-    console.log(this.props.location.query)
+  componentWillMount(){
     let recvParam;
     let CdCompanyName;
     if (this.props.location.query != undefined) {
@@ -81,7 +80,8 @@ class EnhancedTable extends React.Component {
     }
     this.setState({
       companyInformationId: recvParam,
-      companyName :CdCompanyName
+      companyName :CdCompanyName,
+      href:window.location.href
     })
   }
   // componentWillUpdate =()=>{
@@ -103,7 +103,7 @@ class EnhancedTable extends React.Component {
         original.append(key, params[key])
       }
     }
-    console.log(params)
+
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
@@ -236,7 +236,6 @@ class EnhancedTable extends React.Component {
   };
   // 页面更改时触发回调
   handleChangePage = (event, page) => {
-    console.log(event)
     this.state.page = page;
     this.fetchTemplate();
   };
@@ -247,8 +246,8 @@ class EnhancedTable extends React.Component {
   };
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+    let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
-   
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -262,7 +261,7 @@ class EnhancedTable extends React.Component {
         </div> */}
         <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
             <Toolbar style={{paddingLeft:'10px'}}>
-              <Fab href="http://localhost:3000/#/companyInformation"  size="small" variant="extended" color="primary" aria-label="Add" style={{background:'#2196F3'}}>
+              <Fab href={NewUrl} size="small" variant="extended" color="primary" aria-label="Add" style={{background:'#2196F3'}}>
                 <NavigationIcon className={classes.extendedIcon} />
                 返回
               </Fab>
@@ -275,7 +274,6 @@ class EnhancedTable extends React.Component {
         <Grid container>
           <div className="QueryTemplate">
             <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
-            
           </div>
         </Grid>
         <div className={classes.tableWrapper}>

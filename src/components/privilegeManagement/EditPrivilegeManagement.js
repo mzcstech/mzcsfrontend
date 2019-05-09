@@ -4,8 +4,8 @@ import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
-require('./styles/CompanyInformation.css')
-class EditCompanyInformation extends React.Component {
+// require('./styles/CompanyInformation.css')
+class EditPrivilegeManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -89,7 +89,7 @@ class EditCompanyInformation extends React.Component {
                                         <TextField className="InputBox-next" placeholder="remark"  onChange={this.handleChange} multiline={true} 
                                         name="remark" value={this.state.remark} />
                                     </div>
-                            </div> 
+                            </div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
@@ -111,4 +111,4 @@ class EditCompanyInformation extends React.Component {
 
 }
 
-export default EditCompanyInformation;
+export default EditPrivilegeManagement;

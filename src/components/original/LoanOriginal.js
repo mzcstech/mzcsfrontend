@@ -172,20 +172,21 @@ class LoanOriginal extends React.Component {
                                 </div>
                                 <div className="InputBox">                                   
                                     <FormLabel className="InputBox-text">借出对象:</FormLabel>
-                                    <NativeSelect    
+                                    <NativeSelect     
                                         style={{width:'70%'}}                                    
                                         native
                                         value={this.state.originalOutTo}
                                         onChange={this.handleChange}
                                         name='originalOutTo' 
-                                        input={<Input name="name" id="name" />}
+                                        // input={<Input name="age" id="age-label-placeholder" />}
                                         >
+                                        <Input name="age" id="age-label-placeholder" />
                                         <option value="" /> 
                                         {this.state.userList.map(item => {
                                             return (<option value={item.username}>{item.name}</option>)
                                         })
                                         }
-                                    </NativeSelect>
+                                    </NativeSelect >
 
                                 </div>
                             </div>
