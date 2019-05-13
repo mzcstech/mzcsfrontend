@@ -3,13 +3,12 @@ import { SERVER_URL } from '../../constants.js'
 import Input  from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import './styles/CompanyInformationQuery.css'
-
+// import './styles/CompanyInformationQuery.css'
 import Button from '@material-ui/core/Button';
 
 //模糊查询
 
-class QueryCompanyInformationl extends Component{
+class QueryPrivilegeManagement extends Component{
     constructor(props){
         super(props)
         this.handcompanyNameChange       = this.handcompanyNameChange.bind(this)
@@ -86,9 +85,9 @@ class QueryCompanyInformationl extends Component{
         return(
             <div className="box">
                
-                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
+                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="名称"/>
                 <div className="Separate"></div>
-                <InputLabel  style={{color:'black'}} >原件持有人:</InputLabel>
+                <InputLabel  style={{color:'black'}} >子类型:</InputLabel>
                     <NativeSelect    
                         style={{textAlign:'center',width:'175px'}}
                         native
@@ -97,14 +96,14 @@ class QueryCompanyInformationl extends Component{
                         name='originalHolder' 
                         input={<Input name="name" id="name"  />}
                         >
-                        <option value="" /> 
+                        {/* <option value="" /> 
                         {this.state.userList.map(item => {
-                            return (<option  value={item.username}>{item.name}</option>)
+                            return (<option  value={item.name}>{item.name}</option>)
                         })
-                        }
+                        } */}
                   </NativeSelect>
                 <div className="Separate"></div>
-                <InputLabel style={{color:'black'}} htmlFor="age-simple">流转状态:</InputLabel>
+                <InputLabel style={{color:'black'}} htmlFor="age-simple">code:</InputLabel>
                 <NativeSelect
                     style={{textAlign:'center',width:'175px'}}
                     native
@@ -114,14 +113,14 @@ class QueryCompanyInformationl extends Component{
                     name='originalOutStatus' 
                     input={<Input name="name" id="name"  />}
                 >
-                    <option value="" /> 
+                    {/* <option value="" /> 
                     {
                         this.state.singleElectionData.map(item=>{
                             return(
                                 <option value={item.bianma}>{item.name}</option>
                             )
                         })
-                    }
+                    } */}
                 </NativeSelect>
                 <div className="Separate"></div>
                 <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
@@ -130,4 +129,4 @@ class QueryCompanyInformationl extends Component{
     }
     
 }
-export default QueryCompanyInformationl;
+export default QueryPrivilegeManagement;

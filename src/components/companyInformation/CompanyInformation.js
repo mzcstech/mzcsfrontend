@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
 import Snackbar from '@material-ui/core/Snackbar';
 import Topbar from '../Topbar';
 import AddCompanyInformation from './AddCompanyInformation.js';
@@ -309,7 +308,6 @@ class EnhancedTable extends React.Component {
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
-    // alert(this.state.display_toBeConfirmedCount)
     let companyInformationgetCount = this.state.companyInformationgetCount
     let display_holdCount = this.state.display_holdCount
     let display_outgoingCount = this.state.display_outgoingCount

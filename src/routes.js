@@ -8,7 +8,8 @@ import CompanyInformation from './components/companyInformation/CompanyInformati
 import followUpProcess from './components/followUpProcess/FollowUpProcess'
 import Original from './components/original/Original'
 import OriginalProcessRecords from './components/original/OriginalProcessRecords'
-
+import PrivilegeManagement from './components/privilegeManagement/PrivilegeManagement'
+import privilegeSubordinate from './components/privilegeSubordinate/privilegeSubordinate'
 export default props => (
   <HashRouter>
     <ScrollToTop>
@@ -20,6 +21,8 @@ export default props => (
         <Route exact path='/followUpProcess' component={followUpProcess} />
         <Route exact path='/Original' component={Original} />
         <Route exact path='/OriginalProcessRecords' component={OriginalProcessRecords} />
+        <Route exact path='/PrivilegeManagement' component={PrivilegeManagement} />
+        <Route exact path='/privilegeSubordinate' component={privilegeSubordinate} />
       </Switch>
     </ScrollToTop>
   </HashRouter>

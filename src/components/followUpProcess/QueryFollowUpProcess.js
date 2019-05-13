@@ -43,7 +43,6 @@ class QueryTemplate extends Component {
             this.props.handleValue(e.target.value)
         }
     }
-  
     render() {
         return (
             <div className="box">
