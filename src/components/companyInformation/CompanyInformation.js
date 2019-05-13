@@ -248,7 +248,7 @@ class EnhancedTable extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-
+       console.log(responseData.data)
         this.setState({
           QX: {
             add: responseData.data.QX.add,
@@ -257,9 +257,9 @@ class EnhancedTable extends React.Component {
             cha: responseData.data.QX.cha
           },
           data: responseData.data.varList.list,
-          page: responseData.data.pageNum - 1,
-          rowsPerPage: responseData.data.pageSize,
-          total: responseData.data.total
+          page: responseData.data.varList.pageNum - 1,
+          rowsPerPage: responseData.data.varList.pageSize,
+          total: responseData.data.varList.total
         });
       })
       .catch(err => console.error(err));
