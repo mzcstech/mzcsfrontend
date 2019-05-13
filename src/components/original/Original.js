@@ -52,6 +52,12 @@ class EnhancedTable extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      QX: {
+        add: "",
+        edit: "",
+        del: "",
+        cha: ""
+      },
       selected: [],
       data: [
       ],
@@ -61,7 +67,7 @@ class EnhancedTable extends React.Component {
       message: '',
       open: false,
       companyInformationId: '',
-      companyName:''
+      companyName: ''
     };
     this.editTemplate = this.editTemplate.bind(this)
   }
@@ -81,7 +87,7 @@ class EnhancedTable extends React.Component {
     }
     this.setState({
       companyInformationId: recvParam,
-      companyName :CdCompanyName
+      companyName: CdCompanyName
     })
   }
   // componentWillUpdate =()=>{
@@ -126,7 +132,7 @@ class EnhancedTable extends React.Component {
       for (let key in params) {
         companyInformationVo.append(key, params[key])
       }
-    }   
+    }
     fetch(SERVER_URL + '/original/edit',
       {
         mode: "cors",
@@ -136,7 +142,7 @@ class EnhancedTable extends React.Component {
           'Accept': 'application/json,text/plain,*/*'
         },
         body: companyInformationVo
-      })      
+      })
       .then(res => {
         this.fetchTemplate()
       })
@@ -144,7 +150,7 @@ class EnhancedTable extends React.Component {
   }
   //删除
   onDelClick = (id) => {
-    
+
     fetch(SERVER_URL + '/original/delete/' + id,
       {
         mode: "cors",
@@ -157,7 +163,7 @@ class EnhancedTable extends React.Component {
       // fetch(SERVER_URL + 'cars/')
       .then(res => {
         this.setState({ open: true, message: '删除成功' });
-        
+
         this.fetchTemplate()
       })
       .catch(err => {
@@ -182,7 +188,7 @@ class EnhancedTable extends React.Component {
   }
   //分页
   fetchTemplate = () => {
-  
+
     let originalQueryVo = new FormData();
     originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     originalQueryVo.append("pageNum", this.state.page + 1)
@@ -197,9 +203,15 @@ class EnhancedTable extends React.Component {
       body: originalQueryVo
     })
       .then((response) => response.json())
-      .then((responseData) => {
+      .then((responseData) => {        
         this.setState({
-          data: responseData.data.list,
+          QX: {
+            add: responseData.data.QX.add,
+            edit: responseData.data.QX.edit,
+            del: responseData.data.QX.del,
+            cha: responseData.data.QX.cha
+          },
+          data: responseData.data.varList.list,
           page: responseData.data.pageNum - 1,
           rowsPerPage: responseData.data.pageSize,
           total: responseData.data.total
@@ -248,7 +260,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
-   
+
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -260,22 +272,28 @@ class EnhancedTable extends React.Component {
         {/* <div className={classes.tableWrapper}>
           <font>原件详情列表</font>
         </div> */}
-        <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
-            <Toolbar style={{paddingLeft:'10px'}}>
-              <Fab href="http://localhost:3000/#/companyInformation"  size="small" variant="extended" color="primary" aria-label="Add" style={{background:'#2196F3'}}>
-                <NavigationIcon className={classes.extendedIcon} />
-                返回
+        <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
+          <Toolbar style={{ paddingLeft: '10px' }}>
+            <Fab href="http://localhost:3000/#/companyInformation" size="small" variant="extended" color="primary" aria-label="Add" style={{ background: '#2196F3' }}>
+              <NavigationIcon className={classes.extendedIcon} />
+              返回
               </Fab>
-              <Typography style={{paddingLeft:'40px'}} variant="h7" color="inherit" noWrap>
-                原件详情列表 : {this.state.companyName}
-              </Typography>
-             
-            </Toolbar>
-        </AppBar> 
+            <Typography style={{ paddingLeft: '40px' }} variant="h7" color="inherit" noWrap>
+              原件详情列表 : {this.state.companyName}
+            </Typography>
+
+          </Toolbar>
+        </AppBar>
         <Grid container>
           <div className="QueryTemplate">
-            <Grid item><AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} /></Grid>
-            
+            <Grid item>
+              {this.state.QX.add == "1" ? (
+                <AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} />
+              ) : (
+                  <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
+                )}
+            </Grid>
+
           </div>
         </Grid>
         <div className={classes.tableWrapper}>
@@ -305,35 +323,48 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.originalId}
                       selected={isSelected}
-                    > 
+                    >
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none" ><EditOriginal   editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" >
+                        {this.state.QX.edit == "1" ? (
+                          <EditOriginal editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} />
+                        ) : (
+                            <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
+                          )}
+                      </TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutAuthorized ? (
-                          <LoanOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <LoanOriginal id={n.originalId} fetchTemplate={this.fetchTemplate} />
                         ) : (
-                            <Button size="small"  style={linkReadonlyStyle}  color="primary  " variant="text" disabled="true">借出</Button>
+                            <Button size="small" style={linkReadonlyStyle} color="primary  " variant="text" disabled="true">借出</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanInAuthorized ? (
-                          <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate} />
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true" >借入</Button>
                           )}
-                      </TableCell>  
+                      </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
                         {n.hasLoanOutConfirmed ? (
-                          <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate}/>
+                          <OriginalConfirmed id={n.originalId} fetchTemplate={this.fetchTemplate} />
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true">确认</Button>
                           )}
                       </TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none">
+
+                        {this.state.QX.del == "1" ? (
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.originalId) }}>删除</Button>
+                        ) : (
+                            <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
+                          )}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
