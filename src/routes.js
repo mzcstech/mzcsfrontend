@@ -9,7 +9,7 @@ import followUpProcess from './components/followUpProcess/FollowUpProcess'
 import Original from './components/original/Original'
 import OriginalProcessRecords from './components/original/OriginalProcessRecords'
 import PrivilegeManagement from './components/privilegeManagement/PrivilegeManagement'
-import privilegeSubordinate from './components/privilegeSubordinate/privilegeSubordinate'
+import privilegeSubordinate from './components/privilegeSubordinate/PrivilegeSubordinate'
 export default props => (
   <HashRouter>
     <ScrollToTop>

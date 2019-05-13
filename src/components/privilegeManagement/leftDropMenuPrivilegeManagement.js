@@ -41,7 +41,6 @@ class LeftMenu extends React.Component {
         const { classes } = this.props;
         return(
         <List
-            
             component="nav"
             subheader={<ListSubheader component="div">工作组会计leoder组</ListSubheader>}
             className={classes.toolbar}

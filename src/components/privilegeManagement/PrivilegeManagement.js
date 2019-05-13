@@ -4,6 +4,7 @@ import Topbar from '../Topbar';
 import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
 import LeftMenu from './leftDropMenuPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
+import store from '../../store'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -157,7 +158,7 @@ const styles = theme => ({
                     </nav>
                     <main style={{marginLeft:'15.5%',width:'84%' }} className={classes.content}>
                     {/* <div  className={classes.toolbarRight} /> */}
-                        <TablesPrivilegeManagement/>
+                        <TablesPrivilegeManagement history={this.props.history}/>
                     </main>
                 </div>
             </div>

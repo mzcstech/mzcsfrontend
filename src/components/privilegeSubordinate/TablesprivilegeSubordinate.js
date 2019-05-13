@@ -1,12 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { SERVER_URL } from '../../constants.js';
-
-import { withRouter } from 'react-router-dom'
-import EditPrivilegeManagement from './EditPrivilegeManagement'
 import { withStyles } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -22,8 +17,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import Button from '@material-ui/core/Button';
-
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -56,17 +50,14 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: '名称' },
-  { id: 'calories', numeric: true, disablePadding: false, label: '类型' },
-  { id: 'fat', numeric: true, disablePadding: false, label: '子类型' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: '父节点' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'code' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '修改' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '所属' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
+  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ];
 
-class EnhancedTableHead extends React.Component {
+class TablesprivilegeSubordinate extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
@@ -84,12 +75,11 @@ class EnhancedTableHead extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {rows.map(    
+          {rows.map(
             row => (
               <TableCell
-                className="PrivilegTableCell"
                 key={row.id}
-                align="center"
+                align={row.numeric ? 'right' : 'left'}
                 padding={row.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === row.id ? order : false}
               >
@@ -116,7 +106,7 @@ class EnhancedTableHead extends React.Component {
   }
 }
 
-EnhancedTableHead.propTypes = {
+TablesprivilegeSubordinate.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -210,34 +200,29 @@ const styles = theme => ({
   },
 });
 
-class TablesPrivilegeManagement extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            order: 'asc',
-            orderBy: 'calories',
-            selected: [],
-            data: [
-                createData('Cupcake', 305, 3.7, 67, 4.3),
-                createData('Donut', 452, 25.0, 51, 4.9),
-                createData('Eclair', 262, 16.0, 24, 6.0),
-                createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-                createData('Gingerbread', 356, 16.0, 49, 3.9),
-                createData('Honeycomb', 408, 3.2, 87, 6.5),
-                createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-                createData('Jelly Bean', 375, 0.0, 94, 0.0),
-                createData('KitKat', 518, 26.0, 65, 7.0),
-                createData('Lollipop', 392, 0.2, 98, 0.0),
-                createData('Marshmallow', 318, 0, 81, 2.0),
-                createData('Nougat', 360, 19.0, 9, 37.0),
-                createData('Oreo', 437, 18.0, 63, 4.0),
-            ],
-            page: 0,
-            rowsPerPage: 5,
-            };
-     
-    }
- 
+class EnhancedTable extends React.Component {
+  state = {
+    order: 'asc',
+    orderBy: 'calories',
+    selected: [],
+    data: [
+      createData('Cupcake', 305, 3.7, 67, 4.3),
+      createData('Donut', 452, 25.0, 51, 4.9),
+      createData('Eclair', 262, 16.0, 24, 6.0),
+      createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
+      createData('Gingerbread', 356, 16.0, 49, 3.9),
+      createData('Honeycomb', 408, 3.2, 87, 6.5),
+      createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
+      createData('Jelly Bean', 375, 0.0, 94, 0.0),
+      createData('KitKat', 518, 26.0, 65, 7.0),
+      createData('Lollipop', 392, 0.2, 98, 0.0),
+      createData('Marshmallow', 318, 0, 81, 2.0),
+      createData('Nougat', 360, 19.0, 9, 37.0),
+      createData('Oreo', 437, 18.0, 63, 4.0),
+    ],
+    page: 0,
+    rowsPerPage: 5,
+  };
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -288,25 +273,18 @@ class TablesPrivilegeManagement extends React.Component {
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
- 
-  //跳转所属
-  jumpToprivilegeSubordinate=()=>{
-    this.props.history.push({
-        pathname: '/PrivilegeSubordinate',
-      })
-  }   
+
   render() {
-    let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
-    let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
-            <EnhancedTableHead
+            <TablesprivilegeSubordinate
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -321,27 +299,24 @@ class TablesPrivilegeManagement extends React.Component {
                   const isSelected = this.isSelected(n.id);
                   return (
                     <TableRow
-                      className="PrivilegTableCell"
                       hover
                       onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
-                      aria-checked={isSelected}fjumpToprivilegeSubordinate
+                      aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell className="PrivilegTableCell" padding="checkbox">
+                      <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" padding="none">{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.calories}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.fat}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.carbs}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.protein}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"><EditPrivilegeManagement/></TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary">删除</Button></TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary"
-                       onClick={() => { this.jumpToprivilegeSubordinate() }}>所属</Button></TableCell>
+                      <TableCell component="th" scope="row" padding="none">
+                        {n.name}
+                      </TableCell>
+                      <TableCell align="right">{n.calories}</TableCell>
+                      <TableCell align="right">{n.fat}</TableCell>
+                      <TableCell align="right">{n.carbs}</TableCell>
+                      <TableCell align="right">{n.protein}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -373,8 +348,8 @@ class TablesPrivilegeManagement extends React.Component {
   }
 }
 
-TablesPrivilegeManagement.propTypes = {
+EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(TablesPrivilegeManagement);
+export default withStyles(styles)(TablesprivilegeSubordinate);

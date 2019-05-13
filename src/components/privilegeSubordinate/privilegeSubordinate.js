@@ -1,6 +1,8 @@
 import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
+import QueryPrivilegeSubordinate from './QueryPrivilegeSubordinate'
+import TablesprivilegeSubordinate from './TablesprivilegeSubordinate'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -111,12 +113,16 @@ const styles = theme => ({
             <Topbar currentPath={currentPath} />
             <AppBar style={{height:'60px'}} position="static"  color="default" >
                 <Toolbar>
-                    <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
-                    权限管理
-                    </Typography>
+                      <div className="QueryFollowUpProcess">
+                        <div className="QueryFollowUpProcessInto" >
+                            <QueryPrivilegeSubordinate  />
+                        </div>
+                     </div>
                 </Toolbar>
             </AppBar>
+            <TablesprivilegeSubordinate/>
         </Paper>
+      
         )
     }
 }

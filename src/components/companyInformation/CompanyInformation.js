@@ -184,7 +184,7 @@ class EnhancedTable extends React.Component {
       })
       .catch(err => {
         this.setState({ open: true, message: 'Error when deleting' });
-        console.error(err)
+        console.error(err) 
       })
   }
   //确认是否删除
@@ -295,6 +295,7 @@ class EnhancedTable extends React.Component {
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+    console.log(this.props,123)
     let companyInformationgetCount = this.state.companyInformationgetCount
     let display_holdCount          = this.state.display_holdCount
     let display_outgoingCount      = this.state.display_outgoingCount

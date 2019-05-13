@@ -87,7 +87,7 @@ class EditCompanyInformation extends React.Component {
                                     <div className="InputBox">
                                         <div className="InputBox-text">备注:</div>
                                         <TextField className="InputBox-next" placeholder="remark"  onChange={this.handleChange} multiline={true} 
-                                        name="remark" value={this.state.remark} />
+                                        name="remark" value={this.state.remark}  />
                                     </div>
                             </div> 
                             <div className="button">
