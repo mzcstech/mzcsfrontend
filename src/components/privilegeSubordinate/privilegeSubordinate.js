@@ -2,7 +2,7 @@ import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
 import QueryPrivilegeSubordinate from './QueryPrivilegeSubordinate'
-import TablesprivilegeSubordinate from './TablesprivilegeSubordinate'
+import privilegeSubordinateTablesHead from './privilegeSubordinateTablesHead'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -120,7 +120,7 @@ const styles = theme => ({
                      </div>
                 </Toolbar>
             </AppBar>
-            <TablesprivilegeSubordinate/>
+            <privilegeSubordinateTablesHead/>
         </Paper>
       
         )
