@@ -45,6 +45,12 @@ class EnhancedTable extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      QX: {
+        add: "",
+        edit: "",
+        del: "",
+        cha: ""
+      },
       selected: [],
       data: [],
       page: 0,
@@ -53,15 +59,15 @@ class EnhancedTable extends React.Component {
       message: '',
       open: false,
       TEMPLATE_ID: '',
-      companyInformationgetCount:[],
-      display_holdCount:'none',
-      display_loanInCount:'none',
-      display_outgoingCount:'none',
-      display_toBeConfirmedCount:'none',
+      companyInformationgetCount: [],
+      display_holdCount: 'none',
+      display_loanInCount: 'none',
+      display_outgoingCount: 'none',
+      display_toBeConfirmedCount: 'none',
     };
   }
-  componentWillMount(){
-     this.companyInformationGetCount()
+  componentWillMount() {
+    this.companyInformationGetCount()
   }
   componentDidMount = () => {
     this.fetchTemplate();
@@ -72,53 +78,53 @@ class EnhancedTable extends React.Component {
     this.setState({ open: false });
   };
   //显示提示数量
-  companyInformationGetCount(){
+  companyInformationGetCount() {
     fetch(SERVER_URL + '/companyInformation/getCount',
-    {
-      mode: "cors",
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json,text/plain,*/*'
-      },
-    }
-  )
-    .then((response) => response.json())
-    .then(res =>{
-      this.setState({companyInformationgetCount :res.data},()=>{
-      if(this.state.companyInformationgetCount.holdCount != 0){
-        this.setState({display_holdCount:'flex'},()=>{
-        })
-      }else{
-        this.setState({display_holdCount:'none'},()=>{
-        })
-       }
-      if(this.state.companyInformationgetCount.outgoingCount != 0){
-        this.setState({display_outgoingCount:'flex'},()=>{
-        })
-      }else{
-        this.setState({display_outgoingCount:'none'},()=>{
-        })
+      {
+        mode: "cors",
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json,text/plain,*/*'
+        },
       }
-      if(this.state.companyInformationgetCount.loanInCount != 0){
-        this.setState({display_loanInCount:'flex'},()=>{
+    )
+      .then((response) => response.json())
+      .then(res => {
+        this.setState({ companyInformationgetCount: res.data }, () => {
+          if (this.state.companyInformationgetCount.holdCount != 0) {
+            this.setState({ display_holdCount: 'flex' }, () => {
+            })
+          } else {
+            this.setState({ display_holdCount: 'none' }, () => {
+            })
+          }
+          if (this.state.companyInformationgetCount.outgoingCount != 0) {
+            this.setState({ display_outgoingCount: 'flex' }, () => {
+            })
+          } else {
+            this.setState({ display_outgoingCount: 'none' }, () => {
+            })
+          }
+          if (this.state.companyInformationgetCount.loanInCount != 0) {
+            this.setState({ display_loanInCount: 'flex' }, () => {
+            })
+          } else {
+            this.setState({ display_loanInCount: 'none' }, () => {
+            })
+          }
+          if (this.state.companyInformationgetCount.toBeConfirmedCount != 0) {
+            this.setState({ display_toBeConfirmedCount: 'flex' }, () => {
+            })
+
+          } else {
+            this.setState({ display_toBeConfirmedCount: 'none' }, () => {
+            })
+          }
         })
-      }else{
-      this.setState({display_loanInCount:'none'},()=>{
       })
-       }
-      if(this.state.companyInformationgetCount.toBeConfirmedCount != 0){
-        this.setState({display_toBeConfirmedCount:'flex'},()=>{
-        })
-      
-      }else{
-        this.setState({display_toBeConfirmedCount:'none'},()=>{
-        })
-      }
-      })
-    })
-    .catch(err => console.error(err))
-   }
+      .catch(err => console.error(err))
+  }
 
   // 新增
   addTemplate(params) {
@@ -145,7 +151,7 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
-    
+
     console.log(params)
     let companyInformationVo = new FormData()
     if (params) {
@@ -200,37 +206,37 @@ class EnhancedTable extends React.Component {
           label: '否',
         }
       ]
-    }) 
+    })
   }
   //跳转到原件管理List页面
-  jumpToOriginalList = (id,name) => {
+  jumpToOriginalList = (id, name) => {
     //window.location.href='/#/original?companyInformationId='+id;    
-    
+
     this.props.history.push({
       pathname: '/Original',
       query: {
         companyInformationId: id,
-        companyName:name
+        companyName: name
       },
     })
   }
 
   //分页
-  fetchTemplate = (companyName,originalHolder,originalOutStatus) => {
+  fetchTemplate = (companyName, originalHolder, originalOutStatus) => {
     this.setState({
-      data:[]
+      data: []
     })
-    if(companyName == undefined && originalHolder == undefined && originalOutStatus == undefined){
-       companyName      =''
-       originalHolder   =''
-       originalOutStatus=''
+    if (companyName == undefined && originalHolder == undefined && originalOutStatus == undefined) {
+      companyName = ''
+      originalHolder = ''
+      originalOutStatus = ''
     }
     let companyinformationQueryVo = new FormData();
     companyinformationQueryVo.append("pageNum", this.state.page + 1)
     companyinformationQueryVo.append("pageSize", this.state.rowsPerPage)
-    companyinformationQueryVo.append("companyName",companyName)
-    companyinformationQueryVo.append("originalHolder",originalHolder)
-    companyinformationQueryVo.append("originalOutStatus",originalOutStatus)
+    companyinformationQueryVo.append("companyName", companyName)
+    companyinformationQueryVo.append("originalHolder", originalHolder)
+    companyinformationQueryVo.append("originalOutStatus", originalOutStatus)
     fetch(SERVER_URL + '/companyInformation/list', {
       mode: "cors",
       method: 'POST',
@@ -242,11 +248,18 @@ class EnhancedTable extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
+       console.log(responseData.data)
         this.setState({
-          data: responseData.data.list,
-          page: responseData.data.pageNum - 1,
-          rowsPerPage: responseData.data.pageSize,
-          total: responseData.data.total
+          QX: {
+            add: responseData.data.QX.add,
+            edit: responseData.data.QX.edit,
+            del: responseData.data.QX.del,
+            cha: responseData.data.QX.cha
+          },
+          data: responseData.data.varList.list,
+          page: responseData.data.varList.pageNum - 1,
+          rowsPerPage: responseData.data.varList.pageSize,
+          total: responseData.data.varList.total
         });
       })
       .catch(err => console.error(err));
@@ -290,16 +303,16 @@ class EnhancedTable extends React.Component {
     this.fetchTemplate();
   };
   //提示数字信息显示判断
-  showhide(){
-    
+  showhide() {
+
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     console.log(this.props,123)
     let companyInformationgetCount = this.state.companyInformationgetCount
-    let display_holdCount          = this.state.display_holdCount
-    let display_outgoingCount      = this.state.display_outgoingCount
-    let display_loanInCount        = this.state.display_loanInCount
+    let display_holdCount = this.state.display_holdCount
+    let display_outgoingCount = this.state.display_outgoingCount
+    let display_loanInCount = this.state.display_loanInCount
     let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
@@ -310,38 +323,45 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
-        <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
-            <Toolbar>
-              <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
-               公司原件信息列表
+        <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
+          <Toolbar>
+            <Typography style={{ paddingLeft: '28px' }} variant="h7" color="inherit" noWrap>
+              公司原件信息列表
               </Typography>
-              <div className="QueryTemplateInto" >
-                  <QueryCompanyInformationl fetchTemplate={this.fetchTemplate} />
-             </div>
-            </Toolbar>
-        </AppBar> 
+            <div className="QueryTemplateInto" >
+              <QueryCompanyInformationl fetchTemplate={this.fetchTemplate} />
+            </div>
+          </Toolbar>
+        </AppBar>
         <Grid container>
           <div className="QueryTemplate">
-            <Grid item><AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} /></Grid>
-          <div className="QueryTemplateInto" >
-                <div style={{display:display_holdCount}} className="QueryTemplateIntoNumber">
-                    <div>持有原件数量</div>
-                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.holdCount} max={99} color="secondary"></Badge>  
-                </div>
-                <div style={{display:display_outgoingCount}}  className="QueryTemplateIntoNumber">
-                    <div>出库中数量</div>
-                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.outgoingCount} max={99} color="secondary"></Badge>  
-                </div>
-                <div style={{display:display_loanInCount}}  className="QueryTemplateIntoNumber">
-                    <div>待借入数量</div>
-                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.loanInCount} max={99} color="secondary"></Badge>  
-                </div>
-                <div style={{display:display_toBeConfirmedCount}}  className="QueryTemplateIntoNumber">
-                    <div>需确认条数</div>
-                    <Badge className="Badgenumber" badgeContent={companyInformationgetCount.toBeConfirmedCount} max={99} color="secondary"></Badge>  
-                </div>
+            <Grid item>
+              {this.state.QX.add == "1" ? (
+                <AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
+              ) : (
+                  <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
+                )}
+
+            </Grid>
+            <div className="QueryTemplateInto" >
+              <div style={{ display: display_holdCount }} className="QueryTemplateIntoNumber">
+                <div>持有原件数量</div>
+                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.holdCount} max={99} color="secondary"></Badge>
+              </div>
+              <div style={{ display: display_outgoingCount }} className="QueryTemplateIntoNumber">
+                <div>出库中数量</div>
+                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.outgoingCount} max={99} color="secondary"></Badge>
+              </div>
+              <div style={{ display: display_loanInCount }} className="QueryTemplateIntoNumber">
+                <div>待借入数量</div>
+                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.loanInCount} max={99} color="secondary"></Badge>
+              </div>
+              <div style={{ display: display_toBeConfirmedCount }} className="QueryTemplateIntoNumber">
+                <div>需确认条数</div>
+                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.toBeConfirmedCount} max={99} color="secondary"></Badge>
+              </div>
+            </div>
           </div>
-        </div>
         </Grid>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -357,7 +377,7 @@ class EnhancedTable extends React.Component {
               {/* {stableSort(data, getSorting(order, orderBy)) */}
               {stableSort(data)
                 .slice(0, rowsPerPage)
-                .map(n => { 
+                .map(n => {
                   const isSelected = this.isSelected(n.tEMPLATE_ID);
                   // 便利显示列表页面
                   return (
@@ -374,10 +394,29 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId,n.companyName) }}>原件管理</Button></TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} /></TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId, n.companyName) }}>原件管理</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">
+                        {this.state.QX.cha == "1" ? (
+                          <ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} />
+                        ) : (
+                            <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
+                          )}
+                      </TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">
+                        {this.state.QX.edit == "1" ? (
+                          <EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} />
+                        ) : (
+                            <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
+                          )}
+                      </TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none">
+                        {this.state.QX.del == "1" ? (
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button>
+                        ) : (
+                            <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
+                          )}
+
+                      </TableCell>
                     </TableRow>
                   );
                 })}
