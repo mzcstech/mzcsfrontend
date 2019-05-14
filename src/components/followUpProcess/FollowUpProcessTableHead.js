@@ -26,7 +26,7 @@ const rows = [
     id: 'updatePagebutton',
     numeric: false,
     disablePadding: false,
-    label: '操作',
+    label: '流程信息',
 
     Cell: ({ row }) =>
       (<SeeFollowUpProcess fetchFollowUpProcess={this.fetchFollowUpProcess} templeteId={row.tEMPLATE_ID} ></SeeFollowUpProcess>)

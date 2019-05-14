@@ -131,7 +131,7 @@
                 margin-left:10px;
             }
 
-    .QueryTemplate{
+    .PrivilegeTemplate{
         position: relative;
         display:flex;
         align-items:center;
@@ -147,18 +147,19 @@
         table-layout:fixed;
         word-break:break-all;
     }
-    .FollowTableCell{
-
-        width:10.5%;
+    .PrivilegeHeadCell{
+        width:43%;
         padding:0 1px;
-        border-top:2px solid #EDEDED;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-    .FollowTableCell:nth-last-child(1){
+    .PrivilegeHeadCell:nth-last-child(1){
+        width:4%;
+    }
+    .PrivilegeHeadCell:nth-last-child(2){
         width:4%;
     }
         .TableSortLabel{

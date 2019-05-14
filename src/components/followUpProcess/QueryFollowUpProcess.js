@@ -4,6 +4,7 @@ import Input from '@material-ui/core/Input';
 import Badge from '@material-ui/core/Badge';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import Button from '@material-ui/core/Button';
 import './styles/FollowUpProcess.css'
 
 //模糊查询
@@ -12,13 +13,16 @@ class QueryTemplate extends Component {
    
     constructor(props) {
         super(props)
-        this.handleProcessUrl = this.handleProcessUrl.bind(this)
-        this.handleChange = this.handleChange.bind(this);
+        
+        this.handleProcessUrl= this.handleProcessUrl.bind(this)
+        // this.handleChange    = this.handleChange.bind(this);
         this.handValueChange = this.handValueChange.bind(this);
+        this.handsearchBth   = this.handsearchBth.bind(this)
         this.state = {
             valueInput: '',
             responseData: {},
             processUrl:'/commerce/listProcessByUser',
+            companyName:''
         }
     }
 
@@ -31,17 +35,18 @@ class QueryTemplate extends Component {
         
     }
  
-    handleChange = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-    }
+    // handleChange = (event) => {
+    //     this.setState(
+    //         { [event.target.name]: event.target.value }
+    //     );
+    // }
 
     handValueChange(e) {
-        this.setState({valueInput: e.target.value});
-        if(e.target){       
-            this.props.handleValue(e.target.value)
-        }
+        this.setState({companyName: e.target.value});
+        
+    }
+    handsearchBth(){   
+            this.props.handleValue(this.state.companyName)
     }
     render() {
         return (
@@ -83,13 +88,13 @@ class QueryTemplate extends Component {
                         <Badge className="number"  badgeContent={this.props.map.gShangChangeNum} color="secondary">
                     </Badge>
                 </div>
-                <Input style={{position:'absolute',right:'30px'}} className="Input" onChange={this.handValueChange} placeholder="公司名称搜索" />
-                {/* <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '20px' }}>搜索</Button> */}
+                <div style={{position:'absolute',right:'30px',display:'flex'}}>
+                    <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="公司名称搜索" />
+                    <div className="Separate"></div>
+                    <Button onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                </div>
             </div>
         )
-    }
-    componetDidMont() {
-        console.log('componetWillMont')
     }
 }
 export default QueryTemplate;

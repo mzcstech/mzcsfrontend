@@ -109,7 +109,7 @@ class QueryCompanyInformationl extends Component{
                     style={{textAlign:'center',width:'175px'}}
                     native
                     className="downBox-form"
-                    value={this.state.originalOutStatus}
+                    value={this.state.originalOutStatus} 
                     onChange={this.handoriginalOutStatusChange}
                     name='originalOutStatus' 
                     input={<Input name="name" id="name"  />}

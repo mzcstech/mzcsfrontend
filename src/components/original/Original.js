@@ -259,7 +259,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
-    let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
+    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
 
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;

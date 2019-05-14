@@ -4,7 +4,8 @@ import Topbar from '../Topbar';
 import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
 import LeftMenu from './leftDropMenuPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
-import store from '../../store'
+// import store from '../../store'
+import MuiTreeView from 'material-ui-treeview';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -72,21 +73,75 @@ const styles = theme => ({
         flexGrow: 1,
       },
   });
-
+ 
  
   class PrivilegeManagement extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            open: true,
-        };
+          open:'true',
+          data: [],
+          page: 0,
+          rowsPerPage: 10,
+          map:[],
+          total: 0,
+        }
     }
- 
-    handleClick = () => {
-        this.setState(state => ({ open: !state.open }));
-    };
-    
+    componentDidMount(){
+      this.fetchTemplate();
+    }
+      分页
+    fetchTemplate = () => {
+      let followUpVo = new FormData();
+      followUpVo.append("pageNum", this.state.page + 1)
+      followUpVo.append("pageSize", this.state.rowsPerPage)
+      followUpVo.append("companyName", this.state.valueInput)
+      fetch(SERVER_URL + '/usergroup/list', {
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json,text/plain,*/*'
+        },
+        // body: followUpVo
+      })
+        .then((response) => response.json())
+        .then((responseData) => {
+          this.setState({
+            data: responseData.data.list,
+            map:responseData.data.map,
+            page: responseData.data.pageNum - 1,
+            rowsPerPage: responseData.data.pageSize,
+            total: responseData.data.total
+          });
+        })
+        .catch(err => console.error(err));
+    }
+    //将获取的数据传给store
+  
     render(){
+      const tree = [
+        {
+          value: 'Parent A',
+          nodes: [{ value: 'Child A' }, { value: 'Child B' }],
+        },
+        {
+          value: 'Parent B',
+          nodes: [
+            {
+              value: 'Child C',
+            },
+            {
+              value: 'Parent C',
+              nodes: [
+                { value: 'Child D' },
+                { value: 'Child E' },
+                { value: 'Child F' },
+              ],
+            },
+          ],
+        },
+      ];
         const { classes ,theme  } = this.props;
         const currentPath = this.props.location.pathname;
         const  drawer = (
@@ -103,7 +158,7 @@ const styles = theme => ({
               </List>
               <Divider />
               <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                {['All mail', 'Trash', 'Spam'].map((text  , index) => (
                   <ListItem button key={text}>
                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                     <ListItemText primary={text} />
@@ -128,37 +183,22 @@ const styles = theme => ({
             <div>
             <div className={classes.boxbotton} >
                     {/* <LeftMenu  /> */}
-                    <nav className={classes.drawer}>
-                        <Hidden smUp implementation="css">
-                            <Drawer
-                            
-                            variant="temporary"
-                            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                            open={this.state.mobileOpen}
-                            onClose={this.handleDrawerToggle}
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                            >
-                             <LeftMenu/>
-                            </Drawer>
-                        </Hidden>
+                    <nav className={classes.drawer} >
                         <Hidden xsDown implementation="css">
                             <Drawer
-                            // style={{maxHeight:'100px'}}
                             classes={{
                                 paper: classes.drawerPaper,
                             }}
                             variant="permanent"
                             open
                             >
-                            <LeftMenu/>
+                             <MuiTreeView tree={tree} className="leftDropMenuPrivilegeManagement" />
                             </Drawer>
                         </Hidden>
                     </nav>
-                    <main style={{marginLeft:'15.5%',width:'84%' }} className={classes.content}>
+                    <main style={{marginLeft:'15.5%',width:'84%' }}>
                     {/* <div  className={classes.toolbarRight} /> */}
-                        <TablesPrivilegeManagement history={this.props.history}/>
+                        <TablesPrivilegeManagement  history={this.props.history}/>
                     </main>
                 </div>
             </div>

@@ -314,7 +314,7 @@ class EnhancedTable extends React.Component {
     let display_outgoingCount = this.state.display_outgoingCount
     let display_loanInCount = this.state.display_loanInCount
     let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
-    let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
+    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -327,13 +327,13 @@ class EnhancedTable extends React.Component {
           <Toolbar>
             <Typography style={{ paddingLeft: '28px' }} variant="h7" color="inherit" noWrap>
               公司原件信息列表
-              </Typography>
+            </Typography>
             <div className="QueryTemplateInto" >
               <QueryCompanyInformationl fetchTemplate={this.fetchTemplate} />
             </div>
           </Toolbar>
         </AppBar>
-        <Grid container>
+        <Grid container> 
           <div className="QueryTemplate">
             <Grid item>
               {this.state.QX.add == "1" ? (
@@ -341,7 +341,6 @@ class EnhancedTable extends React.Component {
               ) : (
                   <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
                 )}
-
             </Grid>
             <div className="QueryTemplateInto" >
               <div style={{ display: display_holdCount }} className="QueryTemplateIntoNumber">

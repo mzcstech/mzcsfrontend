@@ -12,6 +12,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Topbar from '../Topbar';
 import SeeFollowUpProcess from './SeeFollowUpProcess.js';
 import QueryFollowUpProcess from './QueryFollowUpProcess.js';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
 import EnhancedTableHead from './FollowUpProcessTableHead.js';
 import Grid from '@material-ui/core/Grid';
 import { SERVER_URL } from '../../constants.js'
@@ -28,6 +30,7 @@ const styles = theme => ({
     minWidth: 1020,
   },
   tableWrapper: {
+    marginTop:'54px',
     overflowX: 'auto',
   },
 });
@@ -84,7 +87,7 @@ class EnhancedTable extends React.Component {
   handleClose = (event, reason) => {
     this.setState({ open: false });
   };
-
+ 
 
   //分页
   fetchTemplate = (processUrl) => {
@@ -103,7 +106,6 @@ class EnhancedTable extends React.Component {
       })
         .then((response) => response.json())
         .then((responseData) => {
-          console.log(responseData)
           this.setState({
             data: responseData.data.list,
             map:responseData.data.map,
@@ -149,7 +151,7 @@ class EnhancedTable extends React.Component {
   };
   // 每页的行数更改时触发回调
   handleChangeRowsPerPage = event => {
-    this.state.rowsPerPage = event.target.value;
+    this.state.rowsPerPage = event.target.value; 
     this.fetchTemplate();
   };
 
@@ -164,11 +166,15 @@ class EnhancedTable extends React.Component {
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
         <Grid container>
+        <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
+          <Toolbar>
           <div className="QueryFollowUpProcess">
             <div className="QueryFollowUpProcessInto" >
               <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
             </div>
           </div>
+          </Toolbar>
+         </AppBar>
         </Grid>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">

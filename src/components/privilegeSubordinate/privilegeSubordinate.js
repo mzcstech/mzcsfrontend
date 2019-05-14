@@ -2,7 +2,7 @@ import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
 import QueryPrivilegeSubordinate from './QueryPrivilegeSubordinate'
-import privilegeSubordinateTablesHead from './privilegeSubordinateTablesHead'
+import PrivilegeSubordinateTablesHead from './PrivilegeSubordinateTablesHead'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -16,6 +16,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import './styles/privilegeSubordinate.css'
 
 
 const drawerWidth ='15%';
@@ -77,12 +80,11 @@ const styles = theme => ({
             open: true,
         };
     }
+      //组件御载时触发
  
-    handleClick = () => {
-        this.setState(state => ({ open: !state.open }));
-    };
     
     render(){
+        let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px',marginLeft:'15px' }
         const { classes ,theme  } = this.props;
         const currentPath = this.props.location.pathname;
         const  drawer = (
@@ -120,7 +122,12 @@ const styles = theme => ({
                      </div>
                 </Toolbar>
             </AppBar>
-            <privilegeSubordinateTablesHead/>
+            <div className="PrivilegeTemplate">
+              <Grid item>
+                    <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
+              </Grid>
+            </div>
+            <PrivilegeSubordinateTablesHead/>
         </Paper>
       
         )

@@ -148,10 +148,9 @@
         word-break:break-all;
     }
     .FollowTableCell{
-
-        width:10.5%;
+        width:5.5%;
         padding:0 1px;
-        border-top:2px solid #EDEDED;
+        border-top:3px solid #EDEDED;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;
         white-space: nowrap;
@@ -162,7 +161,7 @@
         width:4%;
     }
         .TableSortLabel{
-            border:1px solid red;
+            /* border:1px solid red; */
             font-size:16px;
         }
     .TableRow{

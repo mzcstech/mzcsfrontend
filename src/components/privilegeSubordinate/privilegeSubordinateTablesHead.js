@@ -5,8 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-// import SeeFollowUpProcess from './SeeFollowUpProcess.js';
-// import './styles/FollowUpProcess.css'
+import './styles/privilegeSubordinate.css'
 
 //第一列的标题
 {/*
@@ -15,26 +14,27 @@ disablePadding：控制padding
 */}
 
 const rows = [
-  { id: 'companyName', numeric: true, disablePadding: false, label: '公司名称' },
-  { id: 'contractDate', numeric: true, disablePadding: false, label: '签单时间' },
-  { id: 'signPerson', numeric: true, disablePadding: false, label: '签单人' },
-  { id: 'customer', numeric: true, disablePadding: false, label: '联系人' },
-  { id: 'businessTypes', numeric: true, disablePadding: false, label: '业务类型' },
-  { id: 'actName', numeric: true, disablePadding: false, label: '当前流程节点' },
-  { id: 'actAssignee', numeric: true, disablePadding: false, label: '当前流程处理人' },
+  { id: 'staffName', numeric: true, disablePadding: false, label: '姓名' },
+  { id: 'username', numeric: true, disablePadding: false, label: 'username' },
   {
     id: 'updatePagebutton',
     numeric: false,
     disablePadding: false,
-    label: '操作',
+    label: '查询',
 
     // Cell: ({ row }) =>
     //   (<SeeFollowUpProcess fetchFollowUpProcess={this.fetchFollowUpProcess} templeteId={row.tEMPLATE_ID} ></SeeFollowUpProcess>)
+  },
+  {
+    id: 'deletePagebutton',
+    numeric: false,
+    disablePadding: false,
+    label: '删除',
   }
 ];
 
 // 列表头的渲染
-class privilegeSubordinateTablesHead extends React.Component {
+class PrivilegeSubordinateTablesHead extends React.Component {
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (
@@ -43,7 +43,7 @@ class privilegeSubordinateTablesHead extends React.Component {
           {rows.map(
             row => (
               <TableCell
-                className="FollowTableCell"
+                className="PrivilegeHeadCell"
                 key={row.id}
                 align="center"
                 padding="none"
@@ -72,10 +72,10 @@ class privilegeSubordinateTablesHead extends React.Component {
   }
 }
 // 数据类型检测
-privilegeSubordinateTablesHead.propTypes = {
+PrivilegeSubordinateTablesHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   // onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
-export default privilegeSubordinateTablesHead
+export default PrivilegeSubordinateTablesHead

@@ -4,6 +4,7 @@ import Input from '@material-ui/core/Input';
 import Badge from '@material-ui/core/Badge';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import Button from '@material-ui/core/Button';
 import './styles/privilegeSubordinate.css'
 
 //模糊查询
@@ -72,8 +73,12 @@ class QueryPrivilegeSubordinate extends Component {
                         <Badge className="number" color="secondary">
                         </Badge>
                 </div>
-                <Input style={{position:'absolute',right:'30px'}} className="Input" onChange={this.handValueChange} placeholder="公司名称搜索" />
-                {/* <Button onClick={this.props.handleSearch} style={{ background: '#61bafb', color: '#ffffff', marginLeft: '20px' }}>搜索</Button> */}
+                <div style={{position:'absolute',right:'30px',display:'flex'}}>
+                    <Input className="Input" onChange={this.handValueChange} placeholder="公司名称搜索" />
+                    <div className="Separate"></div>
+                    <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                </div>
+                
             </div>
         )
     }
