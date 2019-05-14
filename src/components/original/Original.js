@@ -260,7 +260,6 @@ class EnhancedTable extends React.Component {
   render() {
     let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
-
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -282,7 +281,6 @@ class EnhancedTable extends React.Component {
             <Typography style={{ paddingLeft: '40px' }} variant="h7" color="inherit" noWrap>
               原件详情列表 : {this.state.companyName}
             </Typography>
-
           </Toolbar>
         </AppBar>
         <Grid container>

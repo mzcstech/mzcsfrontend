@@ -34,7 +34,7 @@ const rows = [
 ];
 
 // 列表头的渲染
-class EnhancedTableHead extends React.Component {
+class EnhancedTableHead extends React.Component { 
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (

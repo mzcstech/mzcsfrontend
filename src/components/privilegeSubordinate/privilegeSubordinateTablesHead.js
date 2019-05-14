@@ -5,6 +5,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
+import Checkbox from '@material-ui/core/Checkbox';
 import './styles/privilegeSubordinate.css'
 
 //第一列的标题
@@ -40,6 +41,13 @@ class PrivilegeSubordinateTablesHead extends React.Component {
     return (
       <TableHead>
         <TableRow  >
+        <TableCell padding="checkbox">
+            <Checkbox
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+            />
+          </TableCell>
           {rows.map(
             row => (
               <TableCell
@@ -55,7 +63,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                   enterDelay={300}
                 >
                   {/*hover排列箭头*/}
-                  <TableSortLabel
+                  <TableSortLabel 
                     className="TableSortLabel"
                     hideSortIcon={true}
                   >

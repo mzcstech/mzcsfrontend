@@ -43,11 +43,12 @@ class QueryPrivilegeSubordinate extends Component {
             this.props.handleValue(e.target.value)
         }
     }
-    render() {
+    render() { 
+        const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
         return (
             <div className="box">
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
-                <div className="singleElection-text">权限管理:</div>
+                <div className="singleElection-text">权限管理 :</div>
                 <div className="singleElection-next">
             
                     <FormControlLabel control={

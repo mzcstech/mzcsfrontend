@@ -83,7 +83,6 @@ const styles = theme => ({
           data: [],
           page: 0,
           rowsPerPage: 10,
-          map:[],
           total: 0,
         }
     }
@@ -108,11 +107,7 @@ const styles = theme => ({
         .then((response) => response.json())
         .then((responseData) => {
           this.setState({
-            data: responseData.data.list,
-            map:responseData.data.map,
-            page: responseData.data.pageNum - 1,
-            rowsPerPage: responseData.data.pageSize,
-            total: responseData.data.total
+            data: responseData.data,
           });
         })
         .catch(err => console.error(err));
@@ -198,7 +193,7 @@ const styles = theme => ({
                     </nav>
                     <main style={{marginLeft:'15.5%',width:'84%' }}>
                     {/* <div  className={classes.toolbarRight} /> */}
-                        <TablesPrivilegeManagement  history={this.props.history}/>
+                        <TablesPrivilegeManagement data={this.state.data}  history={this.props.history}/>
                     </main>
                 </div>
             </div>

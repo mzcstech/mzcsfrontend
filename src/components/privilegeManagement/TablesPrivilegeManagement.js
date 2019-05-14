@@ -56,12 +56,11 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: '名称' },
-  { id: 'calories', numeric: true, disablePadding: false, label: '类型' },
-  { id: 'fat', numeric: true, disablePadding: false, label: '子类型' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: '父节点' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'code' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '修改' },
+  { id: 'name', numeric: true, disablePadding: false, label: '名称' },
+  { id: 'type', numeric: true, disablePadding: false, label: '类型' },
+  { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
+  { id: 'code', numeric: true, disablePadding: false, label: 'code' },
+  { id: 'EditPrivilegeManagement', numeric: true, disablePadding: false, label: '修改' },
   { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
   { id: 'protein', numeric: true, disablePadding: false, label: '所属' },
 ];
@@ -70,13 +69,11 @@ class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
-
   render() {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
-
     return (
       <TableHead>
-        <TableRow>
+        <TableRow >
           <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -90,18 +87,16 @@ class EnhancedTableHead extends React.Component {
                 className="PrivilegTableCell"
                 key={row.id}
                 align="center"
-                padding={row.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === row.id ? order : false}
+                padding="none"
               >
                 <Tooltip
-                  title="Sort"
+                  title={row.label}
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
                   <TableSortLabel
-                    active={orderBy === row.id}
-                    direction={order}
-                    onClick={this.createSortHandler(row.id)}
+                    className="TableSortLabel"
+                    hideSortIcon={true}
                   >
                     {row.label}
                   </TableSortLabel>
@@ -217,28 +212,20 @@ class TablesPrivilegeManagement extends React.Component {
             order: 'asc',
             orderBy: 'calories',
             selected: [],
-            data: [
-                createData('Cupcake', 305, 3.7, 67, 4.3),
-                createData('Donut', 452, 25.0, 51, 4.9),
-                createData('Eclair', 262, 16.0, 24, 6.0),
-                createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-                createData('Gingerbread', 356, 16.0, 49, 3.9),
-                createData('Honeycomb', 408, 3.2, 87, 6.5),
-                createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-                createData('Jelly Bean', 375, 0.0, 94, 0.0),
-                createData('KitKat', 518, 26.0, 65, 7.0),
-                createData('Lollipop', 392, 0.2, 98, 0.0),
-                createData('Marshmallow', 318, 0, 81, 2.0),
-                createData('Nougat', 360, 19.0, 9, 37.0),
-                createData('Oreo', 437, 18.0, 63, 4.0),
-            ],
-            page: 0,
+            data:[],
+            page:0,
             rowsPerPage: 5,
+            map:[],
             };
      
     }
- 
-
+  componentDidMount(){
+     this.setState({
+     data:this.props.data,
+    //  page: this.props.data.pageNum - 1,
+    //  rowsPerPage: this.props.data.pageSize,
+   })
+  }
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -296,11 +283,12 @@ class TablesPrivilegeManagement extends React.Component {
       })
   }   
   render() {
+    console.log(this.props.data)
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.props.data.length - page * rowsPerPage);
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -312,10 +300,10 @@ class TablesPrivilegeManagement extends React.Component {
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={this.props.data.length}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
+              {stableSort(this.props.data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
                   const isSelected = this.isSelected(n.id);
@@ -333,11 +321,10 @@ class TablesPrivilegeManagement extends React.Component {
                       <TableCell className="PrivilegTableCell" padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" padding="none">{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.calories}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.fat}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.carbs}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.protein}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" key={n.parentId}>{n.name} </TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.parentId}>{n.type}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.parentId}>{n.subtype}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.parentId}>{n.code}</TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none"><EditPrivilegeManagement/></TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none"><Button size="small" style={linkStyle} variant="text" color="primary">删除</Button></TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary"
@@ -356,7 +343,7 @@ class TablesPrivilegeManagement extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={this.props.data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
