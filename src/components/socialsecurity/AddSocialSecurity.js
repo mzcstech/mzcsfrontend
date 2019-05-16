@@ -7,8 +7,10 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
+import PersonInformation from './PersonInformation.js'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
+let addline=1;
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -22,7 +24,7 @@ class AddTemplate extends React.Component {
             address: '',//注册地址
             fees: '',//收费金额
             saler: '',//签单人
-            buyStartMonth: '',//购买起始月
+            buyStartMonth: '2019-05',//购买起始月
             isCreditCard: '',//是否告知客户首次需要刷卡购买
             openAccount: '',//银行是否开户
             backAccount: '',//开户账号
@@ -40,7 +42,15 @@ class AddTemplate extends React.Component {
             level1: '',
             level2: '',
             level3: '',
-            userList: []
+            userList: [],
+            personType:'',
+            personDoms:[],
+            personName:'',
+            idCardNumber:'',
+            gongzi:'',
+            telephone:'',
+            personType:'',
+            remark:''
 
         };
     }
@@ -53,6 +63,28 @@ class AddTemplate extends React.Component {
             { [event.target.name]: event.target.value }
         );
 
+    }
+
+    childValue  = (param) => {       
+        this.setState({
+            personName:param.personName,
+            idCardNumber:param.idCardNumber,
+            gongzi:param.gongzi,
+            telephone:param.telephone,
+            personType:param.personType,
+            remark:param.remark
+        })
+       
+    }
+    //点击添加一行人员信息
+    getPersonInformation  = () => {   
+        alert(addline)
+         addline++;
+    }
+    deletePersonInformation(){       
+        // addline--;
+        // alert(addline)
+        // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
     }
     findAllUser(params) {
         let user = new FormData()
@@ -182,38 +214,34 @@ class AddTemplate extends React.Component {
         this.findAllUser();
         this.refs.addDialog.show();
     }
-    // Save car and close modal form
+    // Save and close modal form
     handleSubmit = (event) => {
-        var templateVo = {}
-        if (this.state.level1 != '' && this.state.level2 != '' && this.state.level3 != '') {
-            templateVo.registeredArea = this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3
-        } else {
-            this.setState({
-                error: true,
-                open: true,
-                message: '请填写注册区域'
-            })
-        }
+        var personalInformation='personName='+this.state.personName+',fh,idCardNumber='+this.state.idCardNumber
+            +',fh,gongzi='+this.state.gongzi+',fh,telephone='+this.state.telephone+',fh,personType='+this.state.personType+',fh,remark='+this.state.remark;
+ 
+        var templateVo = {}  
         if (this.state.companyName != '') {
             templateVo = {
                 companyName: this.state.companyName,
                 isNewCustomer: this.state.isNewCustomer,
-                customer: this.state.customer,
+                customer: this.state.customer,               
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
                 fees: this.state.fees,//收费金额
                 saler: this.state.saler,//签单人
+                registeredArea : this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
                 buyStartMonth: this.state.buyStartMonth,//购买起始月
                 isCreditCard: this.state.isCreditCard,//是否告知客户首次需要刷卡购买
                 openAccount: this.state.openAccount,//银行是否开户
                 backAccount: this.state.backAccount,//开户账号
                 buyType: this.state.buyType,//购买类型（首次购买，非首次购买）
-                personalInformation: this.state.personalInformation,//购买人员信息
+                personalInformation: personalInformation,//购买人员信息
                 isLegalPersonBuy: this.state.isLegalPersonBuy,//法人是否已参保
                 legalPersonCertificate: this.state.legalPersonCertificate,//法人参保证明（已提供，未提供）
                 isClerkStopBuyInsurance: this.state.isClerkStopBuyInsurance,//参保人员是否已停保（是，否）
                 identityCardNumber: this.state.identityCardNumber
             };
+            console.log(templateVo)
             this.props.addTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
@@ -244,7 +272,11 @@ class AddTemplate extends React.Component {
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
-
+        let personDoms=[];        
+        for(var i=0;i<addline;i++){
+            personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
+        }
+       
         return (
 
             <div>
@@ -431,18 +463,18 @@ class AddTemplate extends React.Component {
                                     <div className="InputBox-text">购买类型:</div>
                                     <FormControlLabel control={
                                         <Radio
-                                            checked={this.state.openAccount === '首次购买'}
+                                            checked={this.state.buyType === '首次购买'}
                                             onChange={this.handleChange}
                                             value="首次购买"
-                                            name="openAccount"
+                                            name="buyType"
                                             aria-label="首次购买"
                                         />} label="首次购买" />
                                     <FormControlLabel control={
                                         <Radio
-                                            checked={this.state.openAccount === '非首次购买'}
+                                            checked={this.state.buyType === '非首次购买'}
                                             onChange={this.handleChange}
                                             value="非首次购买"
-                                            name="openAccount"
+                                            name="buyType"
                                             aria-label="非首次购买"
                                         />} label="非首次购买" />
                                 </div>
@@ -454,18 +486,27 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }}  >添加人员</Button>
+                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }}  onClick={this.getPersonInformation}>添加人员</Button>
                                 </div>
                             </div>
                             <div className="tow-row">
-                                <div className="InputBox">
-                                    {/* {this.state.lists.map((data) => {
-                                        console.log(data);
-                                        return <List key={data.id} index={data.id} info={data.value} delete={this.delete} />
-                                    })} */}
-
-
-                                </div>
+                                <input type="hidden" name="personalInformation"></input>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th>姓名</th>
+                                            <th>身份证号</th>
+                                            <th>月工资</th>
+                                            <th>联系电话</th>
+                                            <th>类型</th>
+                                            <th>备注</th>
+                                            <th>删除</th>
+                                        </tr>                                       
+                                            {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                            {this.state.personDoms}                            */}
+                                            {personDoms}
+                                    </tbody>
+                                </table>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
