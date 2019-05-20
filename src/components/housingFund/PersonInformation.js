@@ -14,11 +14,6 @@ class PersonInformation extends React.Component {
             personType:'',
             remark:''
          }
-         this.getValue(props);
-    }
-
-    getValue=(event) =>{        
-        console.log(event.personalInformation);
     }
     handleChange = (event) => {
         this.setState(

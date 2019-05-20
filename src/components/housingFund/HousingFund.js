@@ -9,11 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Topbar from '../Topbar';
-import AddSocialSecurity from './AddSocialSecurity.js';
-import EditSocialSecurity from './EditSocialSecurity.js'
-import ViewSocialSecurity from './ViewSocialSecurity.js';
-import QuerySocialSecurity from './QuerySocialSecurity.js'
-import SocialSecurityEnhancedTableHead from './SocialSecurityEnhancedTableHead.js';
+import AddHousingFund from './AddHousingFund.js';
+import EditHousingFund from './EditHousingFund.js'
+import ViewHousingFund from './ViewHousingFund.js';
+import QueryHousingFund from './QueryHousingFund.js'
+import HousingFundEnhancedTableHead from './HousingFundEnhancedTableHead.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +22,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import { SERVER_URL } from '../../constants.js';
-import './styles/SocialSecurity.css'
+import './styles/HousingFund.css'
 //整体样式
 const styles = theme => ({
   root: {
@@ -79,13 +79,13 @@ class EnhancedTable extends React.Component {
 
   // 新增
   addTemplate(params) {
-    let socialSecurityVo = new FormData()
+    let housingFund = new FormData()
     if (params) {
       for (let key in params) {
-        socialSecurityVo.append(key, params[key])
+        housingFund.append(key, params[key])
       }
     }
-    fetch(SERVER_URL + '/socialSecurity/save',
+    fetch(SERVER_URL + '/housingFund/save',
       {
         mode: "cors",
         method: 'POST',
@@ -93,7 +93,7 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: socialSecurityVo
+        body: housingFund
       }
     )
       .then(res => this.fetchTemplate())
@@ -102,13 +102,13 @@ class EnhancedTable extends React.Component {
   //修改
   editTemplate(params) {
 
-    let socialSecurityVo = new FormData()
+    let companyInformationVo = new FormData()
     if (params) {
       for (let key in params) {
-        socialSecurityVo.append(key, params[key])
+        companyInformationVo.append(key, params[key])
       }
     }
-    fetch(SERVER_URL + '/socialSecurity/edit',
+    fetch(SERVER_URL + '/housingFund/edit',
       {
         mode: "cors",
         method: 'POST',
@@ -116,14 +116,14 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: socialSecurityVo
+        body: companyInformationVo
       })
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/socialSecurity/delete/' + id,
+    fetch(SERVER_URL + '/housingFund/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -157,6 +157,7 @@ class EnhancedTable extends React.Component {
       ]
     })
   }
+  
 
   //分页
   fetchTemplate = (companyName, originalHolder, originalOutStatus) => {
@@ -168,23 +169,23 @@ class EnhancedTable extends React.Component {
       originalHolder = ''
       originalOutStatus = ''
     }
-    let socialSecurity = new FormData();
-    socialSecurity.append("pageNum", this.state.page + 1)
-    socialSecurity.append("pageSize", this.state.rowsPerPage)
-    socialSecurity.append("companyName", companyName)
-    socialSecurity.append("originalHolder", originalHolder)
-    socialSecurity.append("originalOutStatus", originalOutStatus)
-    fetch(SERVER_URL + '/socialSecurity/list', {
+    let housingFund = new FormData();
+    housingFund.append("pageNum", this.state.page + 1)
+    housingFund.append("pageSize", this.state.rowsPerPage)
+    housingFund.append("companyName", companyName)
+    housingFund.append("originalHolder", originalHolder)
+    housingFund.append("originalOutStatus", originalOutStatus)
+    fetch(SERVER_URL + '/housingFund/list', {
       mode: "cors",
       method: 'POST',
       credentials: 'include',
       headers: {
         'Accept': 'application/json,text/plain,*/*'
       },
-      body: socialSecurity
+      body: housingFund
     })
       .then((response) => response.json())
-      .then((responseData) => {       
+      .then((responseData) => { 
         this.setState({
           QX: {
             add: responseData.data.QX.add,
@@ -196,7 +197,7 @@ class EnhancedTable extends React.Component {
           page: responseData.data.varList.pageNum - 1,
           rowsPerPage: responseData.data.varList.pageSize,
           total: responseData.data.varList.total
-        });        
+        }); 
       })
       .catch(err => console.error(err));
   }
@@ -243,14 +244,8 @@ class EnhancedTable extends React.Component {
 
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-  render() {
-    let companyInformationgetCount = this.state.companyInformationgetCount
-    let display_holdCount = this.state.display_holdCount
-    let display_outgoingCount = this.state.display_outgoingCount
-    let display_loanInCount = this.state.display_loanInCount
-    let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
-    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
-    let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
+  render() {    
+    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }    
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
@@ -261,10 +256,10 @@ class EnhancedTable extends React.Component {
         <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
           <Toolbar>
             <Typography style={{ paddingLeft: '28px' }} variant="h7" color="inherit" noWrap>
-              社保工单
+              住房公积金工单
             </Typography>
             <div className="QueryTemplateInto" >
-              <QuerySocialSecurity fetchTemplate={this.fetchTemplate} />
+              <QueryHousingFund fetchTemplate={this.fetchTemplate} />
             </div>
           </Toolbar>
         </AppBar>
@@ -272,7 +267,7 @@ class EnhancedTable extends React.Component {
           <div className="QueryTemplate">
             <Grid item>
               {this.state.QX.add == "1" ? (
-                <AddSocialSecurity addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
+                <AddHousingFund addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
               ) : (
                   <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
                 )}
@@ -282,7 +277,7 @@ class EnhancedTable extends React.Component {
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
-            <SocialSecurityEnhancedTableHead
+            <HousingFundEnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -294,17 +289,17 @@ class EnhancedTable extends React.Component {
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.socialSecurityId);
+                  const isSelected = this.isSelected(n.housingFundId);
                   // 便利显示列表页面
                   return (
                     <TableRow
                       className=""
                       hover
-                      onClicock={event => this.handleClick(event, n.socialSecurityId)}
+                      onClicock={event => this.handleClick(event, n.housingFundId)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.socialSecurityId}
+                      key={n.housingFundId}
                     >
                       <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.registeredArea}>{n.registeredArea}</TableCell>
@@ -313,21 +308,21 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.saler}>{n.saler}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.cha == "1" ? (
-                          <ViewSocialSecurity fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
+                          <ViewHousingFund fetchTemplate={this.fetchTemplate} housingFundId={n.housingFundId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.edit == "1" ? (
-                          <EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
+                          <EditHousingFund editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} housingFundId={n.housingFundId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.housingFundId) }}>删除</Button>
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
                           )}

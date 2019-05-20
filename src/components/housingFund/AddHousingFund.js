@@ -9,8 +9,8 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
 // import { Input } from 'material-ui-icons';
-require('./styles/SocialSecurity.css')
-let addline=1;
+require('./styles/HousingFund.css')
+let addline = 1;
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -24,15 +24,11 @@ class AddTemplate extends React.Component {
             fees: '',//收费金额
             saler: '',//签单人
             buyStartMonth: '2019-05',//购买起始月
-            isCreditCard: '',//是否告知客户首次需要刷卡购买
+            // isCreditCard: '',//是否告知客户首次需要刷卡购买
             openAccount: '',//银行是否开户
             backAccount: '',//开户账号
             buyType: '',//购买类型（首次购买，非首次购买）
             personalInformation: '',//购买人员信息
-            isLegalPersonBuy: '',//法人是否已参保
-            legalPersonCertificate: '',//法人参保证明（已提供，未提供）
-            isClerkStopBuyInsurance: '',//参保人员是否已停保（是，否）
-            identityCardNumber: '',//已收集身份证原件数量
             error: false,
             customerList: [],
             registerAreaList: [],
@@ -42,14 +38,14 @@ class AddTemplate extends React.Component {
             level2: '',
             level3: '',
             userList: [],
-            personType:'',
-            personDoms:[],
-            personName:'',
-            idCardNumber:'',
-            gongzi:'',
-            telephone:'',
-            personType:'',
-            remark:''
+            personType: '',
+            personDoms: [],
+            personName: '',
+            idCardNumber: '',
+            gongzi: '',
+            telephone: '',
+            personType: '',
+            remark: ''
 
         };
     }
@@ -63,73 +59,24 @@ class AddTemplate extends React.Component {
         );
 
     }
-//查询详情，并展示详情页
-findById = (event) => {    
-    //event.preventDefault();
-    var socialSecurityId = this.props.socialSecurityId;
-    fetch(SERVER_URL + '/socialSecurity/findById/' + socialSecurityId,
-        {
-            mode: "cors",
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Accept': '*/*'
-            }
-        })
-        .then(res => res.json())
-        .then((responseData) => {            
-            this.setState({
-                companyName: responseData.data.companyName,
-                registeredArea: responseData.data.registeredArea,
-                customerPhone: responseData.data.customerPhone,
-                address: responseData.data.address,
-                fees: responseData.data.fees,
-                saler: responseData.data.saler,
-                buyStartMonth: responseData.data.buyStartMonth,
-                isCreditCard: responseData.data.isCreditCard,
-                openAccount: responseData.data.openAccount,
-                buyType: responseData.data.buyType,
-                backAccount: responseData.data.backAccount,
-                // personalInformation:JSON.parse(responseData.data.personalInformation),
-                //遍历人员信息
-                // personName:personalInformation[0].personName,
-                // idCardNumber:personalInformation[0].idCardNumber,
-                // gongzi:personalInformation[0].gongzi,
-                // telephone:personalInformation[0].telephone,
-                // personType:personalInformation[0].personType,
-                // remark:personalInformation[0].remark
-                isLegalPersonBuy: responseData.data.isLegalPersonBuy,
-                legalPersonCertificate: responseData.data.legalPersonCertificate,
-                isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
-                identityCardNumber: responseData.data.identityCardNumber,
-                level1:responseData.data.registeredArea.split('-')[0],
-                level2:responseData.data.registeredArea.split('-')[1],
-                level3:responseData.data.registeredArea.split('-')[2]
-            });
 
-        })
-        .catch(err =>
-            this.setState({ open: true, message: 'Error when 查询详情' })
-        )
-    this.refs.viewDialog.show();
-}
-    childValue  = (param) => {       
+    childValue = (param) => {
         this.setState({
-            personName:param.personName,
-            idCardNumber:param.idCardNumber,
-            gongzi:param.gongzi,
-            telephone:param.telephone,
-            personType:param.personType,
-            remark:param.remark
+            personName: param.personName,
+            idCardNumber: param.idCardNumber,
+            gongzi: param.gongzi,
+            telephone: param.telephone,
+            personType: param.personType,
+            remark: param.remark
         })
-       
+
     }
     //点击添加一行人员信息
-    getPersonInformation  = () => {   
+    getPersonInformation = () => {
         alert(addline)
-         addline++;
+        addline++;
     }
-    deletePersonInformation(){       
+    deletePersonInformation() {
         // addline--;
         // alert(addline)
         // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
@@ -256,43 +203,38 @@ findById = (event) => {
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
             )
     }
-    showEdit = (event) => {
+    showAdd = (event) => {
         this.getCustomerList();
         this.getRegisterArea();
         this.findAllUser();
-        this.findById();
-        this.refs.viewDialog.show();
+        this.refs.addDialog.show();
     }
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
-        +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
+        var personalInformation = '[{"personName":"' + this.state.personName + '","idCardNumber":"' + this.state.idCardNumber
+            + '","gongzi":"' + this.state.gongzi + '","telephone":"' + this.state.telephone + '","personType":"' + this.state.personType + '","remark":"' + this.state.remark + '"}]';
 
-        var templateVo = {}  
+        var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
-                companyName: this.state.companyName,               
-                customer: this.state.customer,               
+                companyName: this.state.companyName,
+
+                customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
                 fees: this.state.fees,//收费金额
                 saler: this.state.saler,//签单人
-                registeredArea : this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
-                buyStartMonth: this.state.buyStartMonth,//购买起始月
-                isCreditCard: this.state.isCreditCard,//是否告知客户首次需要刷卡购买
+                registeredArea: this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
+                buyStartMonth: this.state.buyStartMonth,//购买起始月              
                 openAccount: this.state.openAccount,//银行是否开户
                 backAccount: this.state.backAccount,//开户账号
                 buyType: this.state.buyType,//购买类型（首次购买，非首次购买）
-                personalInformation: personalInformation,//购买人员信息
-                isLegalPersonBuy: this.state.isLegalPersonBuy,//法人是否已参保
-                legalPersonCertificate: this.state.legalPersonCertificate,//法人参保证明（已提供，未提供）
-                isClerkStopBuyInsurance: this.state.isClerkStopBuyInsurance,//参保人员是否已停保（是，否）
-                identityCardNumber: this.state.identityCardNumber,
-                socialSecurityId:this.props.socialSecurityId
+                personalInformation: personalInformation,//购买人员信息 
+                identityCardNumber: this.state.identityCardNumber
             };
             console.log(templateVo)
-            this.props.editTemplate(templateVo);
-            this.refs.viewDialog.hide();
+            this.props.addTemplate(templateVo);
+            this.refs.addDialog.hide();
             this.setState({
                 companyName: '',
                 remark: '',
@@ -321,36 +263,37 @@ findById = (event) => {
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
-        let personDoms=[];        
-        for(var i=0;i<addline;i++){
+        let personDoms = [];
+        for (var i = 0; i < addline; i++) {
             personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
         }
-       
+
         return (
 
             <div>
-                <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="viewDialog">
-                    <h3 className="title">社保工单-新增</h3>
+                <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="addDialog">
+                    <h3 className="title">公积金工单-新增</h3>
                     <form>
                         <div className="OutermostBox">
-                            <div className="tow-row">                                
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>                                   
-                                        <NativeSelect
-                                            style={{ width: '70%' }}
-                                            native
-                                            value={this.state.companyName}
-                                            onChange={this.handleChange}
-                                            name='companyName'
-                                        >
-                                            <option value="" />
-                                            {this.state.customerList.map(item => {
-                                                return (<option value={item.companyName}>{item.companyName}</option>)
-                                            })
-                                            }
-                                        </NativeSelect >
+                                    <div className="InputBox-text">公司名称:</div>
+                                    <NativeSelect
+                                        style={{ width: '70%' }}
+                                        native
+                                        value={this.state.companyName}
+                                        onChange={this.handleChange}
+                                        name='companyName'
+                                    >
+                                        <option value="" />
+                                        {this.state.customerList.map(item => {
+                                            return (<option value={item.companyName}>{item.companyName}</option>)
+                                        })
+                                        }
+                                    </NativeSelect >
                                 </div>
-                                <div className="InputBox"></div>
+                                <div className="InputBox">
+                                </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
@@ -443,25 +386,6 @@ findById = (event) => {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">告知客户首次需要刷卡:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isCreditCard"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isCreditCard"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
-                                <div className="InputBox">
                                     <div className="InputBox-text">银行是否开户:</div>
                                     <FormControlLabel control={
                                         <Radio
@@ -479,6 +403,11 @@ findById = (event) => {
                                             name="openAccount"
                                             aria-label="否"
                                         />} label="否" />
+                                </div>
+                                <div className="InputBox">
+                                    <div className="InputBox-text">开户账号:</div>
+                                    <TextField className="InputBox-next" placeholder="请输入开户账号"
+                                        error={this.state.error} value={this.state.backAccount} ref="backAccount" name="backAccount" onChange={this.handleChange} />
                                 </div>
                             </div>
                             <div className="tow-row">
@@ -501,15 +430,11 @@ findById = (event) => {
                                             aria-label="非首次购买"
                                         />} label="非首次购买" />
                                 </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">开户账号:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入开户账号"
-                                        error={this.state.error} value={this.state.backAccount} ref="backAccount" name="backAccount" onChange={this.handleChange} />
-                                </div>
+
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }}  onClick={this.getPersonInformation}>添加人员</Button>
+                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.getPersonInformation}>添加人员</Button>
                                 </div>
                             </div>
                             <div className="tow-row">
@@ -524,80 +449,21 @@ findById = (event) => {
                                             <th>类型</th>
                                             <th>备注</th>
                                             <th>删除</th>
-                                        </tr>                                       
-                                            {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                        </tr>
+                                        {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
                                             {this.state.personDoms}                            */}
-                                            {personDoms}
+                                        {personDoms}
                                     </tbody>
                                 </table>
                             </div>
+
                             <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">法人已参保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isLegalPersonBuy"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isLegalPersonBuy"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">参保证明:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.legalPersonCertificate === '已提供'}
-                                            onChange={this.handleChange}
-                                            value="已提供"
-                                            name="legalPersonCertificate"
-                                            aria-label="已提供"
-                                        />} label="已提供" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.legalPersonCertificate === '未提供'}
-                                            onChange={this.handleChange}
-                                            value="未提供"
-                                            name="legalPersonCertificate"
-                                            aria-label="未提供"
-                                        />} label="未提供" />
-                                </div>
-                            </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">参保人员已停保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
                                 <div className="InputBox">
                                     <div className="InputBox-text">已收身份证原件数量:</div>
                                     <TextField className="InputBox-next" placeholder="请输入已收身份证原件数量"
                                         error={this.state.error} value={this.state.identityCardNumber} ref="identityCardNumber" name="identityCardNumber" onChange={this.handleChange} />
-
                                 </div>
-
+                                <div className="InputBox"></div>
                             </div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
@@ -607,7 +473,7 @@ findById = (event) => {
                     </form>
                 </SkyLight>
                 <div>
-                <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#286090' }} onClick={this.showEdit}>修改</Button>
+                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.showAdd}>新增</Button>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

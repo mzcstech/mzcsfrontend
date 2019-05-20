@@ -1,21 +1,18 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
+import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
-import { SERVER_URL } from '../../constants.js';
-import PersonInformation from './PersonInformation.js'
-// import { Input } from 'material-ui-icons';
-require('./styles/SocialSecurity.css')
+import PersonInformation from './PersonInformation.js';
 let addline = 1;
-class AddTemplate extends React.Component {
-
+class ViewCompanyInformation extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = {            
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -28,10 +25,7 @@ class AddTemplate extends React.Component {
             openAccount: '',//银行是否开户
             backAccount: '',//开户账号
             buyType: '',//购买类型（首次购买，非首次购买）
-            personalInformation: [],//购买人员信息
-            isLegalPersonBuy: '',//法人是否已参保
-            legalPersonCertificate: '',//法人参保证明（已提供，未提供）
-            isClerkStopBuyInsurance: '',//参保人员是否已停保（是，否）
+            personalInformation: [],//购买人员信息           
             identityCardNumber: '',//已收集身份证原件数量
             error: false,
             customerList: [],
@@ -50,36 +44,14 @@ class AddTemplate extends React.Component {
             telephone: '',
             personType: '',
             remark: ''
-
         };
-    }
-    //提示框
-    handleClose = (event, reason) => {
-        this.setState({ open: false });
-    };
-    handleChange = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-
-    }
-
-    childValue = (param) => {
-        this.setState({
-            personName: param.personName,
-            idCardNumber: param.idCardNumber,
-            gongzi: param.gongzi,
-            telephone: param.telephone,
-            personType: param.personType,
-            remark: param.remark
-        })
     }
     //查询详情，并展示详情页
     findById = (event) => {
         this.findAllUser()
         event.preventDefault();
-        var socialSecurityId = this.props.socialSecurityId;
-        fetch(SERVER_URL + '/socialSecurity/findById/' + socialSecurityId,
+        var housingFundId = this.props.housingFundId;
+        fetch(SERVER_URL + '/housingFund/findById/' + housingFundId,
             {
                 mode: "cors",
                 method: 'GET',
@@ -91,43 +63,36 @@ class AddTemplate extends React.Component {
             .then(res => res.json())
             .then((responseData) => {
                 console.log(responseData)
-
-                this.setState({
+                
+                this.setState({                    
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,
-                    customerPhone: responseData.data.customerPhone,
-                    address: responseData.data.address,
-                    fees: responseData.data.fees,
-                    saler: responseData.data.saler,
-                    buyStartMonth: responseData.data.buyStartMonth,
-                    isCreditCard: responseData.data.isCreditCard,
-                    openAccount: responseData.data.openAccount,
-                    buyType: responseData.data.buyType,
-                    backAccount: responseData.data.backAccount,
-                    // personalInformation:JSON.parse(responseData.data.personalInformation),
+                    customerPhone:responseData.data.customerPhone,
+                    address:responseData.data.address,
+                    fees:responseData.data.fees,
+                    saler:responseData.data.saler,
+                    buyStartMonth:responseData.data.buyStartMonth,
+                    isCreditCard:responseData.data.isCreditCard,
+                    openAccount:responseData.data.openAccount,
+                    buyType:responseData.data.buyType,
+                    backAccount:responseData.data.backAccount,
+                   // personalInformation:JSON.parse(responseData.data.personalInformation),
                     //遍历人员信息
                     // personName:personalInformation[0].personName,
                     // idCardNumber:personalInformation[0].idCardNumber,
                     // gongzi:personalInformation[0].gongzi,
                     // telephone:personalInformation[0].telephone,
                     // personType:personalInformation[0].personType,
-                    // remark:personalInformation[0].remark
-                    isLegalPersonBuy: responseData.data.isLegalPersonBuy,
-                    legalPersonCertificate: responseData.data.legalPersonCertificate,
-                    isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
-                    identityCardNumber: responseData.data.identityCardNumber
+                    // remark:personalInformation[0].remark                    
+                    identityCardNumber:responseData.data.identityCardNumber
                 });
-
+                
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
         this.refs.viewDialog.show();
     }
-    //'personName='+this.state.personName+',fh,idCardNumber='+this.state.idCardNumber
-    //+',fh,gongzi='+this.state.gongzi+',fh,telephone='+this.state.telephone+',fh,personType='
-    // +this.state.personType+',fh,remark='+this.state.remark;
-
     findAllUser(params) {
         let user = new FormData()
         if (params) {
@@ -155,72 +120,32 @@ class AddTemplate extends React.Component {
                 this.setState({ open: true, message: 'Error when 获取User列表' })
             )
     }
-    handleChangeRegisterArea = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-        let registerAreaList = this.state.registerAreaList;
-        registerAreaList.forEach(reg => {
-            if (reg.name == event.target.value) {
-                this.setState({
-                    registerAreaList1: reg.childTreeList
-                })
-            }
-        });
-    }
-    handleChangeRegisterArea1 = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-        let registerAreaList1 = this.state.registerAreaList1;
-        registerAreaList1.forEach(reg => {
-            if (reg.name == event.target.value) {
-                this.setState({
-                    registerAreaList2: reg.childTreeList
-                })
-            }
-        });
-    }
-
-
-
-    showAdd = (event) => {
-
-        this.refs.addDialog.show();
-    }
-    // Save and close modal form
-
     // Cancel and close modal form
     cancelSubmit = (event) => {
-        this.setState({
-            error: false,
-        })
         event.preventDefault();
-        this.refs.addDialog.hide();
+        this.refs.editDialog.hide();
     }
     render() {
-        let registerAreaList = this.state.registerAreaList;
-        let registerAreaList1 = this.state.registerAreaList1;
-        let registerAreaList2 = this.state.registerAreaList2;
-        let personalInformation = this.state.personalInformation;
+        let personalInformation=this.state.personalInformation;
         let userList = this.state.userList;
         let personDoms = [];
         for (var i = 0; i < addline; i++) {
             personDoms.push(<PersonInformation childValue={this.childValue} personalInformation={personalInformation}></PersonInformation>)
-        }
+        }  
         return (
             <div>
-                <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="viewDialog">
-                    <h3 className="title">社保工单查看-新增</h3>
+                <SkyLight hideOnOverlayClicked ref="viewDialog">
+                    <h3 className="title">公积金工单-查看</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
+                                
                                 <div className="InputBox">
                                     <div className="InputBox-text">公司名称:</div>
                                     <TextField className="InputBox-next" placeholder="请输入新客户公司名称"
                                         error={this.state.error} value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
                                 </div>
-                                <div className="InputBox">
+                                <div className="InputBox">                                    
                                 </div>
                             </div>
                             <div className="tow-row">
@@ -270,26 +195,7 @@ class AddTemplate extends React.Component {
 
                                 </div>
                             </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">告知客户首次需要刷卡:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isCreditCard"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isCreditCard"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
+                            <div className="tow-row">                                
                                 <div className="InputBox">
                                     <div className="InputBox-text">银行是否开户:</div>
                                     <FormControlLabel control={
@@ -309,6 +215,7 @@ class AddTemplate extends React.Component {
                                             aria-label="否"
                                         />} label="否" />
                                 </div>
+                                <div className="InputBox"></div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
@@ -359,67 +266,8 @@ class AddTemplate extends React.Component {
                                         {personDoms}
                                     </tbody>
                                 </table>
-                            </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">法人已参保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isLegalPersonBuy"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isLegalPersonBuy"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">参保证明:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.legalPersonCertificate === '已提供'}
-                                            onChange={this.handleChange}
-                                            value="已提供"
-                                            name="legalPersonCertificate"
-                                            aria-label="已提供"
-                                        />} label="已提供" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.legalPersonCertificate === '未提供'}
-                                            onChange={this.handleChange}
-                                            value="未提供"
-                                            name="legalPersonCertificate"
-                                            aria-label="未提供"
-                                        />} label="未提供" />
-                                </div>
-                            </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">参保人员已停保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
+                            </div>                            
+                            <div className="tow-row">                                
                                 <div className="InputBox">
                                     <div className="InputBox-text">已收身份证原件数量:</div>
                                     <TextField className="InputBox-next" placeholder="请输入已收身份证原件数量"
@@ -432,9 +280,7 @@ class AddTemplate extends React.Component {
                         </div>
                     </form>
                 </SkyLight>
-                <div>
-                    <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findById}>查看</Button>
-                </div>
+                <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findById}>查看</Button>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
                     open={this.state.open}
@@ -443,7 +289,10 @@ class AddTemplate extends React.Component {
                     message={this.state.message}
                 />
             </div>
+
         );
     }
+
 }
-export default AddTemplate;
+
+export default ViewCompanyInformation;

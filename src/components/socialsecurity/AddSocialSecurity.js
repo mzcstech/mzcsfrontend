@@ -15,8 +15,7 @@ class AddTemplate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            isNewCustomer: '',//是否是新客户
+        this.state = {            
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -216,14 +215,13 @@ class AddTemplate extends React.Component {
     }
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation='personName='+this.state.personName+',fh,idCardNumber='+this.state.idCardNumber
-            +',fh,gongzi='+this.state.gongzi+',fh,telephone='+this.state.telephone+',fh,personType='+this.state.personType+',fh,remark='+this.state.remark;
- 
+        var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
+        +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
+
         var templateVo = {}  
         if (this.state.companyName != '') {
             templateVo = {
-                companyName: this.state.companyName,
-                isNewCustomer: this.state.isNewCustomer,
+                companyName: this.state.companyName,               
                 customer: this.state.customer,               
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
@@ -284,30 +282,9 @@ class AddTemplate extends React.Component {
                     <h3 className="title">社保工单-新增</h3>
                     <form>
                         <div className="OutermostBox">
-                            <div className="tow-row">
+                            <div className="tow-row">                                
                                 <div className="InputBox">
-                                    <div className="InputBox-text">是否是新客户:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isNewCustomer === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isNewCustomer"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isNewCustomer === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isNewCustomer"
-                                            aria-label="否"
-                                        />} label="否" />
-
-                                </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>
-                                    {this.state.isNewCustomer == "否" ? (
+                                    <div className="InputBox-text">公司名称:</div>                                   
                                         <NativeSelect
                                             style={{ width: '70%' }}
                                             native
@@ -321,13 +298,8 @@ class AddTemplate extends React.Component {
                                             })
                                             }
                                         </NativeSelect >
-                                    ) : (
-                                            <TextField className="InputBox-next" placeholder="请输入新客户公司名称"
-                                                error={this.state.error} value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
-                                        )}
-
                                 </div>
-
+                                <div className="InputBox"></div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
