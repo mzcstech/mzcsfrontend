@@ -15,7 +15,7 @@ class AddTemplate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {            
+        this.state = {
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -60,8 +60,8 @@ class AddTemplate extends React.Component {
 
     }
     findById = (event) => {
-        this.findAllUser()
-       
+        this.findAllUser();
+
         var housingFundId = this.props.housingFundId;
         fetch(SERVER_URL + '/housingFund/findById/' + housingFundId,
             {
@@ -75,20 +75,20 @@ class AddTemplate extends React.Component {
             .then(res => res.json())
             .then((responseData) => {
                 console.log(responseData)
-                
-                this.setState({                    
+
+                this.setState({
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,
-                    customerPhone:responseData.data.customerPhone,
-                    address:responseData.data.address,
-                    fees:responseData.data.fees,
-                    saler:responseData.data.saler,
-                    buyStartMonth:responseData.data.buyStartMonth,
-                    isCreditCard:responseData.data.isCreditCard,
-                    openAccount:responseData.data.openAccount,
-                    buyType:responseData.data.buyType,
-                    backAccount:responseData.data.backAccount,
-                   // personalInformation:JSON.parse(responseData.data.personalInformation),
+                    customerPhone: responseData.data.customerPhone,
+                    address: responseData.data.address,
+                    fees: responseData.data.fees,
+                    saler: responseData.data.saler,
+                    buyStartMonth: responseData.data.buyStartMonth,
+                    isCreditCard: responseData.data.isCreditCard,
+                    openAccount: responseData.data.openAccount,
+                    buyType: responseData.data.buyType,
+                    backAccount: responseData.data.backAccount,
+                    // personalInformation:JSON.parse(responseData.data.personalInformation),
                     //遍历人员信息
                     // personName:personalInformation[0].personName,
                     // idCardNumber:personalInformation[0].idCardNumber,
@@ -96,15 +96,44 @@ class AddTemplate extends React.Component {
                     // telephone:personalInformation[0].telephone,
                     // personType:personalInformation[0].personType,
                     // remark:personalInformation[0].remark                    
-                    identityCardNumber:responseData.data.identityCardNumber
+                    identityCardNumber: responseData.data.identityCardNumber,
+                    level1: responseData.data.registeredArea.split('-')[0],
+                    level2: responseData.data.registeredArea.split('-')[1],
+                    level3: responseData.data.registeredArea.split('-')[2]
                 });
-                
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
-            )
+            )        
+        this.getRegisterAreaList();
         this.refs.addDialog.show();
     }
+    //回显地址下拉
+    getRegisterAreaList = () => {
+        let level1 = this.state.level1;
+        let level2 = this.state.level2;
+        if (level1 != '') {            
+            let registerAreaList = this.state.registerAreaList;
+            registerAreaList.forEach(reg => {
+                if (reg.name == level1) {
+                    this.setState({
+                        registerAreaList1: reg.childTreeList
+                    })
+                }
+            });
+        }
+        if (level2 != '') {            
+            let registerAreaList1 = this.state.registerAreaList1;
+            registerAreaList1.forEach(reg => {
+                if (reg.name == level2) {
+                    this.setState({
+                        registerAreaList2: reg.childTreeList
+                    })
+                }
+            });
+        }        
+    }
+
     childValue = (param) => {
         this.setState({
             personName: param.personName,
@@ -178,31 +207,7 @@ class AddTemplate extends React.Component {
                 })
             }
         });
-    }
-    //多选框事件
-    handleChangeCheckbox = name => event => {
-        this.setState({ [name]: event.target.checked });
-        let checkedbox = this.state.TEMPLATE_CHECKBOX
-        if (checkedbox !== null && checkedbox !== "") {
-            //判断TEMPLATE_CHECKBOX是否包含当前点击选项，如果包含，则移除，如果不包含，则添加
-            if (checkedbox.indexOf(event.target.value) >= 0) {
-                checkedbox = checkedbox.replace(event.target.value + ",fh,", "");
-                this.setState(
-                    { TEMPLATE_CHECKBOX: checkedbox }
-                )
-            } else {
-                checkedbox = checkedbox + event.target.value + ",fh,";
-                this.setState(
-                    { TEMPLATE_CHECKBOX: checkedbox }
-                )
-            }
-        } else {
-            checkedbox = event.target.value + ",fh,"
-            this.setState(
-                { TEMPLATE_CHECKBOX: checkedbox }
-            )
-        }
-    };
+    }    
 
     getCustomerList() {
         fetch(SERVER_URL + '/customer/listAll',
@@ -226,6 +231,7 @@ class AddTemplate extends React.Component {
             )
 
     }
+    //获取区域列表Tree
     getRegisterArea() {
         fetch(SERVER_URL + '/dictionaries/findChildlTreeListByBianma?bianma=003',
             {
@@ -242,15 +248,17 @@ class AddTemplate extends React.Component {
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
-
+                this.getRegisterAreaList()
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
             )
     }
-    showAdd = (event) => {
-        this.getCustomerList();
+    componentDidMount(){
         this.getRegisterArea();
+    }
+    showAdd = (event) => {        
+        this.getCustomerList();        
         this.findAllUser();
         this.findById();
         this.refs.addDialog.show();
@@ -277,7 +285,7 @@ class AddTemplate extends React.Component {
                 buyType: this.state.buyType,//购买类型（首次购买，非首次购买）
                 personalInformation: personalInformation,//购买人员信息 
                 identityCardNumber: this.state.identityCardNumber,
-                housingFundId:this.props.housingFundId
+                housingFundId: this.props.housingFundId
             };
             console.log(templateVo)
             this.props.editTemplate(templateVo);
@@ -310,6 +318,9 @@ class AddTemplate extends React.Component {
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
+        let level1 = this.state.level1;
+        let level2 = this.state.level2;
+        let level3 = this.state.level3;
         let personDoms = [];
         for (var i = 0; i < addline; i++) {
             personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
@@ -354,31 +365,31 @@ class AddTemplate extends React.Component {
                                     >
                                         <option value="" />
                                         {registerAreaList.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level1 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
                                         style={{ width: '70%' }}
                                         native
                                         value={this.state.level2}
-                                        onChange={this.handleChangeRegisterArea1}
+                                        onChange={this.handleChangeRegisterArea1}                                        
                                         name='level2'
                                     >
                                         <option value="" />
                                         {registerAreaList1.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level2 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
                                         style={{ width: '70%' }}
                                         native
                                         value={this.state.level3}
-                                        onChange={this.handleChange}
+                                        onChange={this.handleChange}                                        
                                         name='level3'
                                     >
                                         <option value="" />
                                         {registerAreaList2.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level3 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                 </div>

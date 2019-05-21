@@ -250,15 +250,42 @@ findById = (event) => {
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
-
+                this.getRegisterAreaList();
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
             )
     }
-    showEdit = (event) => {
-        this.getCustomerList();
+    //回显地址下拉
+    getRegisterAreaList = () => {
+        let level1 = this.state.level1;
+        let level2 = this.state.level2;
+        if (level1 != '') {            
+            let registerAreaList = this.state.registerAreaList;
+            registerAreaList.forEach(reg => {
+                if (reg.name == level1) {
+                    this.setState({
+                        registerAreaList1: reg.childTreeList
+                    })
+                }
+            });
+        }
+        if (level2 != '') {            
+            let registerAreaList1 = this.state.registerAreaList1;
+            registerAreaList1.forEach(reg => {
+                if (reg.name == level2) {
+                    this.setState({
+                        registerAreaList2: reg.childTreeList
+                    })
+                }
+            });
+        }        
+    }
+    componentDidMount(){
         this.getRegisterArea();
+    }
+    showEdit = (event) => {
+        this.getCustomerList();        
         this.findAllUser();
         this.findById();
         this.refs.viewDialog.show();
@@ -321,6 +348,9 @@ findById = (event) => {
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
+        let level1 = this.state.level1;
+        let level2 = this.state.level2;
+        let level3 = this.state.level3;
         let personDoms=[];        
         for(var i=0;i<addline;i++){
             personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
@@ -364,7 +394,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama}  checked={item.name == level1? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
@@ -376,7 +406,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList1.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama}  checked={item.name == level2 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
@@ -388,7 +418,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList2.map(item => {
-                                            return (<option value={item.binama}>{item.name}</option>)
+                                            return (<option value={item.binama}  checked={item.name == level3 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                 </div>
