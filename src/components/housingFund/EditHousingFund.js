@@ -8,6 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
+import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/HousingFund.css')
 let addline = 1;
@@ -40,13 +41,7 @@ class AddTemplate extends React.Component {
             userList: [],
             personType: '',
             personDoms: [],
-            personName: '',
-            idCardNumber: '',
-            gongzi: '',
-            telephone: '',
-            personType: '',
-            remark: ''
-
+            personInformations: []
         };
     }
     //提示框
@@ -74,8 +69,6 @@ class AddTemplate extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-                console.log(responseData)
-
                 this.setState({
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,
@@ -100,11 +93,21 @@ class AddTemplate extends React.Component {
                     level1: responseData.data.registeredArea.split('-')[0],
                     level2: responseData.data.registeredArea.split('-')[1],
                     level3: responseData.data.registeredArea.split('-')[2]
+                }, () => {
+                    var personinformations = JSON.parse(responseData.data.personalInformation);
+                    const action = {
+                        type: "EDIT_PERSONINFORMATIONS",
+                        personinformations
+                    }
+                    store.dispatch(action);
+                    this.setState({
+                        personInformations: personinformations
+                    })
                 });
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
-            )        
+            )
         this.getRegisterAreaList();
         this.refs.addDialog.show();
     }
@@ -112,7 +115,7 @@ class AddTemplate extends React.Component {
     getRegisterAreaList = () => {
         let level1 = this.state.level1;
         let level2 = this.state.level2;
-        if (level1 != '') {            
+        if (level1 != '') {
             let registerAreaList = this.state.registerAreaList;
             registerAreaList.forEach(reg => {
                 if (reg.name == level1) {
@@ -122,7 +125,7 @@ class AddTemplate extends React.Component {
                 }
             });
         }
-        if (level2 != '') {            
+        if (level2 != '') {
             let registerAreaList1 = this.state.registerAreaList1;
             registerAreaList1.forEach(reg => {
                 if (reg.name == level2) {
@@ -131,7 +134,7 @@ class AddTemplate extends React.Component {
                     })
                 }
             });
-        }        
+        }
     }
 
     childValue = (param) => {
@@ -147,13 +150,24 @@ class AddTemplate extends React.Component {
     }
     //点击添加一行人员信息
     getPersonInformation = () => {
-        alert(addline)
-        addline++;
+        let arr = this.state.personDoms;
+        arr.push(++addline);
+        this.setState({
+            personDoms: arr
+        })
     }
-    deletePersonInformation() {
-        // addline--;
-        // alert(addline)
-        // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
+    //点击删除一行人员信息
+    deletePersonInformation = (index, personDoms) => {
+        let arr = [];
+        personDoms.forEach((obj) => {
+            if (obj == index) {
+            } else {
+                arr.push(obj)
+            }
+        })
+        this.setState({
+            personDoms: arr
+        })
     }
     findAllUser(params) {
         let user = new FormData()
@@ -162,7 +176,7 @@ class AddTemplate extends React.Component {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
@@ -207,7 +221,7 @@ class AddTemplate extends React.Component {
                 })
             }
         });
-    }    
+    }
 
     getCustomerList() {
         fetch(SERVER_URL + '/customer/listAll',
@@ -224,15 +238,21 @@ class AddTemplate extends React.Component {
                 this.setState({
                     customerList: res.data
                 });
-
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取客户列表' })
             )
-
     }
     //获取区域列表Tree
     getRegisterArea() {
+        this.setState({
+            registerAreaList: [],
+            registerAreaList1: [],
+            registerAreaList2: [],
+            level1: '',
+            level2: '',
+            level3: ''
+        })
         fetch(SERVER_URL + '/dictionaries/findChildlTreeListByBianma?bianma=003',
             {
                 mode: "cors",
@@ -244,7 +264,6 @@ class AddTemplate extends React.Component {
             })
             .then(res => res.json())
             .then((res) => {
-                console.log(res.data)
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
@@ -254,25 +273,45 @@ class AddTemplate extends React.Component {
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
             )
     }
-    componentDidMount(){
+    componentDidMount() {
         this.getRegisterArea();
     }
-    showAdd = (event) => {        
-        this.getCustomerList();        
+    showAdd = (event) => {
+        this.getRegisterArea();
+        this.getRegisterAreaList();
+        this.getCustomerList();
         this.findAllUser();
         this.findById();
         this.refs.addDialog.show();
     }
+    //从redux获取数据PersonInformations,并转成json
+    getPersonInformations = () => {
+        //store.从redux获取数据personinformations
+        var personinformations = store.getState().personinformations;
+        var str = '';
+        var persons = [];
+        personinformations.forEach((obj) => {
+            var personObj = {
+                personName: obj.personName,
+                idCardNumber: obj.idCardNumber,
+                gongzi: obj.gongzi,
+                telephone: obj.telephone,
+                personType: obj.personType,
+                remark: obj.remark,
+                id: obj.id
+            }
+            JSON.stringify(personObj)
+            persons.push(personObj);
+        })
+        return JSON.stringify(persons);
+    }
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation = '[{"personName":"' + this.state.personName + '","idCardNumber":"' + this.state.idCardNumber
-            + '","gongzi":"' + this.state.gongzi + '","telephone":"' + this.state.telephone + '","personType":"' + this.state.personType + '","remark":"' + this.state.remark + '"}]';
-
+        var personalInformation = this.getPersonInformations();
         var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
                 companyName: this.state.companyName,
-
                 customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
@@ -287,7 +326,6 @@ class AddTemplate extends React.Component {
                 identityCardNumber: this.state.identityCardNumber,
                 housingFundId: this.props.housingFundId
             };
-            console.log(templateVo)
             this.props.editTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
@@ -295,7 +333,7 @@ class AddTemplate extends React.Component {
                 remark: '',
                 error: false,
                 open: true,
-                message: '新增成功'
+                message: '修改成功'
             })
         } else {
             this.setState({
@@ -322,15 +360,16 @@ class AddTemplate extends React.Component {
         let level2 = this.state.level2;
         let level3 = this.state.level3;
         let personDoms = [];
-        for (var i = 0; i < addline; i++) {
-            personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
+        let personInformations = this.state.personInformations;
+        for (var i = 0; i < personInformations.length; i++) {
+            personDoms.push(<PersonInformation personInformation={personInformations[i]} index={personInformations[i].id}></PersonInformation>)
         }
 
         return (
 
             <div>
                 <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="addDialog">
-                    <h3 className="title">公积金工单-新增</h3>
+                    <h3 className="title">公积金工单-修改</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
@@ -372,7 +411,7 @@ class AddTemplate extends React.Component {
                                         style={{ width: '70%' }}
                                         native
                                         value={this.state.level2}
-                                        onChange={this.handleChangeRegisterArea1}                                        
+                                        onChange={this.handleChangeRegisterArea1}
                                         name='level2'
                                     >
                                         <option value="" />
@@ -384,7 +423,7 @@ class AddTemplate extends React.Component {
                                         style={{ width: '70%' }}
                                         native
                                         value={this.state.level3}
-                                        onChange={this.handleChange}                                        
+                                        onChange={this.handleChange}
                                         name='level3'
                                     >
                                         <option value="" />

@@ -8,14 +8,15 @@ import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
+import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
-let addline=1;
+let addline = 1;
 class AddTemplate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {            
+        this.state = {
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -42,15 +43,9 @@ class AddTemplate extends React.Component {
             level2: '',
             level3: '',
             userList: [],
-            personType:'',
-            personDoms:[],
-            personName:'',
-            idCardNumber:'',
-            gongzi:'',
-            telephone:'',
-            personType:'',
-            remark:''
-
+            personType: '',
+            personDoms: [],
+            personInformations: []
         };
     }
     //提示框
@@ -63,76 +58,98 @@ class AddTemplate extends React.Component {
         );
 
     }
-//查询详情，并展示详情页
-findById = (event) => {    
-    //event.preventDefault();
-    var socialSecurityId = this.props.socialSecurityId;
-    fetch(SERVER_URL + '/socialSecurity/findById/' + socialSecurityId,
-        {
-            mode: "cors",
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Accept': '*/*'
-            }
-        })
-        .then(res => res.json())
-        .then((responseData) => {            
-            this.setState({
-                companyName: responseData.data.companyName,
-                registeredArea: responseData.data.registeredArea,
-                customerPhone: responseData.data.customerPhone,
-                address: responseData.data.address,
-                fees: responseData.data.fees,
-                saler: responseData.data.saler,
-                buyStartMonth: responseData.data.buyStartMonth,
-                isCreditCard: responseData.data.isCreditCard,
-                openAccount: responseData.data.openAccount,
-                buyType: responseData.data.buyType,
-                backAccount: responseData.data.backAccount,
-                // personalInformation:JSON.parse(responseData.data.personalInformation),
-                //遍历人员信息
-                // personName:personalInformation[0].personName,
-                // idCardNumber:personalInformation[0].idCardNumber,
-                // gongzi:personalInformation[0].gongzi,
-                // telephone:personalInformation[0].telephone,
-                // personType:personalInformation[0].personType,
-                // remark:personalInformation[0].remark
-                isLegalPersonBuy: responseData.data.isLegalPersonBuy,
-                legalPersonCertificate: responseData.data.legalPersonCertificate,
-                isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
-                identityCardNumber: responseData.data.identityCardNumber,
-                level1:responseData.data.registeredArea.split('-')[0],
-                level2:responseData.data.registeredArea.split('-')[1],
-                level3:responseData.data.registeredArea.split('-')[2]
-            });
+    //查询详情，并展示详情页
+    findById = (event) => {
+        //event.preventDefault();
+        var socialSecurityId = this.props.socialSecurityId;
+        fetch(SERVER_URL + '/socialSecurity/findById/' + socialSecurityId,
+            {
+                mode: "cors",
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'Accept': '*/*'
+                }
+            })
+            .then(res => res.json())
+            .then((responseData) => {
+                this.setState({
+                    companyName: responseData.data.companyName,
+                    registeredArea: responseData.data.registeredArea,
+                    customerPhone: responseData.data.customerPhone,
+                    address: responseData.data.address,
+                    fees: responseData.data.fees,
+                    saler: responseData.data.saler,
+                    buyStartMonth: responseData.data.buyStartMonth,
+                    isCreditCard: responseData.data.isCreditCard,
+                    openAccount: responseData.data.openAccount,
+                    buyType: responseData.data.buyType,
+                    backAccount: responseData.data.backAccount,
+                    // personalInformation:JSON.parse(responseData.data.personalInformation),
+                    //遍历人员信息
+                    // personName:personalInformation[0].personName,
+                    // idCardNumber:personalInformation[0].idCardNumber,
+                    // gongzi:personalInformation[0].gongzi,
+                    // telephone:personalInformation[0].telephone,
+                    // personType:personalInformation[0].personType,
+                    // remark:personalInformation[0].remark
+                    isLegalPersonBuy: responseData.data.isLegalPersonBuy,
+                    legalPersonCertificate: responseData.data.legalPersonCertificate,
+                    isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
+                    identityCardNumber: responseData.data.identityCardNumber,
+                    level1: responseData.data.registeredArea.split('-')[0],
+                    level2: responseData.data.registeredArea.split('-')[1],
+                    level3: responseData.data.registeredArea.split('-')[2]
+                }, () => {
+                    var personinformations = JSON.parse(responseData.data.personalInformation);
+                    const action = {
+                        type: "EDIT_PERSONINFORMATIONS",
+                        personinformations
+                    }
+                    store.dispatch(action);
+                    this.setState({
+                        personInformations: personinformations
+                    })                    
+                });
 
-        })
-        .catch(err =>
-            this.setState({ open: true, message: 'Error when 查询详情' })
-        )
-    this.refs.viewDialog.show();
-}
-    childValue  = (param) => {       
+            })
+            .catch(err =>
+                this.setState({ open: true, message: 'Error when 查询详情' })
+            )
+        this.getRegisterAreaList();
+        this.refs.viewDialog.show();
+    }
+    childValue = (param) => {
         this.setState({
-            personName:param.personName,
-            idCardNumber:param.idCardNumber,
-            gongzi:param.gongzi,
-            telephone:param.telephone,
-            personType:param.personType,
-            remark:param.remark
+            personName: param.personName,
+            idCardNumber: param.idCardNumber,
+            gongzi: param.gongzi,
+            telephone: param.telephone,
+            personType: param.personType,
+            remark: param.remark
         })
-       
+
     }
     //点击添加一行人员信息
-    getPersonInformation  = () => {   
-        alert(addline)
-         addline++;
+    getPersonInformation = () => {
+        let arr = this.state.personDoms;
+        arr.push(++addline);
+        this.setState({
+            personDoms: arr
+        })
     }
-    deletePersonInformation(){       
-        // addline--;
-        // alert(addline)
-        // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
+    //点击删除一行人员信息
+    deletePersonInformation = (index, personDoms) => {
+        let arr = [];
+        personDoms.forEach((obj) => {
+            if (obj == index) {
+            } else {
+                arr.push(obj)
+            }
+        })
+        this.setState({
+            personDoms: arr
+        })
     }
     findAllUser(params) {
         let user = new FormData()
@@ -141,7 +158,7 @@ findById = (event) => {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
@@ -235,6 +252,15 @@ findById = (event) => {
 
     }
     getRegisterArea() {
+        this.setState({
+            registerAreaList: [],
+            registerAreaList1: [],
+            registerAreaList2: [],
+            level1: '',
+            level2: '',
+            level3: ''
+        })
+
         fetch(SERVER_URL + '/dictionaries/findChildlTreeListByBianma?bianma=003',
             {
                 mode: "cors",
@@ -246,7 +272,6 @@ findById = (event) => {
             })
             .then(res => res.json())
             .then((res) => {
-                console.log(res.data)
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
@@ -260,7 +285,7 @@ findById = (event) => {
     getRegisterAreaList = () => {
         let level1 = this.state.level1;
         let level2 = this.state.level2;
-        if (level1 != '') {            
+        if (level1 != '') {
             let registerAreaList = this.state.registerAreaList;
             registerAreaList.forEach(reg => {
                 if (reg.name == level1) {
@@ -270,7 +295,7 @@ findById = (event) => {
                 }
             });
         }
-        if (level2 != '') {            
+        if (level2 != '') {
             let registerAreaList1 = this.state.registerAreaList1;
             registerAreaList1.forEach(reg => {
                 if (reg.name == level2) {
@@ -279,32 +304,53 @@ findById = (event) => {
                     })
                 }
             });
-        }        
+        }
     }
-    componentDidMount(){
+    componentDidMount() {
         this.getRegisterArea();
     }
     showEdit = (event) => {
-        this.getCustomerList();        
+        this.getRegisterArea();
+        this.getRegisterAreaList();
+        this.getCustomerList();
         this.findAllUser();
         this.findById();
         this.refs.viewDialog.show();
     }
+    //从redux获取数据PersonInformations,并转成json
+    getPersonInformations = () => {
+        //store.从redux获取数据personinformations
+        var personinformations = store.getState().personinformations;
+        var str = '';        
+        var persons = [];
+        personinformations.forEach((obj) => {            
+            var personObj = {
+                personName: obj.personName,
+                idCardNumber: obj.idCardNumber,
+                gongzi: obj.gongzi,
+                telephone: obj.telephone,
+                personType: obj.personType,
+                remark: obj.remark,
+                id: obj.id
+            }
+            JSON.stringify(personObj)
+            persons.push(personObj);
+        })
+        return JSON.stringify(persons);
+    }
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
-        +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
-
-        var templateVo = {}  
+        var personalInformation = this.getPersonInformations();
+        var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
-                companyName: this.state.companyName,               
-                customer: this.state.customer,               
+                companyName: this.state.companyName,
+                customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
                 fees: this.state.fees,//收费金额
                 saler: this.state.saler,//签单人
-                registeredArea : this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
+                registeredArea: this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
                 buyStartMonth: this.state.buyStartMonth,//购买起始月
                 isCreditCard: this.state.isCreditCard,//是否告知客户首次需要刷卡购买
                 openAccount: this.state.openAccount,//银行是否开户
@@ -315,9 +361,8 @@ findById = (event) => {
                 legalPersonCertificate: this.state.legalPersonCertificate,//法人参保证明（已提供，未提供）
                 isClerkStopBuyInsurance: this.state.isClerkStopBuyInsurance,//参保人员是否已停保（是，否）
                 identityCardNumber: this.state.identityCardNumber,
-                socialSecurityId:this.props.socialSecurityId
+                socialSecurityId: this.props.socialSecurityId
             };
-            console.log(templateVo)
             this.props.editTemplate(templateVo);
             this.refs.viewDialog.hide();
             this.setState({
@@ -325,7 +370,7 @@ findById = (event) => {
                 remark: '',
                 error: false,
                 open: true,
-                message: '新增成功'
+                message: '修改成功'
             })
         } else {
             this.setState({
@@ -351,34 +396,35 @@ findById = (event) => {
         let level1 = this.state.level1;
         let level2 = this.state.level2;
         let level3 = this.state.level3;
-        let personDoms=[];        
-        for(var i=0;i<addline;i++){
-            personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
+        let personDoms = [];
+        let personInformations = this.state.personInformations;
+        for (var i = 0; i < personInformations.length; i++) {
+            personDoms.push(<PersonInformation personInformation={personInformations[i]} index={personInformations[i].id}></PersonInformation>)
         }
-       
+
         return (
 
             <div>
                 <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="viewDialog">
-                    <h3 className="title">社保工单-新增</h3>
+                    <h3 className="title">社保工单-修改</h3>
                     <form>
                         <div className="OutermostBox">
-                            <div className="tow-row">                                
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>                                   
-                                        <NativeSelect
-                                            style={{ width: '70%' }}
-                                            native
-                                            value={this.state.companyName}
-                                            onChange={this.handleChange}
-                                            name='companyName'
-                                        >
-                                            <option value="" />
-                                            {this.state.customerList.map(item => {
-                                                return (<option value={item.companyName}>{item.companyName}</option>)
-                                            })
-                                            }
-                                        </NativeSelect >
+                                    <div className="InputBox-text">公司名称:</div>
+                                    <NativeSelect
+                                        style={{ width: '70%' }}
+                                        native
+                                        value={this.state.companyName}
+                                        onChange={this.handleChange}
+                                        name='companyName'
+                                    >
+                                        <option value="" />
+                                        {this.state.customerList.map(item => {
+                                            return (<option value={item.companyName}>{item.companyName}</option>)
+                                        })
+                                        }
+                                    </NativeSelect >
                                 </div>
                                 <div className="InputBox"></div>
                             </div>
@@ -394,7 +440,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList.map(item => {
-                                            return (<option value={item.binama}  checked={item.name == level1? 'checked' : ''}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level1 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
@@ -406,7 +452,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList1.map(item => {
-                                            return (<option value={item.binama}  checked={item.name == level2 ? 'checked' : ''}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level2 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
@@ -418,7 +464,7 @@ findById = (event) => {
                                     >
                                         <option value="" />
                                         {registerAreaList2.map(item => {
-                                            return (<option value={item.binama}  checked={item.name == level3 ? 'checked' : ''}>{item.name}</option>)
+                                            return (<option value={item.binama} checked={item.name == level3 ? 'checked' : ''}>{item.name}</option>)
                                         })}
                                     </NativeSelect >
                                 </div>
@@ -539,7 +585,7 @@ findById = (event) => {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }}  onClick={this.getPersonInformation}>添加人员</Button>
+                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.getPersonInformation}>添加人员</Button>
                                 </div>
                             </div>
                             <div className="tow-row">
@@ -554,10 +600,10 @@ findById = (event) => {
                                             <th>类型</th>
                                             <th>备注</th>
                                             <th>删除</th>
-                                        </tr>                                       
-                                            {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                        </tr>
+                                        {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
                                             {this.state.personDoms}                            */}
-                                            {personDoms}
+                                        {personDoms}
                                     </tbody>
                                 </table>
                             </div>
@@ -637,7 +683,7 @@ findById = (event) => {
                     </form>
                 </SkyLight>
                 <div>
-                <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#286090' }} onClick={this.showEdit}>修改</Button>
+                    <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#286090' }} onClick={this.showEdit}>修改</Button>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

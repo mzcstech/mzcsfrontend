@@ -8,14 +8,15 @@ import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
+import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
-let addline=1;
+let addline = 1;
 class AddTemplate extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {            
+        this.state = {
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -42,15 +43,15 @@ class AddTemplate extends React.Component {
             level2: '',
             level3: '',
             userList: [],
-            personType:'',
-            personDoms:[],
-            personName:'',
-            idCardNumber:'',
-            gongzi:'',
-            telephone:'',
-            personType:'',
-            remark:''
-
+            personType: '',
+            personName: '',
+            idCardNumber: '',
+            personDoms: [1],
+            gongzi: '',
+            telephone: '',
+            personType: '',
+            remark: '',
+            personinformations: [] //人员信息[FormData,FormData]
         };
     }
     //提示框
@@ -64,26 +65,30 @@ class AddTemplate extends React.Component {
 
     }
 
-    childValue  = (param) => {       
-        this.setState({
-            personName:param.personName,
-            idCardNumber:param.idCardNumber,
-            gongzi:param.gongzi,
-            telephone:param.telephone,
-            personType:param.personType,
-            remark:param.remark
-        })
-       
-    }
+    // childValue  = (param) => {       
+    //     this.setState.personinformations = param
+    //    console.log(this.state.personinformations);
+    // }
     //点击添加一行人员信息
-    getPersonInformation  = () => {   
-        alert(addline)
-         addline++;
+    getPersonInformation = () => {
+        let arr = this.state.personDoms;
+        arr.push(++addline);
+        this.setState({
+            personDoms: arr
+        })
     }
-    deletePersonInformation(){       
-        // addline--;
-        // alert(addline)
-        // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
+    //点击删除一行人员信息
+    deletePersonInformation = (index, personDoms) => {
+        let arr = [];
+        personDoms.forEach((obj) => {
+            if (obj == index) {
+            } else {
+                arr.push(obj)
+            }
+        })
+        this.setState({
+            personDoms: arr
+        })
     }
     findAllUser(params) {
         let user = new FormData()
@@ -92,7 +97,7 @@ class AddTemplate extends React.Component {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
@@ -197,11 +202,9 @@ class AddTemplate extends React.Component {
             })
             .then(res => res.json())
             .then((res) => {
-                console.log(res.data)
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
-
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
@@ -213,21 +216,47 @@ class AddTemplate extends React.Component {
         this.findAllUser();
         this.refs.addDialog.show();
     }
+    //从redux获取数据PersonInformations,并转成json
+    getPersonInformations = () => {
+        //store.从redux获取数据personinformations
+        var personinformations = store.getState().personinformations;
+        var str =''
+        //return JSON.stringify(personinformations)
+        var persons=[];
+        personinformations.forEach((obj)=>{           
+            // str='{"personName":"'+obj.personName+'","idCardNumber":"'+obj.idCardNumber
+            // +'","gongzi":"'+obj.gongzi+'","telephone":"'+obj.telephone+'","personType":"'+obj.personType+'","remark":"'+obj.remark+'"}';
+
+            var personObj={
+                personName:obj.personName,
+                idCardNumber:obj.idCardNumber,
+                gongzi:obj.gongzi,
+                telephone:obj.telephone,
+                personType:obj.personType,
+                remark:obj.remark,
+                id:obj.id
+            }
+            JSON.stringify(personObj)
+            persons.push(personObj);
+        })
+        return JSON.stringify(persons);
+    }
+
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
-        +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
-
-        var templateVo = {}  
+        // var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
+        // +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
+        var personalInformation = this.getPersonInformations();
+        var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
-                companyName: this.state.companyName,               
-                customer: this.state.customer,               
+                companyName: this.state.companyName,
+                customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址
                 fees: this.state.fees,//收费金额
                 saler: this.state.saler,//签单人
-                registeredArea : this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
+                registeredArea: this.state.level1 + "-" + this.state.level2 + "-" + this.state.level3,//注册区域       
                 buyStartMonth: this.state.buyStartMonth,//购买起始月
                 isCreditCard: this.state.isCreditCard,//是否告知客户首次需要刷卡购买
                 openAccount: this.state.openAccount,//银行是否开户
@@ -239,7 +268,6 @@ class AddTemplate extends React.Component {
                 isClerkStopBuyInsurance: this.state.isClerkStopBuyInsurance,//参保人员是否已停保（是，否）
                 identityCardNumber: this.state.identityCardNumber
             };
-            console.log(templateVo)
             this.props.addTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
@@ -270,11 +298,6 @@ class AddTemplate extends React.Component {
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
-        let personDoms=[];        
-        for(var i=0;i<addline;i++){
-            personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
-        }
-       
         return (
 
             <div>
@@ -282,22 +305,22 @@ class AddTemplate extends React.Component {
                     <h3 className="title">社保工单-新增</h3>
                     <form>
                         <div className="OutermostBox">
-                            <div className="tow-row">                                
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>                                   
-                                        <NativeSelect
-                                            style={{ width: '70%' }}
-                                            native
-                                            value={this.state.companyName}
-                                            onChange={this.handleChange}
-                                            name='companyName'
-                                        >
-                                            <option value="" />
-                                            {this.state.customerList.map(item => {
-                                                return (<option value={item.companyName}>{item.companyName}</option>)
-                                            })
-                                            }
-                                        </NativeSelect >
+                                    <div className="InputBox-text">公司名称:</div>
+                                    <NativeSelect
+                                        style={{ width: '70%' }}
+                                        native
+                                        value={this.state.companyName}
+                                        onChange={this.handleChange}
+                                        name='companyName'
+                                    >
+                                        <option value="" />
+                                        {this.state.customerList.map(item => {
+                                            return (<option value={item.companyName}>{item.companyName}</option>)
+                                        })
+                                        }
+                                    </NativeSelect >
                                 </div>
                                 <div className="InputBox"></div>
                             </div>
@@ -458,7 +481,7 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }}  onClick={this.getPersonInformation}>添加人员</Button>
+                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.getPersonInformation}>添加人员</Button>
                                 </div>
                             </div>
                             <div className="tow-row">
@@ -473,10 +496,13 @@ class AddTemplate extends React.Component {
                                             <th>类型</th>
                                             <th>备注</th>
                                             <th>删除</th>
-                                        </tr>                                       
-                                            {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
-                                            {this.state.personDoms}                            */}
-                                            {personDoms}
+                                        </tr>
+                                        {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                                                       */}
+                                        {this.state.personDoms.map((item) =>
+                                            <PersonInformation key={item} index={item} personDoms={this.state.personDoms} deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                        )}
+
                                     </tbody>
                                 </table>
                             </div>

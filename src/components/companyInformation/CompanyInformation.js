@@ -134,6 +134,7 @@ class EnhancedTable extends React.Component {
         companyinformationVo.append(key, params[key])
       }
     }    
+    console.log(companyinformationVo)
     fetch(SERVER_URL + '/companyInformation/save',
       {
         mode: "cors",

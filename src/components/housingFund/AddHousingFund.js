@@ -8,6 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
+import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/HousingFund.css')
 let addline = 1;
@@ -71,15 +72,25 @@ class AddTemplate extends React.Component {
         })
 
     }
-    //点击添加一行人员信息
     getPersonInformation = () => {
-        alert(addline)
-        addline++;
+        let arr = this.state.personDoms;
+        arr.push(++addline);
+        this.setState({
+            personDoms: arr
+        })
     }
-    deletePersonInformation() {
-        // addline--;
-        // alert(addline)
-        // this.state.personDoms.replace(<PersonInformation></PersonInformation>)
+    //点击删除一行人员信息
+    deletePersonInformation = (index, personDoms) => {
+        let arr = [];
+        personDoms.forEach((obj) => {
+            if (obj == index) {
+            } else {
+                arr.push(obj)
+            }
+        })
+        this.setState({
+            personDoms: arr
+        })
     }
     findAllUser(params) {
         let user = new FormData()
@@ -88,7 +99,7 @@ class AddTemplate extends React.Component {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
@@ -192,8 +203,7 @@ class AddTemplate extends React.Component {
                 }
             })
             .then(res => res.json())
-            .then((res) => {
-                console.log(res.data)
+            .then((res) => {                
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
@@ -209,11 +219,37 @@ class AddTemplate extends React.Component {
         this.findAllUser();
         this.refs.addDialog.show();
     }
+    //从redux获取数据PersonInformations,并转成json
+    getPersonInformations = () => {
+        //store.从redux获取数据personinformations
+        var personinformations = store.getState().personinformations;
+        var str =''
+        //return JSON.stringify(personinformations)
+        var persons=[];
+        personinformations.forEach((obj)=>{           
+            // str='{"personName":"'+obj.personName+'","idCardNumber":"'+obj.idCardNumber
+            // +'","gongzi":"'+obj.gongzi+'","telephone":"'+obj.telephone+'","personType":"'+obj.personType+'","remark":"'+obj.remark+'"}';
+
+            var personObj={
+                personName:obj.personName,
+                idCardNumber:obj.idCardNumber,
+                gongzi:obj.gongzi,
+                telephone:obj.telephone,
+                personType:obj.personType,
+                remark:obj.remark,
+                id:obj.id
+            }
+            JSON.stringify(personObj)
+            persons.push(personObj);
+        })
+        return JSON.stringify(persons);
+    }
+
     // Save and close modal form
     handleSubmit = (event) => {
-        var personalInformation = '[{"personName":"' + this.state.personName + '","idCardNumber":"' + this.state.idCardNumber
-            + '","gongzi":"' + this.state.gongzi + '","telephone":"' + this.state.telephone + '","personType":"' + this.state.personType + '","remark":"' + this.state.remark + '"}]';
-
+        // var personalInformation='[{"personName":"'+this.state.personName+'","idCardNumber":"'+this.state.idCardNumber
+        // +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
+        var personalInformation = this.getPersonInformations();
         var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
@@ -231,8 +267,7 @@ class AddTemplate extends React.Component {
                 buyType: this.state.buyType,//购买类型（首次购买，非首次购买）
                 personalInformation: personalInformation,//购买人员信息 
                 identityCardNumber: this.state.identityCardNumber
-            };
-            console.log(templateVo)
+            };           
             this.props.addTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
@@ -264,9 +299,9 @@ class AddTemplate extends React.Component {
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
         let personDoms = [];
-        for (var i = 0; i < addline; i++) {
-            personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
-        }
+        // for (var i = 0; i < addline; i++) {
+        //     personDoms.push(<PersonInformation childValue={this.childValue}></PersonInformation>)
+        // }
 
         return (
 
@@ -452,7 +487,9 @@ class AddTemplate extends React.Component {
                                         </tr>
                                         {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
                                             {this.state.personDoms}                            */}
-                                        {personDoms}
+                                         {this.state.personDoms.map((item) =>
+                                            <PersonInformation key={item} index={item} personDoms={this.state.personDoms} deletePersonInformation={this.deletePersonInformation}></PersonInformation>
+                                        )}
                                     </tbody>
                                 </table>
                             </div>

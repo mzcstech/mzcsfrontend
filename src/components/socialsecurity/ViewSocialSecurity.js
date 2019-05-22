@@ -8,6 +8,7 @@ import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
+import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
 let addline = 1;
@@ -90,7 +91,6 @@ class AddTemplate extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-                console.log(responseData)
 
                 this.setState({
                     companyName: responseData.data.companyName,
@@ -116,6 +116,13 @@ class AddTemplate extends React.Component {
                     legalPersonCertificate: responseData.data.legalPersonCertificate,
                     isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
                     identityCardNumber: responseData.data.identityCardNumber
+                }, () => {
+                    var personinformations = JSON.parse(responseData.data.personalInformation);
+                    const action = {
+                        type: "EDIT_PERSONINFORMATIONS",
+                        personinformations
+                    }
+                    store.dispatch(action);
                 });
 
             })
@@ -205,8 +212,30 @@ class AddTemplate extends React.Component {
         let personalInformation = this.state.personalInformation;
         let userList = this.state.userList;
         let personDoms = [];
-        for (var i = 0; i < addline; i++) {
-            personDoms.push(<PersonInformation childValue={this.childValue} personalInformation={personalInformation}></PersonInformation>)
+
+        var personinformations = store.getState().personinformations;
+        for (var i = 0; i < personinformations.length; i++) {
+            personDoms.push(<tr key={this.props.key}>
+                <td><TextField className="InputBox-next" placeholder="请输入姓名"
+                    error={this.state.error} value={personinformations[i].personName} ref="personName" name="personName"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入身份证号"
+                    error={this.state.error} value={personinformations[i].idCardNumber} ref="idCardNumber" name="idCardNumber"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入月工资"
+                    error={this.state.error} value={personinformations[i].gongzi} ref="gongzi" name="gongzi"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入联系电话"
+                    error={this.state.error} value={personinformations[i].telephone} ref="telephone" name="telephone" />
+                </td>
+                <td> <TextField className="InputBox-next" placeholder="请输入联系电话"
+                    error={this.state.error} value={personinformations[i].personType} ref="personType" name="personType"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="备注"
+                    value={personinformations[i].remark} ref="remark" name="remark" />
+                </td>
+                <td></td>
+            </tr>)
         }
         return (
             <div>
@@ -351,12 +380,12 @@ class AddTemplate extends React.Component {
                                             <th>月工资</th>
                                             <th>联系电话</th>
                                             <th>类型</th>
-                                            <th>备注</th>
-                                            <th>删除</th>
+                                            <th>备注</th>                                            
                                         </tr>
                                         {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
                                             {this.state.personDoms}                            */}
                                         {personDoms}
+                                        
                                     </tbody>
                                 </table>
                             </div>

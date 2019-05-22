@@ -8,6 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import PersonInformation from './PersonInformation.js';
+import store from '../../store'
 let addline = 1;
 class ViewCompanyInformation extends React.Component {
     constructor(props) {
@@ -62,7 +63,6 @@ class ViewCompanyInformation extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-                console.log(responseData)
                 
                 this.setState({                    
                     companyName: responseData.data.companyName,
@@ -85,6 +85,13 @@ class ViewCompanyInformation extends React.Component {
                     // personType:personalInformation[0].personType,
                     // remark:personalInformation[0].remark                    
                     identityCardNumber:responseData.data.identityCardNumber
+                }, () => {
+                    var personinformations = JSON.parse(responseData.data.personalInformation);
+                    const action = {
+                        type: "EDIT_PERSONINFORMATIONS",
+                        personinformations
+                    }
+                    store.dispatch(action);
                 });
                 
             })
@@ -128,10 +135,31 @@ class ViewCompanyInformation extends React.Component {
     render() {
         let personalInformation=this.state.personalInformation;
         let userList = this.state.userList;
-        let personDoms = [];
-        for (var i = 0; i < addline; i++) {
-            personDoms.push(<PersonInformation childValue={this.childValue} personalInformation={personalInformation}></PersonInformation>)
-        }  
+        let personDoms=[];
+        var personinformations = store.getState().personinformations;
+        for (var i = 0; i < personinformations.length; i++) {
+            personDoms.push(<tr key={this.props.key}>
+                <td><TextField className="InputBox-next" placeholder="请输入姓名"
+                    error={this.state.error} value={personinformations[i].personName} ref="personName" name="personName"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入身份证号"
+                    error={this.state.error} value={personinformations[i].idCardNumber} ref="idCardNumber" name="idCardNumber"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入月工资"
+                    error={this.state.error} value={personinformations[i].gongzi} ref="gongzi" name="gongzi"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="请输入联系电话"
+                    error={this.state.error} value={personinformations[i].telephone} ref="telephone" name="telephone" />
+                </td>
+                <td> <TextField className="InputBox-next" placeholder="请输入联系电话"
+                    error={this.state.error} value={personinformations[i].personType} ref="personType" name="personType"/>
+                </td>
+                <td><TextField className="InputBox-next" placeholder="备注"
+                    value={personinformations[i].remark} ref="remark" name="remark" />
+                </td>
+                <td></td>
+            </tr>)
+        } 
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="viewDialog">
@@ -258,11 +286,8 @@ class ViewCompanyInformation extends React.Component {
                                             <th>月工资</th>
                                             <th>联系电话</th>
                                             <th>类型</th>
-                                            <th>备注</th>
-                                            <th>删除</th>
+                                            <th>备注</th>                                            
                                         </tr>
-                                        {/* <PersonInformation deletePersonInformation={this.deletePersonInformation}></PersonInformation>
-                                            {this.state.personDoms}                            */}
                                         {personDoms}
                                     </tbody>
                                 </table>
