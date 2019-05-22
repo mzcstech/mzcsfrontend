@@ -29,7 +29,20 @@ class PersonInformation extends React.Component {
     handleChange = (event) => {
         var id = event.target.id;
         var personInformation = {};
-        var personinformations = store.getState().personinformations;        
+        var personinformations = store.getState().personinformations;
+        personinformations.forEach((perinformation) => {
+            if (perinformation.id == id) {                
+                this.setState({
+                    personName: perinformation.personName,
+                    idCardNumber: perinformation.idCardNumber,
+                    gongzi: perinformation.gongzi,
+                    telephone: perinformation.telephone,
+                    personType: perinformation.personType,
+                    remark: perinformation.remark,
+                    id: id
+                })
+            }
+        })
         this.setState({ [event.target.name]: event.target.value }, () => {
             personInformation = {
                 personName: this.state.personName,
