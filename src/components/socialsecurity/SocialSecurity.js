@@ -316,7 +316,7 @@ class EnhancedTable extends React.Component {
                           <ViewSocialSecurity fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
-                          )}
+                          )}                          
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.edit == "1" ? (

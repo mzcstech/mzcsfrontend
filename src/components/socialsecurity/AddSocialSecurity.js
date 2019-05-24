@@ -64,7 +64,59 @@ class AddTemplate extends React.Component {
         );
 
     }
-
+    //选择公司名称后执行
+    handleChangeCompanyInformation = (event) => {
+        this.setState(
+            { [event.target.name]: event.target.value }
+        );
+        var customer={}
+        this.state.customerList.forEach((item)=>{
+            if(item.companyName==event.target.value){
+                customer=item;                
+            }
+        })
+            //其它公司信息回显
+            this.setState(
+                { 
+                    customerPhone:customer.linkmanPhoneNum,
+                    address:customer.registered,
+                    level1:customer.registerArea.split('-')[0],
+                    level2:customer.registerArea.split('-')[1],
+                    level3:customer.registerArea.split('-')[2],
+                    openAccount:customer.bankAccountNo==null||customer.bankAccountNo==''?'否':'是',
+                    backAccount:customer.bankAccountNo
+                }, () =>{
+                    this.getRegisterAreaList();
+                   
+                }); 
+                
+            
+    }
+        //回显地址下拉
+        getRegisterAreaList = () => {
+            let level1 = this.state.level1;
+            let level2 = this.state.level2;
+            if (level1 != '') {
+                let registerAreaList = this.state.registerAreaList;
+               var registerList1 =[];
+                registerAreaList.forEach(reg => {
+                    if (reg.name == level1) {
+                            registerList1= reg.childTreeList
+                    }
+                });
+                this.setState({registerAreaList1:registerList1});
+            }            
+            if (level2 != '') {
+                let registerAreaList1 = this.state.registerAreaList1;
+                let registerList2=[];
+                registerAreaList1.forEach(reg => {
+                    if (reg.name == level2) {
+                        registerList2=reg.childTreeList
+                    }
+                });
+                this.setState({registerAreaList2:registerList2});
+            }           
+        }
     // childValue  = (param) => {       
     //     this.setState.personinformations = param
     //    console.log(this.state.personinformations);
@@ -205,6 +257,7 @@ class AddTemplate extends React.Component {
                 this.setState({
                     registerAreaList: res.data.childTreeList
                 });
+                this.getRegisterAreaList();
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
@@ -312,7 +365,7 @@ class AddTemplate extends React.Component {
                                         style={{ width: '70%' }}
                                         native
                                         value={this.state.companyName}
-                                        onChange={this.handleChange}
+                                        onChange={this.handleChangeCompanyInformation}
                                         name='companyName'
                                     >
                                         <option value="" />
