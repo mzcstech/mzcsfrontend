@@ -322,7 +322,7 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.originalId}
                       selected={isSelected}
-                    >
+                    > 
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>

@@ -14,12 +14,18 @@ class QueryPrivilegeSubordinate extends Component {
     constructor(props) {
         super(props)
         this.handleProcessUrl = this.handleProcessUrl.bind(this)
-        this.handleChange = this.handleChange.bind(this);
-        this.handValueChange = this.handValueChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
+        // this.handValueChange = this.handValueChange.bind(this);
         this.state = {
-            valueInput: '',
-            responseData: {},
-            processUrl:'/commerce/listProcessByUser',
+            // valueInput: '',
+            // responseData: {},
+            processUrl:'/usergroup/findUsersByUsergroup?usergroupId=',
+            name:'',
+            username:'',
+            jurisdictionName:'',
+            subtype:'',
+            code:''
+
         }
     }
 
@@ -27,35 +33,57 @@ class QueryPrivilegeSubordinate extends Component {
     handleProcessUrl (event){
         this.setState({processUrl: event.target.value});
         if(event.target){       
-            this.props.handleUrl(event.target.value)
-        }
-        
-    }
- 
-    handleChange = (event) => {
-        this.setState(
-            { [event.target.name]: event.target.value }
-        );
-    }
-    handValueChange(e) {
-        this.setState({valueInput: e.target.value});
-        if(e.target){       
-            this.props.handleValue(e.target.value)
+            this.props.gethandleUrl(event.target.value)
         }
     }
+    handleChange = (e) => {
+        switch(e.target.name){  
+            case "name":
+            this.setState({
+                name:e.target.value
+            })
+            break;
+            case "username":
+            this.setState({
+                username:e.target.value
+            })
+            break;
+            case "jurisdictionName":
+            this.setState({
+                jurisdictionName:e.target.value
+            })
+            break;
+            case "subtype":
+            this.setState({
+                subtype:e.target.value
+            })
+            break;
+            case "code":
+            this.setState({
+                code:e.target.value
+            })
+            break;
+        }
+    }
+    // handValueChange(e) {
+    //     this.setState({valueInput: e.target.value});
+    //     if(e.target){       
+    //         this.props.handleValue(e.target.value)
+    //     }
+    // }
     render() { 
         const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+        const { name,username,jurisdictionName,subtype,code } = this.state
         return (
-            <div className="box">
+            <div className="box"> 
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
                 <div className="singleElection-text">权限管理 :</div>
                 <div className="singleElection-next">
-            
                     <FormControlLabel control={
                         <Radio  
-                            checked={this.state.processUrl === '/commerce/listProcessByUser'}
+                            checked={this.state.processUrl === '/usergroup/findUsersByUsergroup?usergroupId='}
                             onChange={this.handleProcessUrl}
-                            value="/commerce/listProcessByUser"
+                            value="/usergroup/findUsersByUsergroup?usergroupId="
                             name="processUrl"
                             aria-label="所属人员"
                         />
@@ -65,21 +93,35 @@ class QueryPrivilegeSubordinate extends Component {
                
                     <FormControlLabel control={
                         <Radio
-                            checked={this.state.processUrl === '/tally/listProcessByUser'}
+                            checked={this.state.processUrl === '/usergroup/findPrivilegesByUsergroup?usergroupId='}
                             onChange={this.handleProcessUrl}
-                            value="/tally/listProcessByUser"
+                            value="/usergroup/findPrivilegesByUsergroup?usergroupId="
                             name="processUrl"
-                            aria-label="所属工作组"
-                        />} label="所属工作组" />
+                            aria-label="所属权限"
+                        />} label="所属权限" />
                         <Badge className="number" color="secondary">
                         </Badge>
                 </div>
-                <div style={{position:'absolute',right:'30px',display:'flex'}}>
-                    <Input className="Input" onChange={this.handValueChange} placeholder="公司名称搜索" />
-                    <div className="Separate"></div>
-                    <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
-                </div>
-                
+                {
+                    (this.state.processUrl === '/usergroup/findUsersByUsergroup?usergroupId=')?
+                    <div style={{position:'absolute',right:'30px',display:'flex'}}>
+                        <Input className="Input" onChange={this.handleChange} value={name}     name="name" placeholder="人员姓名搜索" />
+                        <div className="Separate"></div>
+                        <Input className="Input" onChange={this.handleChange} value={username} name="username" placeholder="USERNAME" />
+                        <div className="Separate"></div>
+                        <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                    </div>
+                    :
+                    <div style={{position:'absolute',right:'30px',display:'flex'}}>
+                        <Input className="Input" onChange={this.handleChange}  value={jurisdictionName} name="jurisdictionName" placeholder="名称" />
+                        <div className="Separate"></div>
+                        <Input className="Input" onChange={this.handleChange}  value={subtype}          name="subtype" placeholder="子类型" />
+                        <div className="Separate"></div>
+                        <Input className="Input" onChange={this.handleChange}  value={code}             name="code" placeholder="code" />
+                        <div className="Separate"></div>
+                        <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                    </div>
+                }
             </div>
         )
     }

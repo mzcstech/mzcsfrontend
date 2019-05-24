@@ -1,13 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { SERVER_URL } from '../../constants.js';
-import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
-import { withRouter } from 'react-router-dom'
-import EditPrivilegeManagement from './EditPrivilegeManagement'
-import { confirmAlert } from 'react-confirm-alert';
+import { SERVER_URL } from '../../constants.js'
 import { withStyles } from '@material-ui/core/styles';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -23,9 +18,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import Snackbar from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-
+import { lighten } from '@material-ui/core/styles/colorManipulator';
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -57,17 +50,12 @@ function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
 
-const rows = [
-  { id: 'name', numeric: true, disablePadding: false, label: '名称' },
-  { id: 'type', numeric: true, disablePadding: false, label: '类型' },
-  { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
-  { id: 'subtype', numeric: true, disablePadding: false, label: '父节点' },
-  { id: 'code', numeric: true, disablePadding: false, label: 'code' },
-  { id: 'EditPrivilegeManagement', numeric: true, disablePadding: false, label: '修改' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
-  { id: 'Subordinate', numeric: true, disablePadding: false, label: '所属' },
+const users = [
+  { id: 'name', numeric: false, disablePadding: true, label: '姓名' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'username' },
+  { id: 'query', numeric: true, disablePadding: false, label: '查询' },
+  { id: 'delete', numeric: true, disablePadding: false, label: '删除' },
 ];
-
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -76,7 +64,7 @@ class EnhancedTableHead extends React.Component {
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (
       <TableHead>
-        <TableRow >
+        <TableRow>
           <TableCell padding="checkbox">
             <Checkbox
               indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -84,18 +72,17 @@ class EnhancedTableHead extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {rows.map(    
+          {users.map(
             row => (
               <TableCell
-                className="PrivilegTableCell"
                 key={row.id}
                 align="center"
                 padding="none"
               >
                 <Tooltip
-                  title={row.label}
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                  enterDelay={300}
+                 title={row.label}
+                 placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                 enterDelay={300}
                 >
                   <TableSortLabel
                     className="TableSortLabel"
@@ -150,7 +137,6 @@ const toolbarStyles = theme => ({
 
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
-
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -167,11 +153,11 @@ let EnhancedTableToolbar = props => {
             Nutrition
           </Typography>
         )}
-      </div>f
+      </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
-          <Tooltip  title="Delete">
+          <Tooltip title="Delete">
             <IconButton aria-label="Delete">
               <DeleteIcon />
             </IconButton>
@@ -208,56 +194,28 @@ const styles = theme => ({
   },
 });
 
-class TablesPrivilegeManagement extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            order: 'asc',
-            orderBy: 'calories',
-            selected: [],
-            data:[],
-            page:0,
-            rowsPerPage: 5,
-            map:[],
-            NewqueryList:'',
-            message:'',
-            open: false,
-        };
-        this.filterFun     = this.filterFun.bind(this)
-        this.fetchTemplate = this.fetchTemplate.bind(this)
-    }
-
-    componentDidMount=()=>{  
-      this.fetchTemplate()
-    }
-   // 分页
-   fetchTemplate = (queryList) => {
-    let NewqueryList =[]
-    NewqueryList.push(queryList)
-    let followUpVo = new FormData();
-    followUpVo.append("pageNum", this.state.page + 1)
-    followUpVo.append("pageSize", this.state.rowsPerPage)
-    fetch(SERVER_URL + '/usergroup/list', {
-      mode: "cors",
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json,text/plain,*/*'
-      },
-    })  
-      .then((response) => response.json())
-      .then((responseData)  => {
-        console.log(responseData.data.list)
-        if(queryList === null || queryList === undefined){
-          this.setState({data: responseData.data.list},()=>{
-          });
-        }else{
-            this.setState({data: NewqueryList},()=>{
-          });   
-        }
-      })
-      .catch(err => console.error(err));
+class PrivilegeSubordinateTablesHead extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      order: 'asc',
+      orderBy: 'calories',
+      selected: [],
+      data: [
+        createData('Cupcake', 305, 3.7, 67),
+        createData('Donut', 452, 25.0, 51),
+        createData('Eclair', 262, 16.0, 24),
+        createData('Frozen yoghurt', 159, 6.0, 24),
+        createData('Gingerbread', 356, 16.0, 49),
+        createData('Gingerbread', 356, 16.0, 49),
+      ],
+      page: 0,
+      rowsPerPage: 5,
+      processUrl:this.props.processUrl
+    };
   }
+  
+  
   handleRequestSort = (event, property) => {
     const orderBy = property;
     let order = 'desc';
@@ -307,108 +265,54 @@ class TablesPrivilegeManagement extends React.Component {
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
- 
-  //跳转所属
-  jumpToprivilegeSubordinate=(usergroupId)=>{
-    this.props.history.push({
-        pathname: '/PrivilegeSubordinate',
-        query: {
-          usergroupId: usergroupId,
-        },
-      })
-  }   
-   //提示框的显示判断
-   handleClose = (event, reason) => {
-    this.setState({ open: false });
-  };
-  //左方树选择
-  filterFun(){
-      let state = this.state.data
-      let newstate =[]
-      for(var i=0;i<state.length;i++){
-        if(state[i].name == this.props.label){
-          // let NewparentId    = state[i].parentId  
-          let NewUsergroupId = state[i].usergroupId
-          for(var j=0;j<state.length;j++){
-            if(state[j].usergroupId ==NewUsergroupId || state[j].parentId == NewUsergroupId){
-                 newstate.push(state[j])
-            }
-          }
-        }
-      }
-      return newstate
+  componentDidMount(){
+    this.fetchTemplate()
   }
-  //确认是否删除
-  confirmDelete = (id) => {
-    let deleteID = []
-    deleteID.push(id)
-    confirmAlert({
-      message: '确认是否删除?' + id,
-      buttons: [
-        {
-          label: '是',
-          onClick: () => this.onDelClick(deleteID)
-        },
-        {
-          label: '否',
-        }
-      ]
-    })
-  }
-  //删除
-  onDelClick = (deleteID) => {
-    fetch(SERVER_URL + '/usergroup/delete?ids=' + deleteID,
-      { 
-        mode: "cors",
-        method: 'DELETE',
-        credentials: 'include',
-        headers: {
-          'Accept': '*/*',
-
-        }
-      })
-      .then(res => {
-        this.setState({ open: true, message: '删除成功' });
-        this.fetchTemplate()
-      })
-      .catch(err => {
-        this.setState({ open: true, message: 'Error when deleting' });
-        console.error(err) 
-      })
+  shouldComponentUpdate(nextProps){
+    if(nextProps.processUrl ===this.props.processUrl){
+      return false
+    }else{
+      return true
     }
-    //修改
-  // editTemplate(params) {
-  //   let companyInformationVo = new FormData()
-  //   if (params) {
-  //     for (let key in params) {
-  //       companyInformationVo.append(key, params[key])
-  //     }
-  //   }
-  //   fetch(SERVER_URL + '/companyInformation/edit',
-  //     {
-  //       mode: "cors",
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         'Accept': 'application/json,text/plain,*/*'
-  //       },
-  //       body: companyInformationVo
-  //     })
-  //     .then(res => this.fetchTemplate())
-  //     .catch(err => console.error(err))
-  // }
+  }
+  componentDidUpdate(){
+   
+    this.fetchTemplate()
+  }
+  fetchTemplate = () => {
+    // console.log('usergroupId')
+   
+    let followUpVo = new FormData();
+    followUpVo.append("pageNum", this.state.page + 1)
+    followUpVo.append("pageSize", this.state.rowsPerPage)
+    followUpVo.append("companyName", this.state.valueInput)
+    fetch(SERVER_URL + this.props.processUrl + this.props.usergroupId, {
+      mode: "cors",
+      method: 'POST', 
+      credentials: 'include',
+      headers: {
+        "Accept": "*/*"
+      },
+      body: followUpVo
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData,'res')
+        // this.setState({
+        //   data: responseData.data.list,
+        //   map:responseData.data.map,
+        //   page: responseData.data.pageNum - 1,
+        //   rowsPerPage: responseData.data.pageSize,
+        //   total: responseData.data.total
+        // });
+      })
+      .catch(err => console.error(err));
+  }
   render() {
-    let newData = this.filterFun()
-    let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
-    let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
-    const { classes,label } = this.props;
+    const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.data.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
-      <div>
-        <div className="QueryPrivilegInto" >
-          <QueryPrivilegeManagement fetchTemplate={this.fetchTemplate} />
-        </div>
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
@@ -419,62 +323,47 @@ class TablesPrivilegeManagement extends React.Component {
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={this.state.data.length}
+              rowCount={data.length}
             />
             <TableBody>
-              {
-                
-                 stableSort((newData.length != 0 ? newData : data), getSorting(order, orderBy))
+              {stableSort(data, getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((n) => { 
-                  const isSelected = this.isSelected(n.usergroupId); 
+                .map(n => {
+                  const isSelected = this.isSelected(n.id);
                   return (
                     <TableRow
-                      className="PrivilegTableCell"
-                      onClick={event => this.handleClick(event, n.usergroupId)}
+                      hover
+                      onClick={event => this.handleClick(event, n.id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.usergroupId}
+                      key={n.id}
                       selected={isSelected}
                     >
-                      <TableCell className="PrivilegTableCell" padding="checkbox">
-                         <Checkbox checked={isSelected} />
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" >{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.type}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.subtype}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.parentId}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" ><EditPrivilegeManagement usergroupId={n.usergroupId}/></TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.usergroupId) }}>删除</Button>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" component="th" scope="row" padding="none">
+                        {n.name}
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" ><Button size="small" style={linkStyletwo} variant="text" color="primary"
-                       onClick={() => { this.jumpToprivilegeSubordinate(n.usergroupId) }}>所属</Button></TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.calories}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.fat}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.carbs}</TableCell>
                     </TableRow>
                   );
-                })
-                }
+                })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>
-            <Snackbar
-              style={{ width: 300, color: 'green' }}
-              open={this.state.open}
-              onClose={this.handleClose}
-              autoHideDuration={1500}
-              message={this.state.message}
-            />
           </Table>
         </div>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.data.length}
+          count={data.length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
@@ -487,13 +376,12 @@ class TablesPrivilegeManagement extends React.Component {
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
       </Paper>
-      </div>
     );
   }
 }
 
-TablesPrivilegeManagement.propTypes = {
+PrivilegeSubordinateTablesHead.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(TablesPrivilegeManagement);
+export default withStyles(styles)(PrivilegeSubordinateTablesHead);

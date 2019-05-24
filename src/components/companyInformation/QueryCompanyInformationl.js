@@ -75,7 +75,7 @@ class QueryCompanyInformationl extends Component{
         })
     }
     handoriginalOutStatusChange(e){
-        this.setState({originalOutStatus :e.target.value},()=>{
+        this.setState({originalOutStatus :e.target.value},()=>{ 
         })
     }
     handsearchBth(){

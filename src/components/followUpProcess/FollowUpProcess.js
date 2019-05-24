@@ -51,7 +51,7 @@ class EnhancedTable extends React.Component {
       open: false,
       procInstId: '',
       NewresponseData: {},
-      valueInput: '',
+      valueInput: '', 
       processUrl: '/commerce/listProcessByUser',
       map:[]
     };
@@ -97,7 +97,7 @@ class EnhancedTable extends React.Component {
       followUpVo.append("companyName", this.state.valueInput)
       fetch(SERVER_URL + this.state.processUrl, {
         mode: "cors",
-        method: 'POST',
+        method: 'POST', 
         credentials: 'include',
         headers: {
           'Accept': 'application/json,text/plain,*/*'
@@ -173,7 +173,7 @@ class EnhancedTable extends React.Component {
               <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
             </div>
           </div>
-          </Toolbar>
+          </Toolbar> 
          </AppBar>
         </Grid>
         <div className={classes.tableWrapper}>
@@ -181,7 +181,7 @@ class EnhancedTable extends React.Component {
             {/* 头列表页组件展示 */}
             <EnhancedTableHead
               numSelected={selected.length}
-              order={order}
+              order={order} 
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               rowCount={this.state.total}
@@ -192,11 +192,11 @@ class EnhancedTable extends React.Component {
                 .slice(0, rowsPerPage)
                 .map(n => {
                   // 遍历显示列表页面
-                  return (
+                  return ( 
                     <TableRow
                       hover
                       onClicock={event => this.handleClick(event, n.excutionId)}
-                      role="checkbox"
+                      role="checkbox" 
                       key={n.excutionId}
                     >
                       <TableCell className="TableCell" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>

@@ -13,7 +13,6 @@ class QueryTemplate extends Component {
    
     constructor(props) {
         super(props)
-        
         this.handleProcessUrl= this.handleProcessUrl.bind(this)
         // this.handleChange    = this.handleChange.bind(this);
         this.handValueChange = this.handValueChange.bind(this);
@@ -32,7 +31,6 @@ class QueryTemplate extends Component {
         if(event.target){       
             this.props.handleUrl(event.target.value)
         }
-        
     }
  
     // handleChange = (event) => {
@@ -41,7 +39,7 @@ class QueryTemplate extends Component {
     //     );
     // }
 
-    handValueChange(e) {
+    handValueChange(e) { 
         this.setState({companyName: e.target.value});
         
     }
@@ -49,12 +47,11 @@ class QueryTemplate extends Component {
             this.props.handleValue(this.state.companyName)
     }
     render() {
-        return (
+        return ( 
             <div className="box">
                 {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
                 <div className="singleElection-text">业务类型:</div>
                 <div className="singleElection-next">
-            
                     <FormControlLabel control={
                         <Radio  
                             checked={this.state.processUrl === '/commerce/listProcessByUser'}
@@ -74,7 +71,7 @@ class QueryTemplate extends Component {
                             value="/tally/listProcessByUser"
                             name="processUrl"
                             aria-label="代理记账"
-                        />} label="代理记账" />
+                        />} label="代理记账" /> 
                         <Badge className="number"  badgeContent={this.props.map.tallyNum} color="secondary">
                         </Badge>
                     <FormControlLabel control={

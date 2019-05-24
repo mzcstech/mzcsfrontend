@@ -117,7 +117,7 @@ class EditOriginal extends React.Component {
             var original = {
                 originalName: this.state.originalName,
                 originalHoldStatus:this.state.originalHoldStatus ,
-                remark: this.state.remark,   
+                remark: this.state.remark,    
                 originalId:this.state.originalId      
             };
             this.props.editTemplate(original);

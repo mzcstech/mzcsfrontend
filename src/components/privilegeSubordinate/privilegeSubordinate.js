@@ -2,11 +2,10 @@ import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
 import QueryPrivilegeSubordinate from './QueryPrivilegeSubordinate'
-import PrivilegeSubordinateTablesHead from './PrivilegeSubordinateTablesHead'
+import PrivilegeSubordinateTables from './PrivilegeSubordinateTables'
 import AddprivilegeSubordinate from './AddprivilegeSubordinate'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import PropTypes from 'prop-types';
@@ -18,7 +17,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import NavigationIcon from '@material-ui/icons/Navigation';
 import Fab from '@material-ui/core/Fab';
 import './styles/privilegeSubordinate.css'
@@ -27,7 +25,7 @@ import './styles/privilegeSubordinate.css'
 const drawerWidth ='15%';
 const drawerWidth2 ='84%';
 const styles = theme => ({
-    root: {
+    root: { 
       width: '100%',
       marginTop: theme.spacing.unit * 3,
     },
@@ -80,8 +78,11 @@ const styles = theme => ({
         super(props)
         this.state = {
             open: true,
+            usergroupId:'',
+            processUrl:'/usergroup/findUsersByUsergroup?usergroupId=',
         };
         this.addTemplate = this.addTemplate.bind(this)
+        this.gethandleUrl =this.gethandleUrl.bind(this)
     }
     componentWillMount(){
       this.setState({
@@ -110,13 +111,29 @@ const styles = theme => ({
       .catch(err => console.error(err))
 
     }
-      //组件御载时触发
+
+  componentDidMount(){
+    let usergroupId;
+    if (this.props.location.query != undefined) {
+      usergroupId = this.props.location.query.usergroupId
+      sessionStorage.setItem('id', usergroupId);
+    } else {
+      usergroupId = sessionStorage.getItem('id');
+    }
+    this.setState({usergroupId:usergroupId})
+  }
+  gethandleUrl(processUrl){
+   this.setState({processUrl:processUrl},()=>{
+   })
+  }
+  //组件御载时触发
     render(){
         let NewUrl =  this.state.href.replace('/PrivilegeSubordinate',"") + '/PrivilegeManagement'
         let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px',marginLeft:'15px' }
-        const { classes ,theme  } = this.props;
+        const { processUrl,usergroupId } =this.state
+        const { classes ,theme } = this.props;
         const currentPath = this.props.location.pathname;
-        const  drawer = (
+        const  drawer = ( 
             <div>
               <div className={classes.toolbar} />
               <Divider />
@@ -150,17 +167,17 @@ const styles = theme => ({
                 </Fab>
                       <div className="QueryFollowUpProcess">
                         <div className="QueryFollowUpProcessInto" >
-                            <QueryPrivilegeSubordinate  />
+                            <QueryPrivilegeSubordinate gethandleUrl={this.gethandleUrl}  />
                         </div>
-                     </div>
+                     </div> 
                 </Toolbar>
             </AppBar>
             <div className="PrivilegeTemplate">
               <Grid item>
-                    <AddprivilegeSubordinate onClick={this.addTemplate} style={linkStyle} variant="text"  >新增</AddprivilegeSubordinate>
+                    <AddprivilegeSubordinate onClick={this.addTemplate} style={linkStyle} usergroupId={usergroupId} processUrl={processUrl} variant="text"  >新增</AddprivilegeSubordinate>
               </Grid>
             </div>
-            <PrivilegeSubordinateTablesHead/>
+            <PrivilegeSubordinateTables usergroupId={usergroupId} processUrl={processUrl}/>
         </Paper>
       
         )
