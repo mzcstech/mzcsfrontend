@@ -12,40 +12,20 @@ class QueryPrivilegeManagement extends Component{
     constructor(props){
         super(props)
         this.handcompanyNameChange       = this.handcompanyNameChange.bind(this)
-        this.handoriginalHolderChange    = this.handoriginalHolderChange.bind(this)
-        this.handoriginalOutStatusChange = this.handoriginalOutStatusChange.bind(this)
+        this.findAllUser                 = this.findAllUser.bind(this)
         this.handsearchBth               = this.handsearchBth.bind(this)
         this.state={
-            companyName:'',
+            usergroupId:'',
             originalHolder:'',
             originalOutStatus:'',
             singleElectionData:[],
-            userList:[]
+            queryList:[]
         }
     }
-    componentWillMount(){
-        fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_OUT_STATUS',
-        {
-          mode: "cors",
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            "Accept": "*/*"
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then(res =>{
-            this.setState({
-                singleElectionData:res.data
-            })
-        })
-        .catch(err => console.error(err,'err'))
-        // this.findByName()
-        this.findAllUser()
-    }
+
     findAllUser() {
-        fetch(SERVER_URL + '/user/listAll',
+        let usergroupId = this.state.usergroupId
+        fetch(SERVER_URL + '/usergroup/findById?usergroupId='+ usergroupId,
             {
                 mode: "cors",
                 method: 'POST',
@@ -53,12 +33,11 @@ class QueryPrivilegeManagement extends Component{
                 headers: {
                     'Accept': '*/*'
                 },
-                // body: user
             })
             .then(res => res.json())
             .then((res) => {
-                this.setState({
-                    userList: res.data
+                this.setState({queryList: res.data},()=>{
+                    this.handsearchBth()
                 });                
             })
             .catch(err =>
@@ -66,64 +45,18 @@ class QueryPrivilegeManagement extends Component{
             )
     }
     handcompanyNameChange(e){
-        this.setState({companyName :e.target.value},()=>{
-        })
-    }
-    handoriginalHolderChange(e){
-        this.setState({originalHolder :e.target.value},()=>{
-        })
-    }
-    handoriginalOutStatusChange(e){
-        this.setState({originalOutStatus :e.target.value},()=>{
+        this.setState({usergroupId :e.target.value},()=>{
         })
     }
     handsearchBth(){
-        this.props.fetchTemplate(this.state.companyName,this.state.originalHolder,this.state.originalOutStatus)
+        this.props.fetchTemplate(this.state.queryList)
     }
-
     render(){
         return(
             <div className="box">
-               
-                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="名称"/>
+                <Input style={{width:'175px'}} className="Input" value={this.state.usergroupId}  onChange={this.handcompanyNameChange} placeholder="ID"/>
                 <div className="Separate"></div>
-                <InputLabel  style={{color:'black'}} >子类型:</InputLabel>
-                    <NativeSelect    
-                        style={{textAlign:'center',width:'175px'}}
-                        native
-                        value={this.state.originalHolder}
-                        onChange={this.handoriginalHolderChange}
-                        name='originalHolder' 
-                        input={<Input name="name" id="name"  />}
-                        >
-                        {/* <option value="" /> 
-                        {this.state.userList.map(item => {
-                            return (<option  value={item.name}>{item.name}</option>)
-                        })
-                        } */}
-                  </NativeSelect>
-                <div className="Separate"></div>
-                <InputLabel style={{color:'black'}} htmlFor="age-simple">code:</InputLabel>
-                <NativeSelect
-                    style={{textAlign:'center',width:'175px'}}
-                    native
-                    className="downBox-form"
-                    value={this.state.originalOutStatus}
-                    onChange={this.handoriginalOutStatusChange}
-                    name='originalOutStatus' 
-                    input={<Input name="name" id="name"  />}
-                >
-                    {/* <option value="" /> 
-                    {
-                        this.state.singleElectionData.map(item=>{
-                            return(
-                                <option value={item.bianma}>{item.name}</option>
-                            )
-                        })
-                    } */}
-                </NativeSelect>
-                <div className="Separate"></div>
-                <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                <Button  onClick={this.findAllUser} variant="contained" color="primary" >搜索</Button>
         </div>
         )
     }

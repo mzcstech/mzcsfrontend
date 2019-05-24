@@ -4,12 +4,15 @@ import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
+import FormLabel from '@material-ui/core/FormLabel';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import Input from '@material-ui/core/Input';
 // require('./styles/CompanyInformation.css')
 class EditPrivilegeManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyInformationId: this.props.companyInformationId
+            usergroupId: this.props.usergroupId
         };
     }
     handleChange = (event) => {
@@ -41,8 +44,8 @@ class EditPrivilegeManagement extends React.Component {
     //查询详情，并展示详情页
     findById = (event) => {
         event.preventDefault();
-        var companyInformationId = this.state.companyInformationId;
-        fetch(SERVER_URL + '/companyInformation/findById/' + companyInformationId,
+        var usergroupId = this.state.usergroupId;
+        fetch(SERVER_URL + '/companyInformation/findById/' + usergroupId,
             {
                 mode: "cors",
                 method: 'GET',
@@ -80,15 +83,77 @@ class EditPrivilegeManagement extends React.Component {
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row" >
-                                    <div className="InputBox">
-                                        <div className="InputBox-text">公司名称:</div>
-                                        <TextField className="InputBox-next" placeholder="公司名称" name="companyName"  onChange={this.handleChange} value={this.state.companyName} title="公司名称" />
-                                    </div>
-                                    <div className="InputBox">
-                                        <div className="InputBox-text">备注:</div>
-                                        <TextField className="InputBox-next" placeholder="remark"  onChange={this.handleChange} multiline={true} 
-                                        name="remark" value={this.state.remark} />
-                                    </div>
+                                <div className="InputBox">
+                                        <FormLabel className="InputBox-text">名称:</FormLabel>
+                                        <Input   style={{ width:'70%'}}  className="InputBox-text" className="Input" value={this.state.usergroupId}  onChange={this.handcompanyNameChange} />
+                                </div>    
+                                <div className="InputBox">
+                                        <FormLabel className="InputBox-text">类型:</FormLabel>
+                                        <NativeSelect      
+                                            style={{ width:'70%'}}                                  
+                                            native
+                                            value={this.state.originalName}
+                                            onChange={this.handleChange}
+                                            name='originalName' 
+                                            input={<Input name="originalName" id="originalName" />}
+                                            >
+                                            {/* {this.state.userList.map(item => {
+                                                return (<option value={item.name} >{item.name}</option>)
+                                            }) */}
+                                            }
+                                    </NativeSelect>
+                                </div>
+                                <div className="InputBox">
+                                        <FormLabel className="InputBox-text">子类型:</FormLabel>
+                                        <NativeSelect      
+                                            style={{ width:'70%'}}                                  
+                                            native
+                                            value={this.state.originalName}
+                                            onChange={this.handleChange}
+                                            name='originalName' 
+                                            input={<Input name="originalName" id="originalName" />}
+                                            >
+                                            {/* {this.state.userList.map(item => {
+                                                return (<option value={item.name} >{item.name}</option>)
+                                            }) */}
+                                            }
+                                    </NativeSelect>
+                                </div>
+                                <div className="InputBox">
+                                        <FormLabel className="InputBox-text">父节点:</FormLabel>
+                                        <NativeSelect      
+                                            style={{ width:'70%'}}                                  
+                                            native
+                                            value={this.state.originalName}
+                                            onChange={this.handleChange}
+                                            name='originalName' 
+                                            input={<Input name="originalName" id="originalName" />}
+                                            >
+                                            {/* {this.state.userList.map(item => {
+                                                return (<option value={item.name} >{item.name}</option>)
+                                            }) */}
+                                            }
+                                    </NativeSelect>
+                                </div>
+                                <div className="InputBox">
+                                        <FormLabel className="InputBox-text">code:</FormLabel>
+                                        <NativeSelect      
+                                            style={{ width:'70%'}}                                  
+                                            native
+                                            value={this.state.originalName}
+                                            onChange={this.handleChange}
+                                            name='originalName' 
+                                            input={<Input name="originalName" id="originalName" />}
+                                            >
+                                            {/* {this.state.userList.map(item => {
+                                                return (<option value={item.name} >{item.name}</option>)
+                                            }) */}
+                                            }
+                                    </NativeSelect>
+                                </div>
+                                <div className="InputBox">
+                                
+                                </div>
                             </div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>

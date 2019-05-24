@@ -1,11 +1,11 @@
 import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
-import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
+// import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
 import LeftMenu from './leftDropMenuPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
+import TreeMenu  from 'react-simple-tree-menu'
 // import store from '../../store'
-import MuiTreeView from 'material-ui-treeview';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -17,6 +17,7 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Input from '@material-ui/core/Input';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -79,65 +80,47 @@ const styles = theme => ({
     constructor(props){
         super(props)
         this.state = {
+          three:[],
           open:'true',
-          data: [],
           page: 0,
           rowsPerPage: 10,
           total: 0,
+          label:''
         }
+        this.getUsergroupFindByParentId = this.getUsergroupFindByParentId.bind(this)
+        this.nodeComparison             = this.nodeComparison.bind(this)
     }
     componentDidMount(){
-      this.fetchTemplate();
+      this.getUsergroupFindByParentId()
     }
-      分页
-    fetchTemplate = () => {
-      let followUpVo = new FormData();
-      followUpVo.append("pageNum", this.state.page + 1)
-      followUpVo.append("pageSize", this.state.rowsPerPage)
-      followUpVo.append("companyName", this.state.valueInput)
-      fetch(SERVER_URL + '/usergroup/list', {
+    
+    //获取用户组树
+    getUsergroupFindByParentId(){
+      fetch(SERVER_URL + '/usergroup/findByParentId',{
         mode: "cors",
         method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        // body: followUpVo
       })
-        .then((response) => response.json())
-        .then((responseData) => {
-          this.setState({
-            data: responseData.data,
-          });
-        })
-        .catch(err => console.error(err));
+      .then((response) => response.json())
+      .then((responseData) => {
+           this.setState({
+             three:responseData.data
+           })
+      })
+      .catch(err => console.error(err));
     }
-    //将获取的数据传给store
-  
+    //点击节点渲染列表
+    nodeComparison(e){
+       this.setState({
+          label:e.label
+       })
+    }
     render(){
-      const tree = [
-        {
-          value: 'Parent A',
-          nodes: [{ value: 'Child A' }, { value: 'Child B' }],
-        },
-        {
-          value: 'Parent B',
-          nodes: [
-            {
-              value: 'Child C',
-            },
-            {
-              value: 'Parent C',
-              nodes: [
-                { value: 'Child D' },
-                { value: 'Child E' },
-                { value: 'Child F' },
-              ],
-            },
-          ],
-        },
-      ];
-        const { classes ,theme  } = this.props;
+        const { three,label} = this.state
+        const { classes ,theme ,history} = this.props;
         const currentPath = this.props.location.pathname;
         const  drawer = (
             <div>
@@ -170,9 +153,6 @@ const styles = theme => ({
                     <Typography style={{paddingLeft:'28px'}} variant="h7" color="inherit" noWrap>
                     权限管理
                     </Typography>
-                    <div className="QueryTemplateInto" >
-                        <QueryPrivilegeManagement/>
-                    </div>
                 </Toolbar>
             </AppBar>
             <div>
@@ -187,13 +167,31 @@ const styles = theme => ({
                             variant="permanent"
                             open
                             >
-                             <MuiTreeView tree={tree} className="leftDropMenuPrivilegeManagement" />
+                            <TreeMenu data={three} onClickItem={this.nodeComparison} />
+                            {/* <div
+                              data={treeData}
+                              onClickItem={({ key, label, ...props }) => {
+                             
+                                this.navigate(props.url); // user defined prop
+                              }}
+                              debounceTime={125}>
+                                {({ search, items }) => (
+                                    <>
+                                      <Input  onChange={e => search(e.target.value)} placeholder="搜索" />
+                                      <div>
+                                        {items.map(props => (
+                                          <ListItem {...props} />
+                                        ))}
+                                      </div>
+                                    </>
+                                )}
+                            </div> */}
                             </Drawer>
                         </Hidden>
                     </nav>
                     <main style={{marginLeft:'15.5%',width:'84%' }}>
-                    {/* <div  className={classes.toolbarRight} /> */}
-                        <TablesPrivilegeManagement data={this.state.data}  history={this.props.history}/>
+                    {/* <div  className={classes.toolbarRight} /> */} 
+                        <TablesPrivilegeManagement label={label} history={history}/>
                     </main>
                 </div>
             </div>

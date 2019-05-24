@@ -17,7 +17,7 @@ class EditCompanyInformation extends React.Component {
             { [event.target.name]: event.target.value }
         );
     }
-    //提示框
+    //提示框 
     handleClose = (event, reason) => {
         this.setState({ open: false });
     };   

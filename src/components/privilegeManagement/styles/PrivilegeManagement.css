@@ -139,16 +139,17 @@
         width:100%;
         border-bottom:3px solid #E5E5E5;
     }
-        .QueryTemplateInto{
+        .QueryPrivilegInto{
             position: absolute;
             right:20px;
+            top:78px;
         }
     table{
         table-layout:fixed;
         word-break:break-all;
     }
     .PrivilegTableCell{
-        width:20.5%;
+        width:16.5%;
         padding:0 1px;
         border-top:2px solid #EDEDED;
         border-left:1px solid #EDEDED;
@@ -158,13 +159,13 @@
         text-overflow: ellipsis;
     }
     .PrivilegTableCell:nth-last-child(1){
-        width:4.5%;
+        width:4.3%;
     }
     .PrivilegTableCell:nth-last-child(2){
-        width:4.5%;
+        width:4.3%;
     }
     .PrivilegTableCell:nth-last-child(3){
-        width:4.5%;
+        width:4.3%;
     }
         .TableSortLabel{
             border:1px solid red;

@@ -174,7 +174,7 @@ class EnhancedTable extends React.Component {
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/companyInformation/delete/' + id,
+    fetch(SERVER_URL + '/usergroup/delete' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -183,7 +183,6 @@ class EnhancedTable extends React.Component {
           'Accept': '*/*'
         }
       })
-      // fetch(SERVER_URL + 'cars/')
       .then(res => {
         this.setState({ open: true, message: '删除成功' });
         this.fetchTemplate()
@@ -201,7 +200,7 @@ class EnhancedTable extends React.Component {
         {
           label: '是',
           onClick: () => this.onDelClick(id)
-        },
+        }, 
         {
           label: '否',
         }
@@ -383,7 +382,7 @@ class EnhancedTable extends React.Component {
                     <TableRow
                       className=""
                       hover
-                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)}
+                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)} 
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
