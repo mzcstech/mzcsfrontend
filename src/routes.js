@@ -10,6 +10,8 @@ import Original from './components/original/Original'
 import OriginalProcessRecords from './components/original/OriginalProcessRecords'
 import PrivilegeManagement from './components/privilegeManagement/PrivilegeManagement'
 import privilegeSubordinate from './components/privilegeSubordinate/PrivilegeSubordinate'
+import SocialSecurity from './components/socialsecurity/SocialSecurity'
+import HousingFund from './components/housingFund/HousingFund'
 export default props => (
   <HashRouter>
     <ScrollToTop>
@@ -23,7 +25,9 @@ export default props => (
         <Route exact path='/OriginalProcessRecords' component={OriginalProcessRecords} />
         <Route exact path='/PrivilegeManagement' component={PrivilegeManagement} />
         <Route exact path='/privilegeSubordinate' component={privilegeSubordinate} />
-      </Switch>
+        <Route exact path='/socialSecurity' component={SocialSecurity}/>
+        <Route exact path='/housingFund' component={HousingFund}/>
+      </Switch> 
     </ScrollToTop>
   </HashRouter>
 )

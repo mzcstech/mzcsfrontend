@@ -1,3 +1,4 @@
+
 {
   "name": "material-sense",
   "version": "0.1.0",
@@ -18,10 +19,10 @@
     "react-bootstrap": "^1.0.0-beta.8",
     "react-confirm-alert": "^2.4.0",
     "react-dom": "^16.6.0",
+    "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.1",
-    "react-simple-tree-menu": "^1.0.6",
     "react-skylight": "^0.5.1",
     "react-swipeable-views": "^0.13.0",
     "react-swipeable-views-utils": "^0.13.0",
@@ -45,5 +46,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "redux-devtools": "^3.5.0"
+  }
 }
+

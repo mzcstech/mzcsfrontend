@@ -9,11 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Topbar from '../Topbar';
-import AddCompanyInformation from './AddCompanyInformation.js';
-import EditCompanyInformation from './EditCompanyInformation.js';
-import ViewCompanyInformation from './ViewCompanyInformation.js';
-import QueryCompanyInformationl from './QueryCompanyInformationl'
-import CompanyInformationEnhancedTableHead from './CompanyInformationEnhancedTableHead.js';
+import AddSocialSecurity from './AddSocialSecurity.js';
+import EditSocialSecurity from './EditSocialSecurity.js'
+import ViewSocialSecurity from './ViewSocialSecurity.js';
+import QuerySocialSecurity from './QuerySocialSecurity.js'
+import SocialSecurityEnhancedTableHead from './SocialSecurityEnhancedTableHead.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +22,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import { SERVER_URL } from '../../constants.js';
-import './styles/CompanyInformation.css'
+import './styles/SocialSecurity.css'
 //整体样式
 const styles = theme => ({
   root: {
@@ -58,8 +58,7 @@ class EnhancedTable extends React.Component {
       total: 0,
       message: '',
       open: false,
-      TEMPLATE_ID: '',
-      companyInformationgetCount: [],
+      TEMPLATE_ID: '',      
       display_holdCount: 'none',
       display_loanInCount: 'none',
       display_outgoingCount: 'none',
@@ -67,7 +66,7 @@ class EnhancedTable extends React.Component {
     };
   }
   componentWillMount() {
-    this.companyInformationGetCount()
+    
   }
   componentDidMount = () => {
     this.fetchTemplate();
@@ -76,66 +75,17 @@ class EnhancedTable extends React.Component {
   //提示框的显示判断
   handleClose = (event, reason) => {
     this.setState({ open: false });
-  };
-  //显示提示数量
-  companyInformationGetCount() {
-    fetch(SERVER_URL + '/companyInformation/getCount',
-      {
-        mode: "cors",
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json,text/plain,*/*'
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then(res => {
-        this.setState({ companyInformationgetCount: res.data }, () => {
-          if (this.state.companyInformationgetCount.holdCount != 0) {
-            this.setState({ display_holdCount: 'flex' }, () => {
-            })
-          } else {
-            this.setState({ display_holdCount: 'none' }, () => {
-            })
-          }
-          if (this.state.companyInformationgetCount.outgoingCount != 0) {
-            this.setState({ display_outgoingCount: 'flex' }, () => {
-            })
-          } else {
-            this.setState({ display_outgoingCount: 'none' }, () => {
-            })
-          }
-          if (this.state.companyInformationgetCount.loanInCount != 0) {
-            this.setState({ display_loanInCount: 'flex' }, () => {
-            })
-          } else {
-            this.setState({ display_loanInCount: 'none' }, () => {
-            })
-          }
-          if (this.state.companyInformationgetCount.toBeConfirmedCount != 0) {
-            this.setState({ display_toBeConfirmedCount: 'flex' }, () => {
-            })
-
-          } else {
-            this.setState({ display_toBeConfirmedCount: 'none' }, () => {
-            })
-          }
-        })
-      })
-      .catch(err => console.error(err))
-  }
+  };  
 
   // 新增
   addTemplate(params) {
-    let companyinformationVo = new FormData()
+    let socialSecurityVo = new FormData()
     if (params) {
       for (let key in params) {
-        companyinformationVo.append(key, params[key])
+        socialSecurityVo.append(key, params[key])
       }
-    }    
-    console.log(companyinformationVo)
-    fetch(SERVER_URL + '/companyInformation/save',
+    }
+    fetch(SERVER_URL + '/socialSecurity/save',
       {
         mode: "cors",
         method: 'POST',
@@ -143,7 +93,7 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: companyinformationVo
+        body: socialSecurityVo
       }
     )
       .then(res => this.fetchTemplate())
@@ -152,13 +102,13 @@ class EnhancedTable extends React.Component {
   //修改
   editTemplate(params) {
 
-    let companyInformationVo = new FormData()
+    let socialSecurityVo = new FormData()
     if (params) {
       for (let key in params) {
-        companyInformationVo.append(key, params[key])
+        socialSecurityVo.append(key, params[key])
       }
     }
-    fetch(SERVER_URL + '/companyInformation/edit',
+    fetch(SERVER_URL + '/socialSecurity/edit',
       {
         mode: "cors",
         method: 'POST',
@@ -166,14 +116,14 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: companyInformationVo
+        body: socialSecurityVo
       })
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/usergroup/delete' + id,
+    fetch(SERVER_URL + '/socialSecurity/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -182,13 +132,14 @@ class EnhancedTable extends React.Component {
           'Accept': '*/*'
         }
       })
+      // fetch(SERVER_URL + 'cars/')
       .then(res => {
         this.setState({ open: true, message: '删除成功' });
         this.fetchTemplate()
       })
       .catch(err => {
         this.setState({ open: true, message: 'Error when deleting' });
-        console.error(err) 
+        console.error(err)
       })
   }
   //确认是否删除
@@ -199,23 +150,11 @@ class EnhancedTable extends React.Component {
         {
           label: '是',
           onClick: () => this.onDelClick(id)
-        }, 
+        },
         {
           label: '否',
         }
       ]
-    })
-  }
-  //跳转到原件管理List页面
-  jumpToOriginalList = (id, name) => {
-    //window.location.href='/#/original?companyInformationId='+id;    
-
-    this.props.history.push({
-      pathname: '/Original',
-      query: {
-        companyInformationId: id,
-        companyName: name
-      },
     })
   }
 
@@ -229,23 +168,23 @@ class EnhancedTable extends React.Component {
       originalHolder = ''
       originalOutStatus = ''
     }
-    let companyinformationQueryVo = new FormData();
-    companyinformationQueryVo.append("pageNum", this.state.page + 1)
-    companyinformationQueryVo.append("pageSize", this.state.rowsPerPage)
-    companyinformationQueryVo.append("companyName", companyName)
-    companyinformationQueryVo.append("originalHolder", originalHolder)
-    companyinformationQueryVo.append("originalOutStatus", originalOutStatus)
-    fetch(SERVER_URL + '/companyInformation/list', {
+    let socialSecurity = new FormData();
+    socialSecurity.append("pageNum", this.state.page + 1)
+    socialSecurity.append("pageSize", this.state.rowsPerPage)
+    socialSecurity.append("companyName", companyName)
+    socialSecurity.append("originalHolder", originalHolder)
+    socialSecurity.append("originalOutStatus", originalOutStatus)
+    fetch(SERVER_URL + '/socialSecurity/list', {
       mode: "cors",
       method: 'POST',
       credentials: 'include',
       headers: {
         'Accept': 'application/json,text/plain,*/*'
       },
-      body: companyinformationQueryVo
+      body: socialSecurity
     })
       .then((response) => response.json())
-      .then((responseData) => {    
+      .then((responseData) => {       
         this.setState({
           QX: {
             add: responseData.data.QX.add,
@@ -257,7 +196,7 @@ class EnhancedTable extends React.Component {
           page: responseData.data.varList.pageNum - 1,
           rowsPerPage: responseData.data.varList.pageSize,
           total: responseData.data.varList.total
-        });
+        });        
       })
       .catch(err => console.error(err));
   }
@@ -290,7 +229,7 @@ class EnhancedTable extends React.Component {
   };
   // 页面更改时触发回调
   handleChangePage = (event, page) => {
-    
+
     this.state.page = page;
     this.fetchTemplate();
   };
@@ -304,7 +243,7 @@ class EnhancedTable extends React.Component {
 
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-  render() {    
+  render() {
     let companyInformationgetCount = this.state.companyInformationgetCount
     let display_holdCount = this.state.display_holdCount
     let display_outgoingCount = this.state.display_outgoingCount
@@ -322,46 +261,28 @@ class EnhancedTable extends React.Component {
         <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
           <Toolbar>
             <Typography style={{ paddingLeft: '28px' }} variant="h7" color="inherit" noWrap>
-              公司原件信息列表
+              社保工单
             </Typography>
             <div className="QueryTemplateInto" >
-              <QueryCompanyInformationl fetchTemplate={this.fetchTemplate} />
+              <QuerySocialSecurity fetchTemplate={this.fetchTemplate} />
             </div>
           </Toolbar>
         </AppBar>
-        <Grid container> 
+        <Grid container>
           <div className="QueryTemplate">
             <Grid item>
               {this.state.QX.add == "1" ? (
-                <AddCompanyInformation addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
+                <AddSocialSecurity addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
               ) : (
                   <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
                 )}
-            </Grid>
-            <div className="QueryTemplateInto" >
-              <div style={{ display: display_holdCount }} className="QueryTemplateIntoNumber">
-                <div>持有原件数量</div>
-                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.holdCount} max={99} color="secondary"></Badge>
-              </div>
-              <div style={{ display: display_outgoingCount }} className="QueryTemplateIntoNumber">
-                <div>出库中数量</div>
-                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.outgoingCount} max={99} color="secondary"></Badge>
-              </div>
-              <div style={{ display: display_loanInCount }} className="QueryTemplateIntoNumber">
-                <div>待借入数量</div>
-                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.loanInCount} max={99} color="secondary"></Badge>
-              </div>
-              <div style={{ display: display_toBeConfirmedCount }} className="QueryTemplateIntoNumber">
-                <div>需确认条数</div>
-                <Badge className="Badgenumber" badgeContent={companyInformationgetCount.toBeConfirmedCount} max={99} color="secondary"></Badge>
-              </div>
-            </div>
+            </Grid>           
           </div>
         </Grid>
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
-            <CompanyInformationEnhancedTableHead
+            <SocialSecurityEnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -373,44 +294,43 @@ class EnhancedTable extends React.Component {
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.tEMPLATE_ID);
+                  const isSelected = this.isSelected(n.socialSecurityId);
                   // 便利显示列表页面
                   return (
                     <TableRow
                       className=""
                       hover
-                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)} 
+                      onClicock={event => this.handleClick(event, n.socialSecurityId)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.tEMPLATE_ID}
+                      key={n.socialSecurityId}
                     >
                       <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none"><Button size="small" style={linkStyletwo} variant="text" color="primary" onClick={() => { this.jumpToOriginalList(n.companyInformationId, n.companyName) }}>原件管理</Button></TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.registeredArea}>{n.registeredArea}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.buyType}>{n.buyType}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.identityCardNumber}>{n.identityCardNumber}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.saler}>{n.saler}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.cha == "1" ? (
-                          <ViewCompanyInformation fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} />
+                          <ViewSocialSecurity fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.edit == "1" ? (
-                          <EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} />
+                          <EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button>
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
                           )}
-
                       </TableCell>
                     </TableRow>
                   );
