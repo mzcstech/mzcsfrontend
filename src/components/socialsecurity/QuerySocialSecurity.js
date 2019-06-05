@@ -84,46 +84,8 @@ class QuerySocialSecurity extends Component{
 
     render(){
         return(
-            <div className="box">
-               
-                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
-                <div className="Separate"></div>
-                <InputLabel  style={{color:'black'}} >原件持有人:</InputLabel>
-                    <NativeSelect    
-                        style={{textAlign:'center',width:'175px'}}
-                        native
-                        value={this.state.originalHolder}
-                        onChange={this.handoriginalHolderChange}
-                        name='originalHolder' 
-                        input={<Input name="name" id="name"  />}
-                        >
-                        <option value="" /> 
-                        {this.state.userList.map(item => {
-                            return (<option  value={item.username}>{item.name}</option>)
-                        })
-                        }
-                  </NativeSelect>
-                <div className="Separate"></div>
-                <InputLabel style={{color:'black'}} htmlFor="age-simple">流转状态:</InputLabel>
-                <NativeSelect
-                    style={{textAlign:'center',width:'175px'}}
-                    native
-                    className="downBox-form"
-                    value={this.state.originalOutStatus} 
-                    onChange={this.handoriginalOutStatusChange}
-                    name='originalOutStatus' 
-                    input={<Input name="name" id="name"  />}
-                >
-                    <option value="" /> 
-                    {
-                        this.state.singleElectionData.map(item=>{
-                            return(
-                                <option value={item.bianma}>{item.name}</option>
-                            )
-                        })
-                    }
-                </NativeSelect>
-                <div className="Separate"></div>
+            <div className="box">               
+                <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>                               
                 <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
         </div>
         )
