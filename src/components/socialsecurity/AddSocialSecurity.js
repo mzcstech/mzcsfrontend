@@ -17,6 +17,7 @@ class AddTemplate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            customerId:'',
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -77,7 +78,7 @@ class AddTemplate extends React.Component {
         })
             //其它公司信息回显
             this.setState(
-                { 
+                { customerId:customer.customerId,
                     customerPhone:customer.linkmanPhoneNum,
                     address:customer.registered,
                     level1:customer.registerArea.split('-')[0],
@@ -303,6 +304,7 @@ class AddTemplate extends React.Component {
         var templateVo = {}
         if (this.state.companyName != '') {
             templateVo = {
+                customerId:this.state.customerId,
                 companyName: this.state.companyName,
                 customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
