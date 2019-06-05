@@ -17,6 +17,7 @@ class AddTemplate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            customerId:'',
             companyName: '',
             customer: '',
             customerPhone: '',//客户联系方式
@@ -74,6 +75,7 @@ class AddTemplate extends React.Component {
             .then(res => res.json())
             .then((responseData) => {
                 this.setState({
+                    customerId:responseData.data.customerId,
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,
                     customerPhone: responseData.data.customerPhone,

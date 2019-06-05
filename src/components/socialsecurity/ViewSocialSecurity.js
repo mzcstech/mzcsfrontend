@@ -79,7 +79,13 @@ class AddTemplate extends React.Component {
     findById = (event) => {
         this.findAllUser()
         event.preventDefault();
-        var socialSecurityId = this.props.socialSecurityId;
+        var socialSecurityId ="";
+        try {
+            socialSecurityId = this.props.match.params.socialSecurityId;
+        } catch(e) {
+            socialSecurityId =this.props.socialSecurityId;
+        }
+        //var socialSecurityId = this.props.match.params.socialSecurityId==undefined?this.props.socialSecurityId:this.props.match.params.socialSecurityId;
         fetch(SERVER_URL + '/socialSecurity/findById/' + socialSecurityId,
             {
                 mode: "cors",
@@ -91,7 +97,6 @@ class AddTemplate extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-
                 this.setState({
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,

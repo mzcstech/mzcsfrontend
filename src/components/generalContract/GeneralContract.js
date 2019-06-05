@@ -9,11 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import Topbar from '../Topbar';
-import AddSocialSecurity from './AddSocialSecurity.js';
-import EditSocialSecurity from './EditSocialSecurity.js'
-import ViewSocialSecurity from './ViewSocialSecurity.js';
-import QuerySocialSecurity from './QuerySocialSecurity.js'
-import SocialSecurityEnhancedTableHead from './SocialSecurityEnhancedTableHead.js';
+import AddgeneralContract from './AddGeneralContract.js';
+import EditgeneralContract from './EditGeneralContract.js';
+import ViewgeneralContract from './ViewGeneralContract.js';
+import QuerygeneralContract from './QueryGeneralContract'
+import GeneralContractEnhancedTableHead from './GeneralContractEnhancedTableHead.js';
 import Button from '@material-ui/core/Button';
 import { confirmAlert } from 'react-confirm-alert';
 import Grid from '@material-ui/core/Grid';
@@ -22,7 +22,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import { SERVER_URL } from '../../constants.js';
-import './styles/SocialSecurity.css'
+import './styles/GeneralContract.css'
 //整体样式
 const styles = theme => ({
   root: {
@@ -58,11 +58,8 @@ class EnhancedTable extends React.Component {
       total: 0,
       message: '',
       open: false,
-      TEMPLATE_ID: '',      
-      display_holdCount: 'none',
-      display_loanInCount: 'none',
-      display_outgoingCount: 'none',
-      display_toBeConfirmedCount: 'none',
+      TEMPLATE_ID: '',     
+      
     };
   }
   componentWillMount() {
@@ -75,17 +72,18 @@ class EnhancedTable extends React.Component {
   //提示框的显示判断
   handleClose = (event, reason) => {
     this.setState({ open: false });
-  };  
+  };
+  
 
   // 新增
   addTemplate(params) {
-    let socialSecurityVo = new FormData()
+    let generalContractVo = new FormData() 
     if (params) {
-      for (let key in params) {
-        socialSecurityVo.append(key, params[key])
+      for (let key in params) {        
+        generalContractVo.append(key, params[key])
       }
-    }
-    fetch(SERVER_URL + '/socialSecurity/save',
+    }          
+    fetch(SERVER_URL + '/generalContract/saveFromPage',
       {
         mode: "cors",
         method: 'POST',
@@ -93,7 +91,7 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: socialSecurityVo
+        body: generalContractVo
       }
     )
       .then(res => this.fetchTemplate())
@@ -101,14 +99,13 @@ class EnhancedTable extends React.Component {
   }
   //修改
   editTemplate(params) {
-
-    let socialSecurityVo = new FormData()
+    let generalContractVo = new FormData()
     if (params) {
       for (let key in params) {
-        socialSecurityVo.append(key, params[key])
+        generalContractVo.append(key, params[key])
       }
     }
-    fetch(SERVER_URL + '/socialSecurity/edit',
+    fetch(SERVER_URL + '/generalContract/editFromPage',
       {
         mode: "cors",
         method: 'POST',
@@ -116,14 +113,14 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: socialSecurityVo
+        body: generalContractVo
       })
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
   }
   //删除
   onDelClick = (id) => {
-    fetch(SERVER_URL + '/socialSecurity/delete/' + id,
+    fetch(SERVER_URL + '/generalContract/delete/' + id,
       {
         mode: "cors",
         method: 'DELETE',
@@ -132,14 +129,13 @@ class EnhancedTable extends React.Component {
           'Accept': '*/*'
         }
       })
-      // fetch(SERVER_URL + 'cars/')
       .then(res => {
         this.setState({ open: true, message: '删除成功' });
         this.fetchTemplate()
       })
       .catch(err => {
         this.setState({ open: true, message: 'Error when deleting' });
-        console.error(err)
+        console.error(err) 
       })
   }
   //确认是否删除
@@ -150,11 +146,23 @@ class EnhancedTable extends React.Component {
         {
           label: '是',
           onClick: () => this.onDelClick(id)
-        },
+        }, 
         {
           label: '否',
         }
       ]
+    })
+  }
+  //跳转到原件管理List页面
+  jumpToOriginalList = (id, name) => {
+    //window.location.href='/#/original?generalContractId='+id;    
+
+    this.props.history.push({
+      pathname: '/Original',
+      query: {
+        generalContractId: id,
+        companyName: name
+      },
     })
   }
 
@@ -164,27 +172,24 @@ class EnhancedTable extends React.Component {
       data: []
     })
     if (companyName == undefined && originalHolder == undefined && originalOutStatus == undefined) {
-      companyName = ''
-      originalHolder = ''
-      originalOutStatus = ''
+      companyName = ''     
     }
-    let socialSecurity = new FormData();
-    socialSecurity.append("pageNum", this.state.page + 1)
-    socialSecurity.append("pageSize", this.state.rowsPerPage)
-    socialSecurity.append("companyName", companyName)
-    socialSecurity.append("originalHolder", originalHolder)
-    socialSecurity.append("originalOutStatus", originalOutStatus)
-    fetch(SERVER_URL + '/socialSecurity/list', {
+    let generalContractQueryVo = new FormData();
+    generalContractQueryVo.append("pageNum", this.state.page + 1)
+    generalContractQueryVo.append("pageSize", this.state.rowsPerPage)
+    generalContractQueryVo.append("companyName", companyName)   
+    fetch(SERVER_URL + '/generalContract/list', {
       mode: "cors",
       method: 'POST',
       credentials: 'include',
       headers: {
         'Accept': 'application/json,text/plain,*/*'
       },
-      body: socialSecurity
+      body: generalContractQueryVo
     })
       .then((response) => response.json())
-      .then((responseData) => {       
+      .then((responseData) => {  
+        console.log(responseData)  
         this.setState({
           QX: {
             add: responseData.data.QX.add,
@@ -196,14 +201,14 @@ class EnhancedTable extends React.Component {
           page: responseData.data.varList.pageNum - 1,
           rowsPerPage: responseData.data.varList.pageSize,
           total: responseData.data.varList.total
-        });        
+        });
       })
       .catch(err => console.error(err));
   }
   //clickbox相关函数
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.tEMPLATE_ID) }));
+      this.setState(state => ({ selected: state.data.map(n => n.generalContractId) }));
       return;
     }
     this.setState({ selected: [] });
@@ -229,7 +234,7 @@ class EnhancedTable extends React.Component {
   };
   // 页面更改时触发回调
   handleChangePage = (event, page) => {
-
+    
     this.state.page = page;
     this.fetchTemplate();
   };
@@ -243,12 +248,7 @@ class EnhancedTable extends React.Component {
 
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
-  render() {
-    let companyInformationgetCount = this.state.companyInformationgetCount
-    let display_holdCount = this.state.display_holdCount
-    let display_outgoingCount = this.state.display_outgoingCount
-    let display_loanInCount = this.state.display_loanInCount
-    let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
+  render() {       
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
@@ -261,19 +261,19 @@ class EnhancedTable extends React.Component {
         <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
           <Toolbar>
             <Typography style={{ paddingLeft: '28px' }} variant="h7" color="inherit" noWrap>
-              社保工单
+              合同管理
             </Typography>
             <div className="QueryTemplateInto" >
-              <QuerySocialSecurity fetchTemplate={this.fetchTemplate} />
+              <QuerygeneralContract fetchTemplate={this.fetchTemplate} />
             </div>
           </Toolbar>
         </AppBar>
-        <Grid container>
+        <Grid container> 
           <div className="QueryTemplate">
             <Grid item>
               {this.state.QX.add == "1" ? (
-                <AddSocialSecurity addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
-              ) : (
+                <AddgeneralContract addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} />
+              ) : ( 
                   <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
                 )}
             </Grid>           
@@ -282,55 +282,60 @@ class EnhancedTable extends React.Component {
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
-            <SocialSecurityEnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              rowCount={this.state.total}
+            <GeneralContractEnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={this.handleSelectAllClick}
+                rowCount={this.state.total}
             />
+      
             <TableBody >
               {/* {stableSort(data, getSorting(order, orderBy)) */}
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  const isSelected = this.isSelected(n.socialSecurityId);
+                  const isSelected = this.isSelected(n.tEMPLATE_ID);
                   // 便利显示列表页面
                   return (
                     <TableRow
                       className=""
                       hover
-                      onClicock={event => this.handleClick(event, n.socialSecurityId)}
+                      onClicock={event => this.handleClick(event, n.tEMPLATE_ID)} 
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.socialSecurityId}
+                      key={n.tEMPLATE_ID}
                     >
-                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.registeredArea}>{n.registeredArea}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.buyType}>{n.buyType}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.identityCardNumber}>{n.identityCardNumber}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.saler}>{n.saler}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>                      
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.contractType}>{n.contractType}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.contractCreateDate}>{n.contractCreateDate}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.registerArea}>{n.registerArea}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.contractDate}>{n.contractDate}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.contractPrice}>{n.contractPrice}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.advancesReceived}>{n.advancesReceived}</TableCell>
+                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.finalPayment}>{n.finalPayment}</TableCell>  
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.cha == "1" ? (
-                          <ViewSocialSecurity fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
+                          <ViewgeneralContract fetchTemplate={this.fetchTemplate} generalContractId={n.generalContractId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
-                          )}                          
+                          )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.edit == "1" ? (
-                          <EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
+                          <EditgeneralContract editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} generalContractId={n.generalContractId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.generalContractId) }}>删除</Button>
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
                           )}
+
                       </TableCell>
                     </TableRow>
                   );
