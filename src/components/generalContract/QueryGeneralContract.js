@@ -87,8 +87,7 @@ class QuerygeneralContract extends Component{
             <div className="box">
                
                 <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
-                <div className="Separate"></div>               
-                <div className="Separate"></div>
+                <div className="Separate"></div>   
                 <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
         </div>
         )
