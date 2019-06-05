@@ -61,14 +61,22 @@ const rows = [
   { id: 'name', numeric: true, disablePadding: false, label: '名称' },
   { id: 'type', numeric: true, disablePadding: false, label: '类型' },
   { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
-  { id: 'subtype', numeric: true, disablePadding: false, label: '父节点' },
+  { id: 'parentId', numeric: true, disablePadding: false, label: '父节点' },
   { id: 'code', numeric: true, disablePadding: false, label: 'code' },
   { id: 'EditPrivilegeManagement', numeric: true, disablePadding: false, label: '修改' },
-  { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
+  // { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
   { id: 'Subordinate', numeric: true, disablePadding: false, label: '所属' },
 ];
 
 class EnhancedTableHead extends React.Component {
+  constructor(props){
+    super(props)
+    this.state={
+
+    }
+    
+  }
+  
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
@@ -93,16 +101,17 @@ class EnhancedTableHead extends React.Component {
                 padding="none"
               >
                 <Tooltip
-                  title={row.label}
+                  title={rows.label}
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
+                  key={rows.id}
                 >
-                  <TableSortLabel
-                    className="TableSortLabel"
-                    hideSortIcon={true}
-                  >
-                    {row.label}
-                  </TableSortLabel>
+                <TableSortLabel
+                  className="TableSortLabel"
+                  hideSortIcon={true}
+                >
+                  {row.label}
+                </TableSortLabel>
                 </Tooltip>
               </TableCell>
             ),
@@ -149,8 +158,8 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
-
+  const { numSelected, classes,confirmDelete} = props;
+ 
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -167,13 +176,13 @@ let EnhancedTableToolbar = props => {
             Nutrition
           </Typography>
         )}
-      </div>f
+      </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
         {numSelected > 0 ? (
           <Tooltip  title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon />
+              <DeleteIcon onClick={confirmDelete}   />
             </IconButton>
           </Tooltip>
         ) : (
@@ -202,12 +211,13 @@ const styles = theme => ({
   },
   table: {
     minWidth: 1020,
-  },
+  }, 
   tableWrapper: {
     overflowX: 'auto',
   },
 });
-
+//删除多选的id数组
+let ids = []
 class TablesPrivilegeManagement extends React.Component {
     constructor(props){
         super(props)
@@ -222,9 +232,13 @@ class TablesPrivilegeManagement extends React.Component {
             NewqueryList:'',
             message:'',
             open: false,
+            idsState:[],
         };
-        this.filterFun     = this.filterFun.bind(this)
-        this.fetchTemplate = this.fetchTemplate.bind(this)
+        this.filterFun      = this.filterFun.bind(this)
+        this.editTemplate   = this.editTemplate.bind(this)
+        this.fetchTemplate  = this.fetchTemplate.bind(this)
+        this.handisSelected = this. handisSelected.bind(this)
+        this.onDelClickCheckbox = this.onDelClickCheckbox.bind(this)
     }
 
     componentDidMount=()=>{  
@@ -247,7 +261,6 @@ class TablesPrivilegeManagement extends React.Component {
     })  
       .then((response) => response.json())
       .then((responseData)  => {
-        console.log(responseData.data.list)
         if(queryList === null || queryList === undefined){
           this.setState({data: responseData.data.list},()=>{
           });
@@ -338,16 +351,27 @@ class TablesPrivilegeManagement extends React.Component {
       }
       return newstate
   }
+  //多选删除
+  handisSelected=(e,addid)=>
+  { 
+    if(e.target.checked === true){
+      ids.push(addid)
+      this.setState({idsState:ids},()=>{
+      })
+    }else{
+      ids.splice(addid,1)
+      this.setState({idsState:ids},()=>{
+      })
+    }
+  }
   //确认是否删除
-  confirmDelete = (id) => {
-    let deleteID = []
-    deleteID.push(id)
+  confirmDelete = () => {
     confirmAlert({
-      message: '确认是否删除?' + id,
+      message: '确认是否删除?',
       buttons: [
         {
           label: '是',
-          onClick: () => this.onDelClick(deleteID)
+          onClick: () => this.onDelClickCheckbox()
         },
         {
           label: '否',
@@ -355,62 +379,71 @@ class TablesPrivilegeManagement extends React.Component {
       ]
     })
   }
-  //删除
-  onDelClick = (deleteID) => {
-    fetch(SERVER_URL + '/usergroup/delete?ids=' + deleteID,
+   //多选删除给子组件按钮
+  onDelClickCheckbox = () => {
+    fetch(SERVER_URL + '/usergroup/delete' ,
       { 
         mode: "cors",
-        method: 'DELETE',
+        method: 'POST',
         credentials: 'include',
         headers: {
-          'Accept': '*/*',
-
-        }
+          'Accept': 'text/plain,*/*',
+          "content-type": "application/json"
+        },
+        body:JSON.stringify(this.state.idsState)
       })
-      .then(res => {
-        this.setState({ open: true, message: '删除成功' });
-        this.fetchTemplate()
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({ open: true, message: '删除成功',idsState:[] },()=>{
+          ids=[]
+          this.fetchTemplate()
+  
+        });
       })
       .catch(err => {
         this.setState({ open: true, message: 'Error when deleting' });
         console.error(err) 
-      })
+      })    
     }
-    //修改
-  // editTemplate(params) {
-  //   let companyInformationVo = new FormData()
-  //   if (params) {
-  //     for (let key in params) {
-  //       companyInformationVo.append(key, params[key])
-  //     }
-  //   }
-  //   fetch(SERVER_URL + '/companyInformation/edit',
-  //     {
-  //       mode: "cors",
-  //       method: 'POST',
-  //       credentials: 'include',
-  //       headers: {
-  //         'Accept': 'application/json,text/plain,*/*'
-  //       },
-  //       body: companyInformationVo
-  //     })
-  //     .then(res => this.fetchTemplate())
-  //     .catch(err => console.error(err))
-  // }
+  //修改
+  editTemplate(params) {
+    let usergroupInformationVo = new FormData()
+    if (params) {
+      for (let key in params) {
+        usergroupInformationVo.append(key, params[key])
+      }
+    }
+    fetch(SERVER_URL + '/usergroup/update',
+      {
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include', 
+        headers: {
+          'Accept': 'application/json,text/plain,*/*'
+        },
+        body: usergroupInformationVo
+      })
+      .then(res => {
+        this.fetchTemplate()
+      })
+      .catch(err => console.error(err))
+  }
   render() {
+
     let newData = this.filterFun()
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes,label } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page,idsState } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.data.length - page * rowsPerPage);
+   
     return (
       <div>
         <div className="QueryPrivilegInto" >
           <QueryPrivilegeManagement fetchTemplate={this.fetchTemplate} />
         </div>
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length}  rowCount={this.state.data.length} confirmDelete={this.confirmDelete} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -419,37 +452,38 @@ class TablesPrivilegeManagement extends React.Component {
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={this.state.data.length}
+              idsState={idsState}
             />
             <TableBody>
               {
-                
                  stableSort((newData.length != 0 ? newData : data), getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((n) => { 
+                .map((n,index) => { 
                   const isSelected = this.isSelected(n.usergroupId); 
                   return (
+                  
                     <TableRow
                       className="PrivilegTableCell"
                       onClick={event => this.handleClick(event, n.usergroupId)}
                       role="checkbox"
-                      aria-checked={isSelected}
+                      aria-checked={isSelected} 
                       tabIndex={-1}
                       key={n.usergroupId}
                       selected={isSelected}
                     >
-                      <TableCell className="PrivilegTableCell" padding="checkbox">
-                         <Checkbox checked={isSelected} />
+                      <TableCell key={n.usergroupId} className="PrivilegTableCell" padding="checkbox">
+                         <Checkbox checked={isSelected} key={n.usergroupId} onChange={(e)=>{this.handisSelected(e,n.usergroupId)}} key={n.index}/>
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" >{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.type}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.subtype}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.parentId}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" ><EditPrivilegeManagement usergroupId={n.usergroupId}/></TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" >
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.usergroupId) }}>删除</Button>
-                      </TableCell>
+                      
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row"  key={n.index} >{n.name} </TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.type}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.subtype}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.parentId}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.code}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  ><EditPrivilegeManagement usergroupId={n.usergroupId} editTemplate={this.editTemplate} three={this.props.three}/></TableCell>
+                      {/* <TableCell className="PrivilegTableCell" align="center" padding="none" >
+                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.handisSelected() }}>删除</Button>
+                      </TableCell> */}
                       <TableCell className="PrivilegTableCell" align="center" padding="none" ><Button size="small" style={linkStyletwo} variant="text" color="primary"
                        onClick={() => { this.jumpToprivilegeSubordinate(n.usergroupId) }}>所属</Button></TableCell>
                     </TableRow>

@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { SERVER_URL } from '../../constants.js'
+import EditPrivilegeSubordinate from './EditPrivilegeSubordinate'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -15,16 +16,17 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-
+import './styles/privilegeSubordinate.css'
 let counter = 0;
-function createData(name, calories, fat, carbs, protein) {
-  counter += 1;
-  return { id: counter, name, calories, fat, carbs, protein };
-}
+// function createData(name, calories, fat, carbs, protein) {
+//   counter += 1;
+//   return { id: counter, name, calories, fat, carbs, protein };
+// }
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -38,29 +40,46 @@ function desc(a, b, orderBy) {
 
 function stableSort(array, cmp) {
   const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
+  // stabilizedThis.sort((a, b) => {
+  //   const order = cmp(a[0], b[0]);
+  //   if (order !== 0) return order;
+  //   return a[1] - b[1];
+  // });
   return stabilizedThis.map(el => el[0]);
 }
 
 function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  
 }
 
 const users = [
   { id: 'name', numeric: false, disablePadding: true, label: '姓名' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'username' },
-  { id: 'query', numeric: true, disablePadding: false, label: '查询' },
-  { id: 'delete', numeric: true, disablePadding: false, label: '删除' },
+  { id: 'phone', numeric: true, disablePadding: false, label: '电话' },
+  { id: 'emine', numeric: true, disablePadding: false, label: '邮箱' },
+  { id: 'query', numeric: true, disablePadding: false, label: '最后登录' },
+  // { id: 'delete', numeric: true, disablePadding: false, label: '删除' },
+];
+const privilerows = [
+  { id: 'name', numeric: false, disablePadding: true, label: '名称' },
+  { id: 'type', numeric: true, disablePadding: false, label: '类型' },
+  { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
+  { id: 'query', numeric: true, disablePadding: false, label: 'code' },
+  { id: 'updata', numeric: true, disablePadding: false, label: '修改' },
+  // { id: 'delete', numeric: true, disablePadding: false, label: '删除' },
+  { id: 'suoshu', numeric: true, disablePadding: false, label: '所属' },
 ];
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
   render() {
+    let titleres = []
+    if(this.props.processUrl ==='/usergroup/findUsersByUsergroup?usergroupId='){
+      titleres = users
+    }else{
+      titleres = privilerows
+    }
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (
       <TableHead>
@@ -72,9 +91,10 @@ class EnhancedTableHead extends React.Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {users.map(
+          {titleres.map(
             row => (
               <TableCell
+                className={this.props.processUrl ==='/usergroup/findUsersByUsergroup?usergroupId='?'PrivilegTableCellUserTitle':'PrivilegTableCellPrivilegTitle'}
                 key={row.id}
                 align="center"
                 padding="none"
@@ -201,18 +221,15 @@ class PrivilegeSubordinateTablesHead extends React.Component {
       order: 'asc',
       orderBy: 'calories',
       selected: [],
-      data: [
-        createData('Cupcake', 305, 3.7, 67),
-        createData('Donut', 452, 25.0, 51),
-        createData('Eclair', 262, 16.0, 24),
-        createData('Frozen yoghurt', 159, 6.0, 24),
-        createData('Gingerbread', 356, 16.0, 49),
-        createData('Gingerbread', 356, 16.0, 49),
-      ],
+      data: [],
       page: 0,
+      total: 0,
       rowsPerPage: 5,
-      processUrl:this.props.processUrl
+      processUrl:this.props.processUrl,
+      usergroupId:'',
     };
+    this.fetchTemplate = this.fetchTemplate.bind(this)
+    this.editTemplate  = this.editTemplate.bind(this)
   }
   
   
@@ -238,8 +255,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
   handleClick = (event, id) => {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
+    let newSelected = []
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -257,60 +273,94 @@ class PrivilegeSubordinateTablesHead extends React.Component {
   };
 
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.state.page = page;
+    this.fetchTemplate()
   };
 
   handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
+    console.log(event.target.value,' event.target.value')
+    this.state.rowsPerPage = event.target.value;
+    this.fetchTemplate()
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   componentDidMount(){
+    this.props.onRef(this)
     this.fetchTemplate()
   }
-  shouldComponentUpdate(nextProps){
-    if(nextProps.processUrl ===this.props.processUrl){
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextProps.processUrl !==this.props.processUrl  ){
       return false
     }else{
       return true
     }
   }
-  componentDidUpdate(){
-   
-    this.fetchTemplate()
+  //父组件porps改变之后执行
+  componentWillReceiveProps=(nextProps)=>{
+    this.setState({usergroupId:nextProps.usergroupId},()=>{
+      this.fetchTemplate()
+    })
   }
   fetchTemplate = () => {
-    // console.log('usergroupId')
-   
+    this.setState({
+      data: []
+    })
     let followUpVo = new FormData();
     followUpVo.append("pageNum", this.state.page + 1)
     followUpVo.append("pageSize", this.state.rowsPerPage)
     followUpVo.append("companyName", this.state.valueInput)
-    fetch(SERVER_URL + this.props.processUrl + this.props.usergroupId, {
+    fetch(SERVER_URL + this.props.processUrl + this.state.usergroupId, {
       mode: "cors",
       method: 'POST', 
       credentials: 'include',
       headers: {
-        "Accept": "*/*"
+        'Accept': 'application/json,text/plain,*/*'
       },
       body: followUpVo
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData,'res')
-        // this.setState({
-        //   data: responseData.data.list,
-        //   map:responseData.data.map,
-        //   page: responseData.data.pageNum - 1,
-        //   rowsPerPage: responseData.data.pageSize,
-        //   total: responseData.data.total
-        // });
+        console.log(responseData.data.list,'list')
+        console.log(responseData.data.pageSize,'rowsPerPage')
+        this.setState({
+          data: responseData.data.list,
+          map:responseData.data.map,
+          page: responseData.data.pageNum - 1,
+          rowsPerPage: responseData.data.pageSize,
+          total: responseData.data.total
+        },()=>{this.render()});
       })
       .catch(err => console.error(err));
+  } 
+  
+  //修改权限
+  editTemplate(params) {
+    let privilegeInformationVo = new FormData()
+    if (params) {
+      for (let key in params) {
+        privilegeInformationVo.append(key, params[key])
+      }
+    }
+    fetch(SERVER_URL + '/privilege/update',
+      {
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include', 
+        headers: {
+          'Accept': 'application/json,text/plain,*/*'
+        },
+        body: privilegeInformationVo
+      })
+      .then(res => {
+        
+        this.fetchTemplate()
+      })
+      .catch(err => console.error(err))
   }
-  render() {
+  render(){
+    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page ,total} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <Paper className={classes.root}>
@@ -324,46 +374,82 @@ class PrivilegeSubordinateTablesHead extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
+              processUrl ={this.props.processUrl}
             />
-            <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n.id);
+       
+          <TableBody>
+           { 
+            (this.props.processUrl == '/usergroup/findUsersByUsergroup?usergroupId=')?
+              stableSort(data).slice(0, rowsPerPage).map((n,index) => {
+               const isSelected = this.isSelected(n.userId); 
+               return (
+                 <TableRow
+                   className="PrivilegTableCellUser"
+                   style={{width:'100%'}}
+                   onClick={event => this.handleClick(event, n.userId)}
+                   role="checkbox"
+                   aria-checked={isSelected}
+                   tabIndex={-1}
+                   key={n.userId}
+                   selected={isSelected}
+                 >
+                   <TableCell className="PrivilegTableCellUser" padding="checkbox">
+                       <Checkbox key={index} checked={isSelected}/>
+                   </TableCell>
+                   <TableCell className="PrivilegTableCellUser" align="center" padding="none"component="th" scope="data" key={index} >{n.name} </TableCell>
+                   <TableCell className="PrivilegTableCellUser" align="center" padding="none" key={index}>{n.phone}</TableCell>
+                   <TableCell className="PrivilegTableCellUser" align="center" padding="none" key={index}>{n.email}</TableCell>
+                   <TableCell className="PrivilegTableCellUser" align="center" padding="none" key={index}>{n.lastLogin}</TableCell>
+              {/* <TableCell className="PrivilegTableCell" align="center" padding="none" >
+                     <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.userId) }}>删除</Button>
+                   </TableCell> */}
+                 </TableRow>
+               ); 
+             })
+             :
+             stableSort(data)
+               .slice(0, rowsPerPage)
+                .map((n) => { 
+                  const isSelected = this.isSelected(n.privilegeId); 
                   return (
                     <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      className="PrivilegTableCellPrivileg"
+                      onClick={event => this.handleClick(event, n.privilegeId)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
-                      key={n.id}
+                      key={n.privilegeId}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
+                      <TableCell className="PrivilegTableCellPrivileg" padding="checkbox">
+                          <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" component="th" scope="row" padding="none">
-                        {n.name}
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none"component="th" scope="data" >{n.name} </TableCell>
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.type}</TableCell>
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.subType}</TableCell>
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.code}</TableCell>
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >
+                        <EditPrivilegeSubordinate privilegeId={n.privilegeId} editTemplate={this.editTemplate}></EditPrivilegeSubordinate>
+                      </TableCell>  
+                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >
+                        <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.privilegeId) }}>所属</Button>
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.calories}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.fat}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none">{n.carbs}</TableCell>
                     </TableRow>
                   );
-                })}
-              {emptyRows > 0 && (
+                })
+             }
+             {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </div>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

@@ -2,7 +2,6 @@ import React from 'react';
 import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
 // import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
-import LeftMenu from './leftDropMenuPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
 import TreeMenu  from 'react-simple-tree-menu'
 // import store from '../../store'
@@ -21,7 +20,7 @@ import Input from '@material-ui/core/Input';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import MailIcon from '@material-ui/icons/Mail'; 
 import './styles/PrivilegeManagement.css'
 
 const drawerWidth ='15%';
@@ -191,7 +190,7 @@ const styles = theme => ({
                     </nav>
                     <main style={{marginLeft:'15.5%',width:'84%' }}>
                     {/* <div  className={classes.toolbarRight} /> */} 
-                        <TablesPrivilegeManagement label={label} history={history}/>
+                        <TablesPrivilegeManagement label={label} history={history} three={three}/>
                     </main>
                 </div>
             </div>
