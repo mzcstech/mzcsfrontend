@@ -86,7 +86,7 @@ class EnhancedTable extends React.Component {
   //提示框的显示判断
   handleClose = (event, reason) => {
     this.setState({ open: false });
-  };
+  }; 
  
 
   //分页

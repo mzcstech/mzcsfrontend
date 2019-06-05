@@ -289,8 +289,7 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: newSelected });
   };
   // 页面更改时触发回调
-  handleChangePage = (event, page) => {
-    
+  handleChangePage = (event, page) => { 
     this.state.page = page;
     this.fetchTemplate();
   };
@@ -313,7 +312,7 @@ class EnhancedTable extends React.Component {
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page ,total } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
@@ -434,9 +433,9 @@ class EnhancedTable extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.total}
-          rowsPerPage={this.state.rowsPerPage}
-          page={this.state.page}
+          count={total}
+          rowsPerPage={rowsPerPage}
+          page={page} 
           backIconButtonProps={{
             'aria-label': 'Previous Page',
           }}

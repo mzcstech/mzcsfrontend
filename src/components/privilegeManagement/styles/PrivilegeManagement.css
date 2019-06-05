@@ -149,7 +149,7 @@
         word-break:break-all;
     }
     .PrivilegTableCell{
-        width:16.5%;
+        width:17.3%;
         padding:0 1px;
         border-top:2px solid #EDEDED;
         border-left:1px solid #EDEDED;
@@ -164,9 +164,7 @@
     .PrivilegTableCell:nth-last-child(2){
         width:4.3%;
     }
-    .PrivilegTableCell:nth-last-child(3){
-        width:4.3%;
-    }
+   
         .TableSortLabel{
             border:1px solid red;
             font-size:16px;

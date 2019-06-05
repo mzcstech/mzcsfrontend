@@ -56,7 +56,6 @@ class EditOriginal extends React.Component {
             console.log(res)
             this.setState({
                 singleElectionData:res.data
-                
             })
         })
         .catch(err => console.error(err,'err'))
@@ -99,7 +98,6 @@ class EditOriginal extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
-                console.log(responseData,'responseData')
                 this.setState({ 
                     originalName: responseData.data.originalName,
                     originalHoldStatus:responseData.data.originalHoldStatus ,

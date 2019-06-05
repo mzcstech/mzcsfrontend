@@ -88,6 +88,7 @@
         }
     
         .singleElection-text{
+         
             text-align:right;
             padding-right:20px;
             width:29%;
@@ -130,7 +131,7 @@
                 margin-left:10px;
             }
 
-    .PrivilegeTemplate{
+    .QueryTemplate{
         position: relative;
         display:flex;
         align-items:center;
@@ -138,29 +139,17 @@
         width:100%;
         border-bottom:3px solid #E5E5E5;
     }
-        .QueryTemplateInto{
+        .QueryPrivilegInto{
             position: absolute;
             right:20px;
+            top:78px;
         }
-    table{
+    table{ 
         table-layout:fixed;
         word-break:break-all;
     }
-    .PrivilegeHeadCell{
-        width:46%;
-        padding:0 1px;
-        border-left:1px solid #EDEDED;
-        border-right:1px solid #EDEDED;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .PrivilegeHeadCell:nth-last-child(1){
-        width:4%;
-    }
-    .PrivilegeHeadCell:nth-last-child(2){
-        width:4%;
-    }
+   
+  
         .TableSortLabel{
             border:1px solid red;
             font-size:16px;
@@ -178,4 +167,55 @@
         margin-top:12px;
         margin-left:-10px;
         margin-right:15px;
+    }
+    .leftDropMenuPrivilegeManagement:first-child{
+        border:1px solid rgba(0, 0, 0, 0.12);
+    }
+    .PrivilegTableCellUserTitle{
+        width:24%;
+        padding:0 1px;
+        border-top:2px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .PrivilegTableCellUser{
+        border-top:1px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+ 
+    .PrivilegTableCellPrivilegTitle{
+        width:21.9%;
+        border-top:1px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .PrivilegTableCellPrivilegTitle:nth-last-child(1){
+        width:4.3%;
+    }
+    .PrivilegTableCellPrivilegTitle:nth-last-child(2){
+        width:4.3%;
+    }
+    .PrivilegTableCellPrivileg{
+        width:16%;
+        border-top:1px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .AddTablesTitle{
+        width:23.5%;
+        border-top:1px solid #EDEDED;
+        border-left:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align:center;
     }

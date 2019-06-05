@@ -81,8 +81,10 @@ const styles = theme => ({
             usergroupId:'',
             processUrl:'/usergroup/findUsersByUsergroup?usergroupId=',
         };
-        this.addTemplate = this.addTemplate.bind(this)
-        this.gethandleUrl =this.gethandleUrl.bind(this)
+        this.addTemplate  = this.addTemplate.bind(this)
+        this.gethandleUrl = this.gethandleUrl.bind(this)
+        this.onRef        = this.onRef.bind(this)
+        this.childfetchTemplate=this.childfetchTemplate.bind(this)
     }
     componentWillMount(){
       this.setState({
@@ -111,7 +113,6 @@ const styles = theme => ({
       .catch(err => console.error(err))
 
     }
-
   componentDidMount(){
     let usergroupId;
     if (this.props.location.query != undefined) {
@@ -125,6 +126,13 @@ const styles = theme => ({
   gethandleUrl(processUrl){
    this.setState({processUrl:processUrl},()=>{
    })
+  }
+  //兄弟组件方法调用
+  onRef = (ref) =>{
+    this.child = ref
+  }
+  childfetchTemplate(){
+    this.child.fetchTemplate()
   }
   //组件御载时触发
     render(){
@@ -174,10 +182,10 @@ const styles = theme => ({
             </AppBar>
             <div className="PrivilegeTemplate">
               <Grid item>
-                    <AddprivilegeSubordinate onClick={this.addTemplate} style={linkStyle} usergroupId={usergroupId} processUrl={processUrl} variant="text"  >新增</AddprivilegeSubordinate>
+                    <AddprivilegeSubordinate onClick={this.addTemplate} style={linkStyle} usergroupId={usergroupId} processUrl={processUrl} childfetchTemplate={this.childfetchTemplate} variant="text"  >新增</AddprivilegeSubordinate>
               </Grid>
             </div>
-            <PrivilegeSubordinateTables usergroupId={usergroupId} processUrl={processUrl}/>
+            <PrivilegeSubordinateTables usergroupId={usergroupId} processUrl={processUrl} onRef={this.onRef}/>
         </Paper>
       
         )

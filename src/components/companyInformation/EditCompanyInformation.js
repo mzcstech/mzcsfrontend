@@ -59,7 +59,6 @@ class EditCompanyInformation extends React.Component {
                     remark: responseData.data.remark,
                     companyInformationId: responseData.data.companyInformationId
                 });
-                console.log(this.state.templateVo)
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' }) 
@@ -80,7 +79,7 @@ class EditCompanyInformation extends React.Component {
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row" >
-                                    <div className="InputBox">
+                                    <div className="InputBox"> 
                                         <div className="InputBox-text">公司名称:</div>
                                         <TextField className="InputBox-next" placeholder="公司名称" name="companyName"  onChange={this.handleChange} value={this.state.companyName} title="公司名称" />
                                     </div>

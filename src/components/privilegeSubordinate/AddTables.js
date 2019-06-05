@@ -19,7 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-
+import './styles/privilegeSubordinate.css'
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
   counter += 1;
@@ -59,8 +59,9 @@ function getSorting(order, orderBy) {
   ];
   const privilerows = [
     { id: 'name', numeric: false, disablePadding: true, label: '名称' },
-    { id: 'calories', numeric: true, disablePadding: false, label: 'code' },
-    { id: 'fat', numeric: true, disablePadding: false, label: 'privilegeId' },
+    { id: 'type', numeric: true, disablePadding: false, label: '类型' },
+    { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
+    { id: 'code', numeric: true, disablePadding: false, label: 'code' },
   ];
 
 class AddTablesHead extends React.Component {
@@ -90,6 +91,7 @@ class AddTablesHead extends React.Component {
           {titleres.map(
             row => (
               <TableCell
+                className='AddTablesTitle'
                 key={row.id}
                 align="center"
                 padding="none"
@@ -210,16 +212,21 @@ const styles = theme => ({
     overflowX: 'auto',
   },
 });
-
+let addUserid = []
 class AddTables extends React.Component {
-  state = {
-    order: 'asc',
-    orderBy: 'calories',
-    selected: [],
-    data: [],
-    page: 0,
-    rowsPerPage: 5,
-  };
+  constructor(props){
+    super(props)
+    this.state = {
+      order: 'asc',
+      orderBy: 'calories',
+      selected: [],
+      data: [],
+      page: 0,
+      rowsPerPage: 5,
+      total:'',
+    };
+  }
+  
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
@@ -244,7 +251,6 @@ class AddTables extends React.Component {
     const { selected } = this.state;
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
@@ -275,7 +281,6 @@ class AddTables extends React.Component {
    this.fetchTemplate()
  }
  fetchTemplate = () => {
- 
   let RequestUrl = ''
   if(this.props.processUrl === '/usergroup/findUsersByUsergroup?usergroupId=' ){
       RequestUrl = '/usergroup/findUsersUnselected?usergroupId='
@@ -305,9 +310,19 @@ class AddTables extends React.Component {
     })
     .catch(err => console.error(err));
 }
+//选中当前要添加的用户
+
+handisSelected=(userId)=>
+{
+  addUserid.push(userId)
+  this.props.addTemplateData(addUserid)
+}
   render() {
+    if(this.props.emptyArray === false){
+      addUserid=[]
+    }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page ,total} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
       <Paper className={classes.root}>
@@ -329,6 +344,7 @@ class AddTables extends React.Component {
                 .map(n => {
                   const isSelected = this.isSelected(n.userId);
                   return (
+                    this.props.processUrl==='/usergroup/findUsersByUsergroup?usergroupId='?
                     <TableRow
                       hover
                       onClick={event => this.handleClick(event, n.userId)}
@@ -339,13 +355,31 @@ class AddTables extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
+                        <Checkbox checked={isSelected} className='AddTablesTitle' onClick={()=>{this.handisSelected(n.userId)}} />
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none" align="center">{n.name}</TableCell>
-                      <TableCell align="center">{n.phone}</TableCell>
-                      <TableCell align="center">{n.number}</TableCell>
-                      <TableCell align="center">{n.lastLogin}</TableCell>
+                      <TableCell className='AddTablesTitle' component="th" scope="row" padding="none" align="center">{n.name}</TableCell>
+                      <TableCell className='AddTablesTitle' padding="none" align="center">{n.phone}</TableCell>
+                      <TableCell className='AddTablesTitle' padding="none" align="center">{n.number}</TableCell>
+                      <TableCell className='AddTablesTitle' padding="none" align="center">{n.lastLogin}</TableCell>
                     </TableRow>
+                      :
+                     <TableRow
+                     hover
+                     onClick={event => this.handleClick(event, n.privilegeId)}
+                     role="checkbox"
+                     aria-checked={isSelected}
+                     tabIndex={-1}
+                     key={n.privilegeId}
+                     selected={isSelected}
+                     >
+                     <TableCell padding="checkbox">
+                       <Checkbox checked={isSelected}  className='AddTablesTitle' onClick={()=>{this.handisSelected(n.privilegeId)}} />
+                     </TableCell>
+                     <TableCell  className='AddTablesTitle' component="th" scope="row" padding="none" align="center">{n.name}</TableCell>
+                     <TableCell  className='AddTablesTitle' padding="none" align="center">{n.type}</TableCell>
+                     <TableCell  className='AddTablesTitle' padding="none" align="center">{n.code}</TableCell>
+                     <TableCell  className='AddTablesTitle' padding="none" align="center">{n.tenantId}</TableCell>
+                   </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
