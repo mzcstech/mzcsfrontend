@@ -1,0 +1,22 @@
+.GeneralLitsTitle{
+    width:13%;
+    padding:0 1px;
+    border-left:1px solid #EDEDED;
+    border-right:1px solid #EDEDED;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin:0 auto;
+}
+.GeneralLitsTitle:nth-last-child(1){
+    margin:0 auto;
+    width:5%;
+}
+.GeneralLitsTitle:nth-last-child(2){
+    margin:0 auto;
+    width:5%;
+}
+.GeneralLitsTitle:nth-last-child(3){
+    margin:0 auto;
+    width:5%;
+}

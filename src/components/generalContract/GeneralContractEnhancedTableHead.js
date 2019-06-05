@@ -60,11 +60,11 @@ class GeneralContractEnhancedTableHead extends React.Component {
         return (
             <TableHead>
                 <TableRow  >
-                  
+                   
                     {rows.map(
                         row => (
                             <TableCell
-                                className="TableCellCUM"
+                                className="GeneralLitsTitle"
                                 key={row.id}
                                 align="center"
                                 padding="none"
