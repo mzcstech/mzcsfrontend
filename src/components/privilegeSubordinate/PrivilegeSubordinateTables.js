@@ -21,6 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
+import { confirmAlert } from 'react-confirm-alert';
 import './styles/privilegeSubordinate.css'
 let counter = 0;
 // function createData(name, calories, fat, carbs, protein) {
@@ -65,8 +66,6 @@ const privilerows = [
   { id: 'type', numeric: true, disablePadding: false, label: '类型' },
   { id: 'subtype', numeric: true, disablePadding: false, label: '子类型' },
   { id: 'query', numeric: true, disablePadding: false, label: 'code' },
-  { id: 'updata', numeric: true, disablePadding: false, label: '修改' },
-  // { id: 'delete', numeric: true, disablePadding: false, label: '删除' },
   { id: 'suoshu', numeric: true, disablePadding: false, label: '所属' },
 ];
 class EnhancedTableHead extends React.Component {
@@ -104,12 +103,12 @@ class EnhancedTableHead extends React.Component {
                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                  enterDelay={300}
                 >
-                  <TableSortLabel
-                    className="TableSortLabel"
-                    hideSortIcon={true}
-                  >
-                    {row.label}
-                  </TableSortLabel>
+                <TableSortLabel
+                  className="TableSortLabel"
+                  hideSortIcon={true}
+                >
+                {row.label}
+                </TableSortLabel>
                 </Tooltip>
               </TableCell>
             ),
@@ -179,7 +178,7 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon />
+              {/* <DeleteIcon  onClick={confirmDelete}/> */}
             </IconButton>
           </Tooltip>
         ) : (
@@ -213,7 +212,7 @@ const styles = theme => ({
     overflowX: 'auto',
   },
 });
-
+let Userids =[]
 class PrivilegeSubordinateTablesHead extends React.Component {
   constructor(props){
     super(props)
@@ -227,9 +226,11 @@ class PrivilegeSubordinateTablesHead extends React.Component {
       rowsPerPage: 5,
       processUrl:this.props.processUrl,
       usergroupId:'',
+      UseridsState:[]
     };
     this.fetchTemplate = this.fetchTemplate.bind(this)
     this.editTemplate  = this.editTemplate.bind(this)
+    this.confirmDelete = this.confirmDelete.bind(this)
   }
   
   
@@ -268,7 +269,6 @@ class PrivilegeSubordinateTablesHead extends React.Component {
         selected.slice(selectedIndex + 1),
       );
     }
-
     this.setState({ selected: newSelected });
   };
 
@@ -278,12 +278,12 @@ class PrivilegeSubordinateTablesHead extends React.Component {
   };
 
   handleChangeRowsPerPage = event => {
-    console.log(event.target.value,' event.target.value')
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate()
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
+
   componentDidMount(){
     this.props.onRef(this)
     this.fetchTemplate()
@@ -320,8 +320,6 @@ class PrivilegeSubordinateTablesHead extends React.Component {
     })
       .then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData.data.list,'list')
-        console.log(responseData.data.pageSize,'rowsPerPage')
         this.setState({
           data: responseData.data.list,
           map:responseData.data.map,
@@ -351,17 +349,45 @@ class PrivilegeSubordinateTablesHead extends React.Component {
         },
         body: privilegeInformationVo
       })
-      .then(res => {
-        
+      .then(res => { 
         this.fetchTemplate()
       })
       .catch(err => console.error(err))
   }
+  //多选删除
+  handisUserSelectDelete=(e,addUserid)=>
+  { 
+    if(e.target.checked === true){
+      Userids.push(addUserid)
+      this.setState({UseridsState:Userids},()=>{
+      })  
+    }else{
+      Userids.splice(addUserid,1)
+      this.setState({UseridsState:Userids},()=>{
+      })
+    }
+  }
+  //确认是否删除
+  confirmDelete = () => {
+    confirmAlert({
+      message: '确认是否删除?',
+      buttons: [
+        {
+          label: '是',
+          onClick: () => this.onDelClickCheckbox()
+        },
+        {
+          label: '否',
+        }
+      ]
+    })
+  }
   render(){
-    let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
+    let linkStyle = { backgroundColor: '#2196F3', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page ,total} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    console.log(this.state.UseridsState)
     return (
       <Paper className={classes.root}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -375,6 +401,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
               processUrl ={this.props.processUrl}
+              confirmDelete={this.confirmDelete}
             />
        
           <TableBody>
@@ -394,7 +421,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                    selected={isSelected}
                  >
                    <TableCell className="PrivilegTableCellUser" padding="checkbox">
-                       <Checkbox key={index} checked={isSelected}/>
+                       <Checkbox key={index} checked={isSelected} onChange={(e)=>{this.handisUserSelectDelete(e,n.masterAccessOperationMappingId)}} />
                    </TableCell>
                    <TableCell className="PrivilegTableCellUser" align="center" padding="none"component="th" scope="data" key={index} >{n.name} </TableCell>
                    <TableCell className="PrivilegTableCellUser" align="center" padding="none" key={index}>{n.phone}</TableCell>
@@ -415,7 +442,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                     <TableRow
                       className="PrivilegTableCellPrivileg"
                       onClick={event => this.handleClick(event, n.privilegeId)}
-                      role="checkbox"
+                      role="checkbox" 
                       aria-checked={isSelected}
                       tabIndex={-1}
                       key={n.privilegeId}
@@ -428,9 +455,9 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.type}</TableCell>
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.subType}</TableCell>
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >
+                      {/* <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >
                         <EditPrivilegeSubordinate privilegeId={n.privilegeId} editTemplate={this.editTemplate}></EditPrivilegeSubordinate>
-                      </TableCell>  
+                      </TableCell>   */}
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >
                         <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.privilegeId) }}>所属</Button>
                       </TableCell>

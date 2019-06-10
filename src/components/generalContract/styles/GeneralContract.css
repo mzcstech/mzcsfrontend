@@ -11,25 +11,24 @@
     .tow-row{
         display: flex;
         flex-wrap:wrap
-    }
+    } 
         .InputBox{
             margin:0 auto;
             display:flex;
             width:45%;
             height:60px;
         }
-        .InputBox .InputBox-text{
+        .InputBox .GeneralInputBox-text{
             text-align:right;
             padding-right:20px;
-            width:30%; 
+            width:32%; 
             height:60px;
             line-height:60px;
             color: black;
+        
         }
-        .InputBox .InputBox-next{
-            width:70%;
-            height:60px;
-            line-height:60px;
+        .InputBox .GeneralInputBox-next{
+            width:60%;
             margin-top:8px;
         }
 
@@ -101,26 +100,25 @@
             display:flex;
             justify-content:flex-end;
         }
-        .textDomain  .textDomain-class{
+        .textDomain.textDomain-class{
                 width:90%;
                 height:80px;
             }
-        .button{
-            position:absolute;
-            bottom:25px;
-            left:25%;
+        .Generalbutton{
+            padding-top:40px; 
+            padding-bottom:40px; 
+            margin:0 auto;
             display: flex;
             justify-content:center;
             width:50%;
         }
-            .button-class{
+            .Generalbutton-class{
                 width:60px;
-                background: red;
             }
-            .button-class:first-child{
+            .Generalbutton-class:first-child{
                 margin-right:10px;
             }
-            .button-class:last-child{
+            .Generalbutton-class:last-child{
                 margin-left:10px;
             }
 

@@ -38,11 +38,7 @@ function desc(a, b, orderBy) {
 
 function stableSort(array, cmp) {
   const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
+
   return stabilizedThis.map(el => el[0]);
 }
 
@@ -241,7 +237,7 @@ class AddTables extends React.Component {
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
+      this.setState(state => ({ selected: this.state.data.map(n => n.id) }));
       return;
     }
     this.setState({ selected: [] });
@@ -263,16 +259,17 @@ class AddTables extends React.Component {
         selected.slice(selectedIndex + 1),
       );
     }
-
     this.setState({ selected: newSelected });
   };
 
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.state.page = page;
+    this.fetchTemplate()
   };
 
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
+    this.fetchTemplate()
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
@@ -303,9 +300,9 @@ class AddTables extends React.Component {
     .then((responseData) => {
       this.setState({
         data: responseData.data.list,
-        // page: responseData.data.varList.pageNum - 1,
-        // rowsPerPage: responseData.data.varList.pageSize,
-        // total: responseData.data.varList.total
+        page: responseData.data.pageNum - 1,
+        rowsPerPage: responseData.data.pageSize,
+        total:responseData.data.total
       });
     })
     .catch(err => console.error(err));
@@ -321,7 +318,7 @@ handisSelected=(userId)=>
     if(this.props.emptyArray === false){
       addUserid=[]
     }
-    const { classes } = this.props;
+    const { classes } = this.props; 
     const { data, order, orderBy, selected, rowsPerPage, page ,total} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
     return (
@@ -339,9 +336,10 @@ handisSelected=(userId)=>
               processUrl={this.props.processUrl}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
+              {
+               stableSort(data).slice(0, rowsPerPage)
+               .map((n) =>
+                  {
                   const isSelected = this.isSelected(n.userId);
                   return (
                     this.props.processUrl==='/usergroup/findUsersByUsergroup?usergroupId='?
@@ -371,7 +369,7 @@ handisSelected=(userId)=>
                      tabIndex={-1}
                      key={n.privilegeId}
                      selected={isSelected}
-                     >
+                     > 
                      <TableCell padding="checkbox">
                        <Checkbox checked={isSelected}  className='AddTablesTitle' onClick={()=>{this.handisSelected(n.privilegeId)}} />
                      </TableCell>
@@ -382,18 +380,18 @@ handisSelected=(userId)=>
                    </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </div>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={data.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

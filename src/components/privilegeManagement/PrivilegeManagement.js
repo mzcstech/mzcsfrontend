@@ -3,7 +3,9 @@ import { SERVER_URL } from '../../constants.js'
 import Topbar from '../Topbar';
 // import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
+import AddPrivilegeManagement from './AddPrivilegeManagement.js';
 import TreeMenu  from 'react-simple-tree-menu'
+
 // import store from '../../store'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -64,7 +66,7 @@ const styles = theme => ({
       },
       drawerPaper: {
         maxHeight:`calc(83%)`,
-        top:`calc(16%)`,
+        top:`calc(21.5%)`,
         width: drawerWidth,
       },
       content: {
@@ -84,15 +86,15 @@ const styles = theme => ({
           page: 0,
           rowsPerPage: 10,
           total: 0,
-          label:''
+          threekey:'',
+          Refresh:''
         }
         this.getUsergroupFindByParentId = this.getUsergroupFindByParentId.bind(this)
-        this.nodeComparison             = this.nodeComparison.bind(this)
+        this.addTemplate                = this.addTemplate.bind(this)
     }
     componentDidMount(){
       this.getUsergroupFindByParentId()
     }
-    
     //获取用户组树
     getUsergroupFindByParentId(){
       fetch(SERVER_URL + '/usergroup/findByParentId',{
@@ -111,16 +113,40 @@ const styles = theme => ({
       })
       .catch(err => console.error(err));
     }
-    //点击节点渲染列表
-    nodeComparison(e){
-       this.setState({
-          label:e.label
-       })
+    // 新增
+    addTemplate(params) {
+      let companyinformationVo = new FormData()
+      if (params) {
+        for (let key in params) {
+          companyinformationVo.append(key, params[key])
+        }
+      }    
+      fetch(SERVER_URL + '/usergroup/save',
+        {
+          mode: "cors",
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json,text/plain,*/*'
+          },
+          body: companyinformationVo
+        }
+      )
+        .then(res => {
+          this.child.fetchTemplate()
+        })
+        .catch(err => console.error(err))
     }
+    //父组件调用子组件刷新
+    onRef = (ref) =>{
+      this.child = ref
+    }
+    //点击节点渲染列表
     render(){
-        const { three,label} = this.state
+      
+        const { three,threekey} = this.state
         const { classes ,theme ,history} = this.props;
-        const currentPath = this.props.location.pathname;
+        const currentPath = this.props.location.pathname; 
         const  drawer = (
             <div>
               <div className={classes.toolbar} />
@@ -153,44 +179,25 @@ const styles = theme => ({
                     权限管理
                     </Typography>
                 </Toolbar>
-            </AppBar>
-            <div>
-            <div className={classes.boxbotton} >
-                    {/* <LeftMenu  /> */}
+            </AppBar> 
+            <AddPrivilegeManagement addTemplate={this.addTemplate}></AddPrivilegeManagement>
+            <div >
+                <div className={classes.boxbotton} >
                     <nav className={classes.drawer} >
                         <Hidden xsDown implementation="css">
                             <Drawer
                             classes={{
                                 paper: classes.drawerPaper,
-                            }}
+                            }}  
                             variant="permanent"
                             open
                             >
-                            <TreeMenu data={three} onClickItem={this.nodeComparison} />
-                            {/* <div
-                              data={treeData}
-                              onClickItem={({ key, label, ...props }) => {
-                             
-                                this.navigate(props.url); // user defined prop
-                              }}
-                              debounceTime={125}>
-                                {({ search, items }) => (
-                                    <>
-                                      <Input  onChange={e => search(e.target.value)} placeholder="搜索" />
-                                      <div>
-                                        {items.map(props => (
-                                          <ListItem {...props} />
-                                        ))}
-                                      </div>
-                                    </>
-                                )}
-                            </div> */}
+                            {/* <TreeMenu data={three} onClickItem={this.nodeComparison} /> */}
                             </Drawer>
                         </Hidden>
                     </nav>
                     <main style={{marginLeft:'15.5%',width:'84%' }}>
-                    {/* <div  className={classes.toolbarRight} /> */} 
-                        <TablesPrivilegeManagement label={label} history={history} three={three}/>
+                        <TablesPrivilegeManagement  onRef={this.onRef} threekey={threekey} history={history} three={three}/>
                     </main>
                 </div>
             </div>

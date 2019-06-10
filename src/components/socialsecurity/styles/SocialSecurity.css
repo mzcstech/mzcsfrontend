@@ -11,25 +11,24 @@
     .tow-row{
         display: flex;
         flex-wrap:wrap
-    }
+    } 
         .InputBox{
             margin:0 auto;
             display:flex;
             width:45%;
             height:60px;
         }
-        .InputBox .InputBox-text{
+        .InputBox .socialsecurity-text{
             text-align:right;
             padding-right:20px;
-            width:30%;
+            width:32%; 
             height:60px;
             line-height:60px;
             color: black;
+        
         }
-        .InputBox .InputBox-next{
-            width:70%;
-            height:60px;
-            line-height:60px;
+        .InputBox .socialsecurity-next{
+            width:60%;
             margin-top:8px;
         }
 
@@ -105,22 +104,21 @@
                 width:90%;
                 height:80px;
             }
-        .button{
-            position:absolute;
-            bottom:25px;
-            left:25%;
+        .Generalbutton{
+            padding-top:40px; 
+            padding-bottom:40px; 
+            margin:0 auto;
             display: flex;
             justify-content:center;
             width:50%;
         }
-            .button-class{
+            .Generalbutton-class{
                 width:60px;
-                background: red;
             }
-            .button-class:first-child{
+            .Generalbutton-class:first-child{
                 margin-right:10px;
             }
-            .button-class:last-child{
+            .Generalbutton-class:last-child{
                 margin-left:10px;
             }
 
@@ -161,7 +159,7 @@
         text-overflow: ellipsis;
     }
     .TableCell{
-        width:20.5%;
+        width:15.5%;
         padding:0 1px;
         border-left:1px solid #EDEDED;
         border-right:1px solid #EDEDED;

@@ -45,11 +45,11 @@ function desc(a, b, orderBy) {
 
 function stableSort(array, cmp) {
   const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
+  // stabilizedThis.sort((a, b) => {
+  //   const order = cmp(a[0], b[0]);
+  //   if (order !== 0) return order;
+  //   return a[1] - b[1];
+  // });
   return stabilizedThis.map(el => el[0]);
 }
 
@@ -64,7 +64,6 @@ const rows = [
   { id: 'parentId', numeric: true, disablePadding: false, label: '父节点' },
   { id: 'code', numeric: true, disablePadding: false, label: 'code' },
   { id: 'EditPrivilegeManagement', numeric: true, disablePadding: false, label: '修改' },
-  // { id: 'protein', numeric: true, disablePadding: false, label: '删除' },
   { id: 'Subordinate', numeric: true, disablePadding: false, label: '所属' },
 ];
 
@@ -72,16 +71,16 @@ class EnhancedTableHead extends React.Component {
   constructor(props){
     super(props)
     this.state={
-
-    }
-    
+    } 
   }
   
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
   };
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+  
+    const { onSelectAllClick,numSelected, rowCount } = this.props;
+
     return (
       <TableHead>
         <TableRow >
@@ -91,12 +90,12 @@ class EnhancedTableHead extends React.Component {
               checked={numSelected === rowCount}
               onChange={onSelectAllClick}
             />
-          </TableCell>
+          </TableCell> 
           {rows.map(    
             row => (
               <TableCell
                 className="PrivilegTableCell"
-                key={row.id}
+                key={row.usergroupId}
                 align="center"
                 padding="none"
               >
@@ -104,7 +103,7 @@ class EnhancedTableHead extends React.Component {
                   title={rows.label}
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
-                  key={rows.id}
+                  key={rows.usergroupId}
                 >
                 <TableSortLabel
                   className="TableSortLabel"
@@ -182,8 +181,8 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip  title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon onClick={confirmDelete}   />
-            </IconButton>
+              <DeleteIcon onClick={confirmDelete}    />
+            </IconButton>`
           </Tooltip>
         ) : (
           <Tooltip title="Filter list">
@@ -233,36 +232,45 @@ class TablesPrivilegeManagement extends React.Component {
             message:'',
             open: false,
             idsState:[],
+            ROOF:'ROOF'
         };
         this.filterFun      = this.filterFun.bind(this)
         this.editTemplate   = this.editTemplate.bind(this)
         this.fetchTemplate  = this.fetchTemplate.bind(this)
         this.handisSelected = this. handisSelected.bind(this)
         this.onDelClickCheckbox = this.onDelClickCheckbox.bind(this)
+        this.handleChangePage   = this.handleChangePage.bind(this)
     }
 
     componentDidMount=()=>{  
       this.fetchTemplate()
     }
    // 分页
-   fetchTemplate = (queryList) => {
+   fetchTemplate = (queryList) => { 
+
     let NewqueryList =[]
     NewqueryList.push(queryList)
     let followUpVo = new FormData();
     followUpVo.append("pageNum", this.state.page + 1)
     followUpVo.append("pageSize", this.state.rowsPerPage)
-    fetch(SERVER_URL + '/usergroup/list', {
+    fetch(SERVER_URL + '/usergroup/list?parentId=' + this.state.ROOF , {
       mode: "cors",
       method: 'POST',
       credentials: 'include',
       headers: {
         'Accept': 'application/json,text/plain,*/*'
-      },
+      },  
+      body: followUpVo
     })  
       .then((response) => response.json())
       .then((responseData)  => {
+        console.log(responseData,'responseData')
         if(queryList === null || queryList === undefined){
-          this.setState({data: responseData.data.list},()=>{
+          this.setState({data: responseData.data.list,
+                         page: responseData.data.pageNum - 1,
+                         rowsPerPage: responseData.data.pageSize,
+                         total:responseData.data.total
+          },()=>{
           });
         }else{
             this.setState({data: NewqueryList},()=>{
@@ -271,16 +279,15 @@ class TablesPrivilegeManagement extends React.Component {
       })
       .catch(err => console.error(err));
   }
-  handleRequestSort = (event, property) => {
-    const orderBy = property;
-    let order = 'desc';
-
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
-    }
-
-    this.setState({ order, orderBy });
-  };
+  //排序
+  // handleRequestSort = (event, property) => {
+  //   const orderBy = property;
+  //   let order = 'desc';
+  //   if (this.state.orderBy === property && this.state.order === 'desc') {
+  //     order = 'asc';
+  //   }
+  //   this.setState({ order, orderBy });
+  // };
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
@@ -290,13 +297,13 @@ class TablesPrivilegeManagement extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, id) => {
+  handleClick = (event, usergroupId) => {
     const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
+    const selectedIndex = selected.indexOf(usergroupId);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, usergroupId);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -312,14 +319,16 @@ class TablesPrivilegeManagement extends React.Component {
   };
 
   handleChangePage = (event, page) => {
-    this.setState({ page });
+    this.state.page = page;
+    this.fetchTemplate()
   };
 
   handleChangeRowsPerPage = event => {
     this.setState({ rowsPerPage: event.target.value });
+    this.fetchTemplate()
   };
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1;
+  isSelected = usergroupId => this.state.selected.indexOf(usergroupId) !== -1;
  
   //跳转所属
   jumpToprivilegeSubordinate=(usergroupId)=>{
@@ -330,6 +339,9 @@ class TablesPrivilegeManagement extends React.Component {
         },
       })
   }   
+  componentWillMount(){
+    this.props.onRef(this)
+  }
    //提示框的显示判断
    handleClose = (event, reason) => {
     this.setState({ open: false });
@@ -337,13 +349,11 @@ class TablesPrivilegeManagement extends React.Component {
   //左方树选择
   filterFun(){
       let state = this.state.data
-      let newstate =[]
+      let newstate = []
       for(var i=0;i<state.length;i++){
-        if(state[i].name == this.props.label){
-          // let NewparentId    = state[i].parentId  
-          let NewUsergroupId = state[i].usergroupId
+        if(state[i].usergroupId == this.props.threekey){ 
           for(var j=0;j<state.length;j++){
-            if(state[j].usergroupId ==NewUsergroupId || state[j].parentId == NewUsergroupId){
+            if(state[j].usergroupId == this.props.threekey || state[j].parentId == this.props.threekey){
                  newstate.push(state[j])
             }
           }
@@ -397,7 +407,6 @@ class TablesPrivilegeManagement extends React.Component {
         this.setState({ open: true, message: '删除成功',idsState:[] },()=>{
           ids=[]
           this.fetchTemplate()
-  
         });
       })
       .catch(err => {
@@ -429,21 +438,20 @@ class TablesPrivilegeManagement extends React.Component {
       .catch(err => console.error(err))
   }
   render() {
-
     let newData = this.filterFun()
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
-    let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
+    let linkStyletwo = { backgroundColor: '#2196F3', color: '#ffffff', height: '36px' }
     const { classes,label } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page,idsState } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page , idsState ,total } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.data.length - page * rowsPerPage);
-   
+    console.log(idsState,'idsState')
     return (
       <div>
         <div className="QueryPrivilegInto" >
           <QueryPrivilegeManagement fetchTemplate={this.fetchTemplate} />
         </div>
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length}  rowCount={this.state.data.length} confirmDelete={this.confirmDelete} />
+        <EnhancedTableToolbar numSelected={selected.length}  rowCount={data.length} confirmDelete={this.confirmDelete} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -451,50 +459,45 @@ class TablesPrivilegeManagement extends React.Component {
               order={order}
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              idsState={idsState}
+              rowCount={data.length}
             />
             <TableBody>
               {
-                 stableSort((newData.length != 0 ? newData : data), getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                //  stableSort((newData.length != 0 ? newData : data), getSorting(order, orderBy))
+                // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                stableSort((newData.length != 0 ? newData : data)).slice(0, rowsPerPage)
                 .map((n,index) => { 
                   const isSelected = this.isSelected(n.usergroupId); 
                   return (
-                  
                     <TableRow
                       className="PrivilegTableCell"
                       onClick={event => this.handleClick(event, n.usergroupId)}
                       role="checkbox"
                       aria-checked={isSelected} 
                       tabIndex={-1}
-                      key={n.usergroupId}
+                      key={n.usergroupId} 
                       selected={isSelected}
                     >
-                      <TableCell key={n.usergroupId} className="PrivilegTableCell" padding="checkbox">
-                         <Checkbox checked={isSelected} key={n.usergroupId} onChange={(e)=>{this.handisSelected(e,n.usergroupId)}} key={n.index}/>
+                      <TableCell key={n.usergroupId} clas sName="PrivilegTableCell" padding="checkbox">
+                         <Checkbox checked={isSelected} key={n.usergroupId} onChange={(e)=>{this.handisSelected(e,n.usergroupId)}} key={index}/>
                       </TableCell>
-                      
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row"  key={n.index} >{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.type}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.subtype}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.parentId}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={n.index}  ><EditPrivilegeManagement usergroupId={n.usergroupId} editTemplate={this.editTemplate} three={this.props.three}/></TableCell>
-                      {/* <TableCell className="PrivilegTableCell" align="center" padding="none" >
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.handisSelected() }}>删除</Button>
-                      </TableCell> */}
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row"  key={index} >{n.name} </TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.type}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.subtype}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.parentId}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.code}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  ><EditPrivilegeManagement usergroupId={n.usergroupId} editTemplate={this.editTemplate} three={this.props.three}/></TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none" ><Button size="small" style={linkStyletwo} variant="text" color="primary"
                        onClick={() => { this.jumpToprivilegeSubordinate(n.usergroupId) }}>所属</Button></TableCell>
                     </TableRow>
                   );
                 })
                 }
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
             <Snackbar
               style={{ width: 300, color: 'green' }}
@@ -508,7 +511,7 @@ class TablesPrivilegeManagement extends React.Component {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={this.state.data.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

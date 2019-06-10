@@ -99,7 +99,7 @@ class AddprivilegeSubordinate extends React.Component {
             headers: {
               'Accept': 'application/json,text/plain,*/*'
             },
-            body: obj
+            body: obj 
           }
         )
         .then((response) => response.json())

@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
-import PersonInformation from './PersonInformation.js'
+import Dialog from '@material-ui/core/Dialog';
 import store from '../../store'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
@@ -50,7 +50,10 @@ class AddTemplate extends React.Component {
             gongzi: '',
             telephone: '',
             personType: '',
-            remark: ''
+            remark: '',
+            openDialog:false,
+            maxWidth: 'lg',
+            fullWidth:true
 
         };
     }
@@ -98,6 +101,7 @@ class AddTemplate extends React.Component {
             .then(res => res.json())
             .then((responseData) => {
                 this.setState({
+                    openDialog:true,
                     companyName: responseData.data.companyName,
                     registeredArea: responseData.data.registeredArea,
                     customerPhone: responseData.data.customerPhone,
@@ -134,7 +138,6 @@ class AddTemplate extends React.Component {
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
-        this.refs.viewDialog.show();
     }
     //'personName='+this.state.personName+',fh,idCardNumber='+this.state.idCardNumber
     //+',fh,gongzi='+this.state.gongzi+',fh,telephone='+this.state.telephone+',fh,personType='
@@ -194,21 +197,14 @@ class AddTemplate extends React.Component {
         });
     }
 
-
-
-    showAdd = (event) => {
-
-        this.refs.addDialog.show();
-    }
     // Save and close modal form
 
     // Cancel and close modal form
     cancelSubmit = (event) => {
         this.setState({
-            error: false,
+            openDialog:false,
         })
         event.preventDefault();
-        this.refs.addDialog.hide();
     }
     render() {
         let registerAreaList = this.state.registerAreaList;
@@ -244,48 +240,45 @@ class AddTemplate extends React.Component {
         }
         return (
             <div>
-                <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="viewDialog">
+                <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
+                            maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
                     <h3 className="title">社保工单查看-新增</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入新客户公司名称"
+                                    <div className="socialsecurity-text">公司名称:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入新客户公司名称"
                                         error={this.state.error} value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
-                                </div>
-                            </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <div className="InputBox-text">注册区域:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入注册区域"
+                                    <div className="socialsecurity-text">注册区域:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入注册区域"
                                         error={this.state.error} value={this.state.registeredArea} ref="registeredArea" name="registeredArea" onChange={this.handleChange} />
                                 </div>
+                            </div>
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">客户联系方式:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入客户联系方式"
+                                    <div className="socialsecurity-text">客户联系方式:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入客户联系方式"
                                         error={this.state.error} value={this.state.customerPhone} ref="customerPhone" name="customerPhone" onChange={this.handleChange} />
                                 </div>
-                            </div>
-                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司地址:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入公司地址"
+                                    <div className="socialsecurity-text">公司地址:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入公司地址"
                                         error={this.state.error} value={this.state.address} ref="address" name="address" onChange={this.handleChange} />
                                 </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">收费金额:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入收费金额"
-                                        error={this.state.error} value={this.state.fees} ref="fees" name="fees" onChange={this.handleChange} />
-                                </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">签单人:</div>
+                                    <div className="socialsecurity-text">收费金额:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入收费金额"
+                                        error={this.state.error} value={this.state.fees} ref="fees" name="fees" onChange={this.handleChange} />
+                                </div>
+                                <div className="InputBox">
+                                    <div className="socialsecurity-text">签单人:</div>
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        className="socialsecurity-next"
                                         native
                                         value={this.state.saler}
                                         onChange={this.handleChange}
@@ -297,35 +290,40 @@ class AddTemplate extends React.Component {
                                         })}
                                     </NativeSelect >
                                 </div>
+                            </div>
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">购买起始月:</div>
-                                    <TextField className="InputBox-next" placeholder=""
+                                    <div className="socialsecurity-text">购买起始月:</div>
+                                    <TextField className="socialsecurity-next" placeholder=""
                                         error={this.state.error} value={this.state.buyStartMonth} ref="buyStartMonth" name="buyStartMonth" onChange={this.handleChange} />
 
+                                </div>
+                                <div className="InputBox">
+                                    <div className="socialsecurity-text">告知客户首次需要刷卡:</div>
+                                    <div className="socialsecurity-next">
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isCreditCard === '是'}
+                                                onChange={this.handleChange}
+                                                value="是"
+                                                name="isCreditCard"
+                                                aria-label="是"
+                                            />} label="是" />
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isCreditCard === '否'}
+                                                onChange={this.handleChange}
+                                                value="否"
+                                                name="isCreditCard"
+                                                aria-label="否"
+                                        />} label="否" />
+                                    </div>
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">告知客户首次需要刷卡:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isCreditCard"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isCreditCard === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isCreditCard"
-                                            aria-label="否"
-                                        />} label="否" />
-                                </div>
-                                <div className="InputBox">
-                                    <div className="InputBox-text">银行是否开户:</div>
+                                    <div className="socialsecurity-text">银行是否开户:</div>
+                                    <div className="socialsecurity-next">
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.openAccount === '是'}
@@ -342,11 +340,11 @@ class AddTemplate extends React.Component {
                                             name="openAccount"
                                             aria-label="否"
                                         />} label="否" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">购买类型:</div>
+                                    <div className="socialsecurity-text">购买类型:</div>
+                                    <div className="socialsecurity-next">
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.buyType === '首次购买'}
@@ -363,19 +361,18 @@ class AddTemplate extends React.Component {
                                             name="buyType"
                                             aria-label="非首次购买"
                                         />} label="非首次购买" />
+                                    </div>
                                 </div>
+                            </div>
+                            <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">开户账号:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入开户账号"
+                                    <div className="socialsecurity-text">开户账号:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入开户账号"
                                         error={this.state.error} value={this.state.backAccount} ref="backAccount" name="backAccount" onChange={this.handleChange} />
                                 </div>
+                                <div className="InputBox"></div>
                             </div>
-                            <div className="tow-row">
-                                <div className="InputBox">
-                                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.getPersonInformation}>添加人员</Button>
-                                </div>
-                            </div>
-                            <div className="tow-row">
+                            <div className="tow-row" style={{margin:"0 auto"}}>
                                 <input type="hidden" name="personalInformation"></input>
                                 <table>
                                     <tbody>
@@ -396,26 +393,29 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">法人已参保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isLegalPersonBuy"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isLegalPersonBuy === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isLegalPersonBuy"
-                                            aria-label="否"
-                                        />} label="否" />
+                                    <div className="socialsecurity-text">法人已参保:</div>
+                                    <div className="socialsecurity-next">
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isLegalPersonBuy === '是'}
+                                                onChange={this.handleChange}
+                                                value="是"
+                                                name="isLegalPersonBuy"
+                                                aria-label="是"
+                                            />} label="是" />
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isLegalPersonBuy === '否'}
+                                                onChange={this.handleChange}
+                                                value="否"
+                                                name="isLegalPersonBuy"
+                                                aria-label="否"
+                                            />} label="否" />
+                                    </div>
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">参保证明:</div>
+                                    <div className="socialsecurity-text">参保证明:</div>
+                                    <div className="socialsecurity-next">
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.legalPersonCertificate === '已提供'}
@@ -432,42 +432,46 @@ class AddTemplate extends React.Component {
                                             name="legalPersonCertificate"
                                             aria-label="未提供"
                                         />} label="未提供" />
+                                    </div>
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">参保人员已停保:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.isClerkStopBuyInsurance === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="isClerkStopBuyInsurance"
-                                            aria-label="否"
-                                        />} label="否" />
+                                    <div className="socialsecurity-text">参保人员已停保:</div>
+                                    <div className="socialsecurity-next">
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isClerkStopBuyInsurance === '是'}
+                                                onChange={this.handleChange}
+                                                value="是"
+                                                name="isClerkStopBuyInsurance"
+                                                aria-label="是"
+                                            />} label="是" />
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.isClerkStopBuyInsurance === '否'}
+                                                onChange={this.handleChange}
+                                                value="否"
+                                                name="isClerkStopBuyInsurance"
+                                                aria-label="否"
+                                            />} label="否" />
+                                    </div>
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">已收身份证原件数量:</div>
-                                    <TextField className="InputBox-next" placeholder="请输入已收身份证原件数量"
+                                    <div className="socialsecurity-text">已收身份证原件数量:</div>
+                                    <TextField className="socialsecurity-next" placeholder="请输入已收身份证原件数量"
                                         error={this.state.error} value={this.state.identityCardNumber} ref="identityCardNumber" name="identityCardNumber" onChange={this.handleChange} />
-
                                 </div>
-
+                                <div className="Generalbutton">
+                                    <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>关闭</Button>
+                                </div>
                             </div>
 
                         </div>
                     </form>
-                </SkyLight>
+                </Dialog>
                 <div>
-                    <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#31b0d5' }} onClick={this.findById}>查看</Button>
+                    <Button variant="contained" color="primary" style={{ 'margin': '10px,0',backgroundColor:'#2196F3' }} onClick={this.findById}>查看</Button>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

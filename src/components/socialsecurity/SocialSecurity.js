@@ -250,6 +250,7 @@ class EnhancedTable extends React.Component {
     let display_loanInCount = this.state.display_loanInCount
     let display_toBeConfirmedCount = this.state.display_toBeConfirmedCount
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
+    let linkStyleDelete = { backgroundColor: '#E10050', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -327,9 +328,9 @@ class EnhancedTable extends React.Component {
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
+                          <Button size="small" style={linkStyleDelete} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
                         ) : (
-                            <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
+                            <Button size="small" style={linkStyleDelete} variant="text" disabled="true" >删除</Button>
                           )}
                       </TableCell>
                     </TableRow>

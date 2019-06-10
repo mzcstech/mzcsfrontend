@@ -24,7 +24,7 @@ import Badge from '@material-ui/core/Badge';
 import { SERVER_URL } from '../../constants.js';
 import './styles/GeneralContract.css'
 //整体样式
-const styles = theme => ({
+const styles = theme => ({ 
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
@@ -250,6 +250,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {       
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
+    let linkStyleDelete = { backgroundColor: '#E10050', color: '#ffffff', height: '36px' }
     let linkStyletwo = { backgroundColor: '#7087AD', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -331,9 +332,9 @@ class EnhancedTable extends React.Component {
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
-                          <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.generalContractId) }}>删除</Button>
+                          <Button size="small" style={linkStyleDelete} variant="text" color="primary" onClick={() => { this.confirmDelete(n.generalContractId) }}>删除</Button>
                         ) : (
-                            <Button size="small" style={linkStyle} variant="text" disabled="true" >删除</Button>
+                            <Button size="small" style={linkStyleDelete} variant="text" disabled="true" >删除</Button>
                           )}
 
                       </TableCell>

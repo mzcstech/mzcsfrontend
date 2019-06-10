@@ -81,7 +81,6 @@ class QuerygeneralContract extends Component{
     handsearchBth(){
         this.props.fetchTemplate(this.state.companyName,this.state.originalHolder,this.state.originalOutStatus)
     }
-
     render(){
         return(
             <div className="box">

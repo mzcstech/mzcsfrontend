@@ -1,5 +1,4 @@
 import React from 'react';
-import SkyLight from 'react-skylight';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -7,6 +6,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
+import Dialog from '@material-ui/core/Dialog';
 // import { Input } from 'material-ui-icons';
 require('./styles/GeneralContract.css')
 class AddTemplate extends React.Component {
@@ -41,7 +41,11 @@ class AddTemplate extends React.Component {
             level1: '',
             level2: '',
             level3: '',
-            userList: []
+            userList: [],
+            openDialog:false,
+            maxWidth: 'lg',
+            fullWidth:true
+
         };
     }
     //提示框
@@ -178,17 +182,16 @@ class AddTemplate extends React.Component {
                 remark: this.state.remark//备注
             };
             this.props.editTemplate(templateVo);
-            this.refs.addDialog.hide();
             this.setState({
                 companyName: '',
                 remark: '',
-                error: false,
+                openDialog:false,
                 open: true,
                 message: '编辑成功'
             })
         } else {
             this.setState({
-                error: true,
+                error:true,
                 open: true,
                 message: '请填写公司名称'
             })
@@ -339,20 +342,22 @@ class AddTemplate extends React.Component {
             )
     }
     showAdd = (event) => {
+        this.setState({
+            openDialog:true
+        })
         this.findById();
         this.getCustomerList();
         this.getRegisterArea();
         this.findAllUser();
         this.findIndustryList();
-        this.refs.addDialog.show();
     }
     // Cancel and close modal form
     cancelSubmit = (event) => {
         this.setState({
-            error: false,
+            openDialog: false,
         })
-        event.preventDefault();
-        this.refs.addDialog.hide();
+        // event.preventDefault();
+        // this.refs.addDialog.hide();
     }
     render() {
         let registerAreaList = this.state.registerAreaList;
@@ -361,15 +366,16 @@ class AddTemplate extends React.Component {
         let userList = this.state.userList;
         return (
             <div>
-                <SkyLight style={{ position: 'relative' }} hideOnOverlayClicked ref="addDialog">
+              <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
+                            maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
                     <h3 className="title">合同-新增</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">公司名称:</div>
+                                    <div className="GeneralInputBox-text">公司名称:</div>
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        className="GeneralInputBox-next"
                                         native
                                         value={this.state.companyName}
                                         onChange={this.handleChangeCompanyInformation}
@@ -383,9 +389,10 @@ class AddTemplate extends React.Component {
                                     </NativeSelect >
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">注册区域:</div>
+                                    <div className="GeneralInputBox-text">注册区域:</div>
+                                    <div className="GeneralInputBox-next">
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        style={{width:"30%",marginRight:'3.33%'}}
                                         native
                                         value={this.state.level1}
                                         onChange={this.handleChangeRegisterArea}
@@ -397,7 +404,7 @@ class AddTemplate extends React.Component {
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        style={{width:"30%",marginRight:'3.33%'}}
                                         native
                                         value={this.state.level2}
                                         onChange={this.handleChangeRegisterArea1}
@@ -409,7 +416,7 @@ class AddTemplate extends React.Component {
                                         })}
                                     </NativeSelect >
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        style={{width:"30%",marginRight:'3.33%'}}
                                         native
                                         value={this.state.level3}
                                         onChange={this.handleChange}
@@ -421,11 +428,13 @@ class AddTemplate extends React.Component {
                                         })}
                                     </NativeSelect >
                                 </div>
+                                </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">合同签订日期:</div>
+                                    <div className="GeneralInputBox-text">合同签订日期:</div>
                                     <TextField
+                                        className="GeneralInputBox-next"
                                         id="contractDate"
                                         name="contractDate"
                                         onChange={this.handleChange}
@@ -437,8 +446,9 @@ class AddTemplate extends React.Component {
                                     />
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">合同登记日期 :</div>
+                                    <div className="GeneralInputBox-text">合同登记日期 :</div>
                                     <TextField
+                                        className="GeneralInputBox-next"
                                         id="contractCreateDate"
                                         name="contractCreateDate"
                                         onChange={this.handleChange}
@@ -452,28 +462,30 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">是否签订合同:</div>
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.hasContract === '是'}
-                                            onChange={this.handleChange}
-                                            value="是"
-                                            name="hasContract"
-                                            aria-label="是"
-                                        />} label="是" />
-                                    <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.hasContract === '否'}
-                                            onChange={this.handleChange}
-                                            value="否"
-                                            name="hasContract"
-                                            aria-label="否"
-                                        />} label="否" />
+                                    <div className="GeneralInputBox-text">是否签订合同:</div>
+                                        <div className="GeneralInputBox-next">
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.hasContract === '是'}
+                                                onChange={this.handleChange}
+                                                value="是"
+                                                name="hasContract"
+                                                aria-label="是"
+                                            />} label="是" />
+                                        <FormControlLabel control={
+                                            <Radio
+                                                checked={this.state.hasContract === '否'}
+                                                onChange={this.handleChange}
+                                                value="否"
+                                                name="hasContract"
+                                                aria-label="否"
+                                            />} label="否" />
+                                        </div>
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">行业 :</div>
+                                    <div className="GeneralInputBox-text">行业 :</div>
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        className="GeneralInputBox-next"
                                         native
                                         value={this.state.industry}
                                         onChange={this.handleChange}
@@ -489,14 +501,14 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">出单人部门:</div>
-                                    <TextField className="InputBox-next"
+                                    <div className="GeneralInputBox-text">出单人部门:</div>
+                                    <TextField className="GeneralInputBox-next"
                                         error={this.state.error} value={this.state.drawerDepartment} ref="drawerDepartment" name="drawerDepartment" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">出单人:</div>
+                                    <div className="GeneralInputBox-text">出单人:</div>
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        className="GeneralInputBox-next"
                                         native
                                         value={this.state.drawer}
                                         onChange={this.handleChange}
@@ -511,9 +523,9 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">签单人:</div>
+                                    <div className="GeneralInputBox-text">签单人:</div>
                                     <NativeSelect
-                                        style={{ width: '70%' }}
+                                        className="GeneralInputBox-next"
                                         native
                                         value={this.state.signPerson}
                                         onChange={this.handleChange}
@@ -526,44 +538,45 @@ class AddTemplate extends React.Component {
                                     </NativeSelect >
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">客户来源:</div>
-                                    <TextField className="InputBox-next" value={this.state.sourceOfCustomer} multiline={true}
+                                    <div className="GeneralInputBox-text">客户来源:</div>
+                                    <TextField className="GeneralInputBox-next" value={this.state.sourceOfCustomer} multiline={true}
                                         name="sourceOfCustomer" onChange={this.handleChange} />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">客户联系人:</div>
-                                    <TextField className="InputBox-next"
+                                    <div className="GeneralInputBox-text">客户联系人:</div>
+                                    <TextField className="GeneralInputBox-next"
                                         error={this.state.error} value={this.state.linkman} ref="linkman" name="linkman" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">合同类型:</div>
-                                    <TextField className="InputBox-next" value={this.state.contractType} multiline={true}
+                                    <div className="GeneralInputBox-text">合同类型:</div>
+                                    <TextField className="GeneralInputBox-next" value={this.state.contractType} multiline={true}
                                         name="contractType" onChange={this.handleChange} />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">合同价款:</div>
-                                    <TextField className="InputBox-next"
+                                    <div className="GeneralInputBox-text">合同价款:</div>
+                                    <TextField className="GeneralInputBox-next"
                                         error={this.state.error} value={this.state.contractPrice} ref="contractPrice" name="contractPrice" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">预收款:</div>
-                                    <TextField className="InputBox-next" value={this.state.advancesReceived} multiline={true}
+                                    <div className="GeneralInputBox-text">预收款:</div>
+                                    <TextField className="GeneralInputBox-next" value={this.state.advancesReceived} multiline={true}
                                         name="advancesReceived" onChange={this.handleChange} />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">尾款:</div>
-                                    <TextField className="InputBox-next"
+                                    <div className="GeneralInputBox-text">尾款:</div>
+                                    <TextField className="GeneralInputBox-next"
                                         error={this.state.error} value={this.state.finalPayment} ref="finalPayment" name="finalPayment" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox">
-                                    <div className="InputBox-text">约定结办日期:</div>
+                                    <div className="GeneralInputBox-text">约定结办日期:</div>
                                     <TextField
+                                        className="GeneralInputBox-next"
                                         id="deadline"
                                         name="deadline"
                                         onChange={this.handleChange}
@@ -577,21 +590,21 @@ class AddTemplate extends React.Component {
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
-                                    <div className="InputBox-text">备注:</div>
-                                    <TextField className="InputBox-next"
+                                    <div className="GeneralInputBox-text">备注:</div>
+                                    <TextField className="GeneralInputBox-next"
                                         error={this.state.error} value={this.state.remark} ref="remark" name="remark" onChange={this.handleChange} />
                                 </div>
                                 <div className="InputBox"></div>
                             </div>
-                            <div className="button">
-                            <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
-                                <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
+                            <div className="Generalbutton">
+                                <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
+                                <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
                             </div>
                         </div>
                     </form>
-                </SkyLight>
+                </Dialog>
                 <div>
-                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={this.showAdd}>编辑</Button>
+                    <Button variant="contained" color="primary" style={{ 'margin': '10px',backgroundColor:'#2A608F' }} onClick={this.showAdd}>编辑</Button>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

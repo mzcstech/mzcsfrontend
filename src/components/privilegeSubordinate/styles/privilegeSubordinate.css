@@ -189,7 +189,7 @@
     }
  
     .PrivilegTableCellPrivilegTitle{
-        width:21.9%;
+        width:23%;
         border-top:1px solid #EDEDED;
         border-left:1px solid #EDEDED;
         white-space: nowrap;
@@ -197,9 +197,6 @@
         text-overflow: ellipsis;
     }
     .PrivilegTableCellPrivilegTitle:nth-last-child(1){
-        width:4.3%;
-    }
-    .PrivilegTableCellPrivilegTitle:nth-last-child(2){
         width:4.3%;
     }
     .PrivilegTableCellPrivileg{
