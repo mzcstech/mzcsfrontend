@@ -307,26 +307,26 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.socialSecurityId}
                     >
-                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.registeredArea}>{n.registeredArea}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.buyType}>{n.buyType}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.identityCardNumber}>{n.identityCardNumber}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none" title={n.saler}>{n.saler}</TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">
+                      <TableCell className="socialsecurity" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
+                      <TableCell className="socialsecurity" align="center" padding="none" title={n.registeredArea}>{n.registeredArea}</TableCell>
+                      <TableCell className="socialsecurity" align="center" padding="none" title={n.buyType}>{n.buyType}</TableCell>
+                      <TableCell className="socialsecurity" align="center" padding="none" title={n.identityCardNumber}>{n.identityCardNumber}</TableCell>
+                      <TableCell className="socialsecurity" align="center" padding="none" title={n.saler}>{n.saler}</TableCell>
+                      <TableCell className="socialsecurity" align="center" padding="none">
                         {this.state.QX.cha == "1" ? (
                           <ViewSocialSecurity fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
                           )}                          
                       </TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">
+                      <TableCell className="socialsecurity" align="center" padding="none">
                         {/* {this.state.QX.edit == "1" ? (
                           <EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} socialSecurityId={n.socialSecurityId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )} */}
                       </TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">
+                      <TableCell className="socialsecurity" align="center" padding="none">
                         {/* {this.state.QX.del == "1" ? (
                           <Button size="small" style={linkStyleDelete} variant="text" color="primary" onClick={() => { this.confirmDelete(n.socialSecurityId) }}>删除</Button>
                         ) : (

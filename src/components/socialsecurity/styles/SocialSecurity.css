@@ -158,6 +158,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .socialsecurity{
+        width:19.2%;
+        padding:0 1px;
+        border-left:1px solid #EDEDED;
+        border-right:1px solid #EDEDED;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .socialsecurity:nth-last-child(1){
+        width:4%;
+    }
     .TableCell{
         width:15.5%;
         padding:0 1px;

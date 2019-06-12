@@ -80,22 +80,38 @@ class AddTemplate extends React.Component {
                 customer=item;                
             }
         })
-            //其它公司信息回显
-            this.setState(
-                { customerId:customer.customerId,
+        if(event.target.value != "" && customer.registerArea !=""){
+            this.setState({
+                level1:customer.registerArea.split('-')[0],
+                level2:customer.registerArea.split('-')[1],
+                level3:customer.registerArea.split('-')[2],
+            })
+        }
+        if(event.target.value != ""){
+            this.setState({ 
+                    customerId:customer.customerId,
                     customerPhone:customer.linkmanPhoneNum,
                     address:customer.registered,
-                    level1:customer.registerArea.split('-')[0],
-                    level2:customer.registerArea.split('-')[1],
-                    level3:customer.registerArea.split('-')[2],
                     openAccount:customer.bankAccountNo==null||customer.bankAccountNo==''?'否':'是',
                     backAccount:customer.bankAccountNo
                 }, () =>{
                     this.getRegisterAreaList();
                    
                 }); 
-                
-            
+        }else{
+            this.setState({
+                companyName:'',
+                level1:'',
+                level2:'',
+                level3:'',
+                customerPhone:'',
+                address:'',
+                saler:'',
+                fees:'',
+                backAccount:'',
+                identityCardNumber:'',
+            })
+        }   
     }
         //回显地址下拉
         getRegisterAreaList = () => {
@@ -103,7 +119,7 @@ class AddTemplate extends React.Component {
             let level2 = this.state.level2;
             if (level1 != '') {
                 let registerAreaList = this.state.registerAreaList;
-               var registerList1 =[];
+                var registerList1 =[];
                 registerAreaList.forEach(reg => {
                     if (reg.name == level1) {
                             registerList1= reg.childTreeList
@@ -112,15 +128,17 @@ class AddTemplate extends React.Component {
                 this.setState({registerAreaList1:registerList1});
             }            
             if (level2 != '') {
-                let registerAreaList1 = this.state.registerAreaList1;
                 let registerList2=[];
-                registerAreaList1.forEach(reg => {
+                registerList1.forEach(reg => {
                     if (reg.name == level2) {
                         registerList2=reg.childTreeList
                     }
                 });
-                this.setState({registerAreaList2:registerList2});
-            }           
+                this.setState({registerAreaList2:registerList2},()=>{
+
+                });
+            }
+                    
         }
     // childValue  = (param) => {       
     //     this.setState.personinformations = param
@@ -350,6 +368,17 @@ class AddTemplate extends React.Component {
     cancelSubmit = (event) => {
         this.setState({
             openDialog: false,
+            companyName:'',
+            level1:'',
+            level2:'',
+            level3:'',
+            customerPhone:'',
+            address:'',
+            saler:'',
+            fees:'',
+            backAccount:'',
+            identityCardNumber:'',
+            error:false,
         })
         event.preventDefault();
     }
@@ -359,7 +388,6 @@ class AddTemplate extends React.Component {
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
         return (
-
             <div>
               <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
                             maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
@@ -429,6 +457,7 @@ class AddTemplate extends React.Component {
                                     <div className="InputBox">
                                         <div className="socialsecurity-text">客户联系方式:</div>
                                         <TextField className="socialsecurity-next" placeholder="请输入客户联系方式"
+                                            placeholder="请输入电话" type="number" maxlength="5"
                                             error={this.state.error} value={this.state.customerPhone} ref="customerPhone" name="customerPhone" onChange={this.handleChange} />
                                     </div>
                                     <div className="InputBox">

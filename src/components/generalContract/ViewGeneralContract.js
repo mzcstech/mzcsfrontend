@@ -114,18 +114,38 @@ class AddTemplate extends React.Component {
             }
         })
         this.getIndustry(customer.insdutry);
-        //其它公司信息回显
-        this.setState(
-            {  // industry:customer.insdutry,//行业                
-                linkman: customer.linkman,
-                level1: customer.registerArea.split('-')[0],
-                level2: customer.registerArea.split('-')[1],
-                level3: customer.registerArea.split('-')[2]
-
-            }, () => {
-                this.getRegisterAreaList();
-
-            });
+        if(event.target.value != ''){
+            this.setState(
+                {  
+                    // industry:customer.insdutry,//行业                
+                    linkman: customer.linkman,
+                    level1: customer.registerArea.split('-')[0],
+                    level2: customer.registerArea.split('-')[1],
+                    level3: customer.registerArea.split('-')[2]
+    
+                }, () => {
+                    this.getRegisterAreaList();
+    
+                });
+        }else{
+            this.setState({
+                companyName:'',
+                level1:'',
+                level2:'',
+                level3:'',
+                industry:'',
+                drawerDepartment:'',
+                drawer:'',
+                signPerson:'',
+                sourceOfCustomer:'',
+                linkman:'',
+                contractType:'',
+                contractPrice:'',
+                advancesReceived:'',
+                finalPayment:'',
+                remark:'',
+            })
+        }
     }
     getIndustry = (event) => {
         this.state.industryList.forEach(element => {
@@ -365,7 +385,7 @@ class AddTemplate extends React.Component {
             <div>
                 <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
                             maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
-                    <h3 className="title">合同-新增</h3>
+                    <h3 className="title">合同-查看</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">
@@ -375,7 +395,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         native
                                         value={this.state.companyName}
-                                        onChange={this.handleChangeCompanyInformation}
                                         name='companyName'
                                     >
                                         <option value="" />
@@ -392,7 +411,6 @@ class AddTemplate extends React.Component {
                                         style={{width:"30%",marginRight:'3.33%'}}
                                             native
                                             value={this.state.level1}
-                                            onChange={this.handleChangeRegisterArea}
                                             name='level1'
                                         >
                                             <option value="" />
@@ -404,7 +422,6 @@ class AddTemplate extends React.Component {
                                             style={{width:"30%",marginRight:'3.33%'}}
                                             native
                                             value={this.state.level2}
-                                            onChange={this.handleChangeRegisterArea1}
                                             name='level2'
                                         >
                                             <option value="" />
@@ -416,7 +433,6 @@ class AddTemplate extends React.Component {
                                             style={{width:"30%",marginRight:'3.33%'}}
                                             native
                                             value={this.state.level3}
-                                            onChange={this.handleChange}
                                             name='level3'
                                         >
                                             <option value="" />
@@ -434,7 +450,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         id="contractDate"
                                         name="contractDate"
-                                        onChange={this.handleChange}
                                         type="date"
                                         defaultValue="2019-06-04"
                                         InputLabelProps={{
@@ -448,7 +463,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         id="contractCreateDate"
                                         name="contractCreateDate"
-                                        onChange={this.handleChange}
                                         type="date"
                                         defaultValue="2019-06-04"
                                         InputLabelProps={{
@@ -464,7 +478,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.hasContract === '是'}
-                                            onChange={this.handleChange}
                                             value="是"
                                             name="hasContract"
                                             aria-label="是"
@@ -472,7 +485,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.hasContract === '否'}
-                                            onChange={this.handleChange}
                                             value="否"
                                             name="hasContract"
                                             aria-label="否"
@@ -485,7 +497,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         native
                                         value={this.state.industry}
-                                        onChange={this.handleChange}
                                         name='industry'
                                     >
                                         <option value="" />
@@ -500,7 +511,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">出单人部门:</div>
                                     <TextField  className="GeneralInputBox-next"
-                                        error={this.state.error} value={this.state.drawerDepartment} ref="drawerDepartment" name="drawerDepartment" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.drawerDepartment} ref="drawerDepartment" name="drawerDepartment"  />
                                 </div>
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">出单人:</div>
@@ -508,7 +519,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"    
                                         native
                                         value={this.state.drawer}
-                                        onChange={this.handleChange}
                                         name='drawer'
                                     >
                                         <option value="" />
@@ -525,7 +535,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         native
                                         value={this.state.signPerson}
-                                        onChange={this.handleChange}
                                         name='signPerson'
                                     >
                                         <option value="" />
@@ -537,38 +546,38 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">客户来源:</div>
                                     <TextField className="GeneralInputBox-next" value={this.state.sourceOfCustomer} multiline={true}
-                                        name="sourceOfCustomer" onChange={this.handleChange} />
+                                        name="sourceOfCustomer"  />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">客户联系人:</div>
                                     <TextField className="GeneralInputBox-next"
-                                        error={this.state.error} value={this.state.linkman} ref="linkman" name="linkman" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.linkman} ref="linkman" name="linkman"  />
                                 </div>
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">合同类型:</div>
                                     <TextField className="GeneralInputBox-next" value={this.state.contractType} multiline={true}
-                                        name="contractType" onChange={this.handleChange} />
+                                        name="contractType"  />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">合同价款:</div>
                                     <TextField className="GeneralInputBox-next"
-                                        error={this.state.error} value={this.state.contractPrice} ref="contractPrice" name="contractPrice" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.contractPrice} ref="contractPrice" name="contractPrice"  />
                                 </div>
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">预收款:</div>
                                     <TextField className="GeneralInputBox-next" value={this.state.advancesReceived} multiline={true}
-                                        name="advancesReceived" onChange={this.handleChange} />
+                                        name="advancesReceived"  />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">尾款:</div>
                                     <TextField className="GeneralInputBox-next"
-                                        error={this.state.error} value={this.state.finalPayment} ref="finalPayment" name="finalPayment" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.finalPayment} ref="finalPayment" name="finalPayment" />
                                 </div>
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">约定结办日期:</div>
@@ -576,7 +585,6 @@ class AddTemplate extends React.Component {
                                         className="GeneralInputBox-next"
                                         id="deadline"
                                         name="deadline"
-                                        onChange={this.handleChange}
                                         type="date"
                                         defaultValue="2019-06-04"
                                         InputLabelProps={{
@@ -589,7 +597,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="GeneralInputBox-text">备注:</div>
                                     <TextField className="GeneralInputBox-next"
-                                        error={this.state.error} value={this.state.remark} ref="remark" name="remark" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.remark} ref="remark" name="remark" />
                                 </div>
                                 <div className="InputBox"></div>
                             </div>

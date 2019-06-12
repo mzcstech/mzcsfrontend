@@ -21,7 +21,7 @@ class AddTemplate extends React.Component {
             contractDate: '2019-06-04',//合同签订日期
             hasContract: '',//是否签订合同
             industry: '',//行业
-            drawerDepartment: '',//出单人部门
+            drawerDepartment: '',//出单人部门 
             drawer: '',//出单人
             signPerson: '',//签单人
             sourceOfCustomer: '',//客户来源
@@ -115,18 +115,40 @@ class AddTemplate extends React.Component {
             }
         })
         this.getIndustry(customer.insdutry);
-        //其它公司信息回显
-        this.setState(
-            {  // industry:customer.insdutry,//行业                
-                linkman: customer.linkman,
+        if(event.target.value != "" && customer.registerArea !=""){
+            this.setState({
                 level1: customer.registerArea.split('-')[0],
                 level2: customer.registerArea.split('-')[1],
                 level3: customer.registerArea.split('-')[2]
-
-            }, () => {
-                this.getRegisterAreaList();
-
-            });
+            })
+        }
+        if(event.target.value != ''){
+            this.setState(
+                {  // industry:customer.insdutry,        
+                    linkman: customer.linkman,
+                }, () => {
+                    this.getRegisterAreaList();
+    
+                });
+        }else{
+            this.setState({
+                companyName:'',
+                level1:'',
+                level2:'',
+                level3:'',
+                industry:'',
+                drawerDepartment:'',
+                drawer:'',
+                signPerson:'',
+                sourceOfCustomer:'',
+                linkman:'',
+                contractType:'',
+                contractPrice:'',
+                advancesReceived:'',
+                finalPayment:'',
+                remark:'',
+            })
+        }
     }
     getIndustry = (event) => {
         this.state.industryList.forEach(element => {
@@ -368,7 +390,7 @@ class AddTemplate extends React.Component {
             <div>
               <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
                             maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
-                    <h3 className="title">合同-新增</h3>
+                    <h3 className="title">合同-修改</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">

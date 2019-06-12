@@ -31,23 +31,23 @@ const rows = [
         Cell: ({ row }) =>
             (<ViewSocialSecurity fetchTemplate={this.fetchTemplate} templeteId={row.socialSecurityId} ></ViewSocialSecurity>)
     },
-    {
-        id: 'updatePagebutton',
-        numeric: false,
-        disablePadding: false,
-        label: '修改',
+    // {
+    //     id: 'updatePagebutton',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: '修改',
 
-        Cell: ({ row }) =>
-            (<EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.socialSecurityId} />)
-    },
-    {
-        id: 'delbutton',
-        numeric: false,
-        disablePadding: false,
-        label: '删除',
-        width: 70,
-        Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.socialSecurityId) }}>删除</Button>)
-    }
+    //     Cell: ({ row }) =>
+    //         (<EditSocialSecurity editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.socialSecurityId} />)
+    // },
+    // {
+    //     id: 'delbutton',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: '删除',
+    //     width: 70,
+    //     Cell: ({ row }) => (<Button size="small" variant="text" color="primary" onClick={() => { this.confirmDelete(row.socialSecurityId) }}>删除</Button>)
+    // }
 ];
 
 // 列表头的渲染
@@ -61,7 +61,7 @@ class EnhancedTableHead extends React.Component {
                     {rows.map(
                         row => (
                             <TableCell
-                                className="TableCellCUM"
+                                className="socialsecurity"
                                 key={row.id}
                                 align="center"
                                 padding="none"

@@ -249,31 +249,31 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">公司名称:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入新客户公司名称"
-                                        error={this.state.error} value={this.state.companyName} ref="companyName" name="companyName" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.companyName} ref="companyName" name="companyName"  />
                                 </div>
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">注册区域:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入注册区域"
-                                        error={this.state.error} value={this.state.registeredArea} ref="registeredArea" name="registeredArea" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.registeredArea} ref="registeredArea" name="registeredArea" />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">客户联系方式:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入客户联系方式"
-                                        error={this.state.error} value={this.state.customerPhone} ref="customerPhone" name="customerPhone" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.customerPhone} ref="customerPhone" name="customerPhone"  />
                                 </div>
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">公司地址:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入公司地址"
-                                        error={this.state.error} value={this.state.address} ref="address" name="address" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.address} ref="address" name="address" />
                                 </div>
                             </div>
                             <div className="tow-row">
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">收费金额:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入收费金额"
-                                        error={this.state.error} value={this.state.fees} ref="fees" name="fees" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.fees} ref="fees" name="fees" />
                                 </div>
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">签单人:</div>
@@ -281,7 +281,6 @@ class AddTemplate extends React.Component {
                                         className="socialsecurity-next"
                                         native
                                         value={this.state.saler}
-                                        onChange={this.handleChange}
                                         name='saler'
                                     >
                                         <option value="" />
@@ -295,7 +294,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">购买起始月:</div>
                                     <TextField className="socialsecurity-next" placeholder=""
-                                        error={this.state.error} value={this.state.buyStartMonth} ref="buyStartMonth" name="buyStartMonth" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.buyStartMonth} ref="buyStartMonth" name="buyStartMonth" />
 
                                 </div>
                                 <div className="InputBox">
@@ -304,7 +303,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isCreditCard === '是'}
-                                                onChange={this.handleChange}
                                                 value="是"
                                                 name="isCreditCard"
                                                 aria-label="是"
@@ -312,7 +310,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isCreditCard === '否'}
-                                                onChange={this.handleChange}
                                                 value="否"
                                                 name="isCreditCard"
                                                 aria-label="否"
@@ -327,7 +324,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.openAccount === '是'}
-                                            onChange={this.handleChange}
                                             value="是"
                                             name="openAccount"
                                             aria-label="是"
@@ -335,7 +331,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.openAccount === '否'}
-                                            onChange={this.handleChange}
                                             value="否"
                                             name="openAccount"
                                             aria-label="否"
@@ -348,7 +343,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.buyType === '首次购买'}
-                                            onChange={this.handleChange}
                                             value="首次购买"
                                             name="buyType"
                                             aria-label="首次购买"
@@ -356,7 +350,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.buyType === '非首次购买'}
-                                            onChange={this.handleChange}
                                             value="非首次购买"
                                             name="buyType"
                                             aria-label="非首次购买"
@@ -368,7 +361,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">开户账号:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入开户账号"
-                                        error={this.state.error} value={this.state.backAccount} ref="backAccount" name="backAccount" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.backAccount} ref="backAccount" name="backAccount" />
                                 </div>
                                 <div className="InputBox"></div>
                             </div>
@@ -398,7 +391,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isLegalPersonBuy === '是'}
-                                                onChange={this.handleChange}
                                                 value="是"
                                                 name="isLegalPersonBuy"
                                                 aria-label="是"
@@ -406,7 +398,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isLegalPersonBuy === '否'}
-                                                onChange={this.handleChange}
                                                 value="否"
                                                 name="isLegalPersonBuy"
                                                 aria-label="否"
@@ -419,7 +410,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.legalPersonCertificate === '已提供'}
-                                            onChange={this.handleChange}
                                             value="已提供"
                                             name="legalPersonCertificate"
                                             aria-label="已提供"
@@ -427,7 +417,6 @@ class AddTemplate extends React.Component {
                                     <FormControlLabel control={
                                         <Radio
                                             checked={this.state.legalPersonCertificate === '未提供'}
-                                            onChange={this.handleChange}
                                             value="未提供"
                                             name="legalPersonCertificate"
                                             aria-label="未提供"
@@ -442,7 +431,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isClerkStopBuyInsurance === '是'}
-                                                onChange={this.handleChange}
                                                 value="是"
                                                 name="isClerkStopBuyInsurance"
                                                 aria-label="是"
@@ -450,7 +438,6 @@ class AddTemplate extends React.Component {
                                         <FormControlLabel control={
                                             <Radio
                                                 checked={this.state.isClerkStopBuyInsurance === '否'}
-                                                onChange={this.handleChange}
                                                 value="否"
                                                 name="isClerkStopBuyInsurance"
                                                 aria-label="否"
@@ -460,7 +447,7 @@ class AddTemplate extends React.Component {
                                 <div className="InputBox">
                                     <div className="socialsecurity-text">已收身份证原件数量:</div>
                                     <TextField className="socialsecurity-next" placeholder="请输入已收身份证原件数量"
-                                        error={this.state.error} value={this.state.identityCardNumber} ref="identityCardNumber" name="identityCardNumber" onChange={this.handleChange} />
+                                        error={this.state.error} value={this.state.identityCardNumber} ref="identityCardNumber" name="identityCardNumber" />
                                 </div>
                                 <div className="Generalbutton">
                                     <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>关闭</Button>

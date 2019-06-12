@@ -14,7 +14,7 @@ class AddTemplate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyName: '',//公司
+            companyName: '',//公司 
             registerArea: '',//注册区域    
             contractCreateDate: '2019-06-04',//合同登记日期  
             contractDate: '2019-06-04',//合同签订日期
@@ -114,17 +114,40 @@ class AddTemplate extends React.Component {
         })
         this.getIndustry(customer.insdutry);
         //其它公司信息回显
-        this.setState(
-            {  // industry:customer.insdutry,//行业                
-                linkman: customer.linkman,
+        if(event.target.value != "" && customer.registerArea !=""){
+            this.setState({
                 level1: customer.registerArea.split('-')[0],
                 level2: customer.registerArea.split('-')[1],
                 level3: customer.registerArea.split('-')[2]
-
-            }, () => {
-                this.getRegisterAreaList();
-
-            });
+            })
+        }
+        if(event.target.value != ''){
+            this.setState(
+                {  // industry:customer.insdutry,//行业                
+                    linkman: customer.linkman,
+                }, () => {
+                    this.getRegisterAreaList();
+    
+                });
+        }else{
+            this.setState({
+                companyName:'',
+                level1:'',
+                level2:'',
+                level3:'',
+                industry:'',
+                drawerDepartment:'',
+                drawer:'',
+                signPerson:'',
+                sourceOfCustomer:'',
+                linkman:'',
+                contractType:'',
+                contractPrice:'',
+                advancesReceived:'',
+                finalPayment:'',
+                remark:'',
+            })
+        }
     }
     getIndustry = (event) => {
         this.state.industryList.forEach(element => {
@@ -231,7 +254,6 @@ class AddTemplate extends React.Component {
             registerAreaList.forEach(reg => {
                 if (reg.name == level1) {
                     registerList1 = reg.childTreeList
-
                 }
             });
             this.setState({ registerAreaList1: registerList1 }, () => {
@@ -311,6 +333,21 @@ class AddTemplate extends React.Component {
         this.setState({
             error: false,
             openDialog:false,
+            companyName:'',
+            level1:'',
+            level2:'',
+            level3:'',
+            industry:'',
+            drawerDepartment:'',
+            drawer:'',
+            signPerson:'',
+            sourceOfCustomer:'',
+            linkman:'',
+            contractType:'',
+            contractPrice:'',
+            advancesReceived:'',
+            finalPayment:'',
+            remark:'',
         })
         event.preventDefault();
     }
