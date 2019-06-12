@@ -158,7 +158,7 @@ class EditPrivilegeManagement extends React.Component {
     }
     //修改树显示
     showThree(){
-        let NewshowThree = this.state.showThree
+      let NewshowThree = this.state.showThree
        this.setState({
         showThree:!NewshowThree
        })
@@ -214,23 +214,13 @@ class EditPrivilegeManagement extends React.Component {
                                             }
                                     </NativeSelect>
                                 </div>
-                                <div className="InputBox">
-                                        <FormLabel className="InputBox-text" >父节点:</FormLabel>
-                                      
-                                            <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"  onClick={this.showThree}   onChange={this.handleChangegeparentId} value={this.state.usergroupparentId}/>
-                                            <IconButton  aria-label="Search">
+                                <div className="InputBox" >
+                                        <FormLabel className="InputBox-text"  >父节点:</FormLabel>
+                                            <Input style={{ width:'75%'}}  className="InputBox-text" className="Input"  onClick={this.showThree}  
+                                             onChange={this.handleChangegeparentId} value={this.state.usergroupparentId}/>
+                                            <IconButton  onClick={this.showThree} aria-label="Search">
                                                 <SearchIcon />
                                             </IconButton>
-                                        {/* <NativeSelect      
-                                            style={{ width:'70%'}}                                  
-                                            native
-                                            value={this.state.usergroupparentId}
-                                            onChange={this.handleChangegeparentId}
-                                            onClick={this.showThree}
-                                            name='originalName' 
-                                            input={<Input name="originalName" id="originalName" />}
-                                            >
-                                            </NativeSelect> */}
                                 </div>
                                 <div className="InputBox"></div>
                                 {

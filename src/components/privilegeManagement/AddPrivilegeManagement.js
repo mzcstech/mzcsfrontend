@@ -7,6 +7,10 @@ import Snackbar from '@material-ui/core/Snackbar';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
+import List from '@material-ui/core/List';
+import TreeMenu from 'react-simple-tree-menu';
 
 class AddPrivilegeManagement extends React.Component {
     constructor(props) {
@@ -19,7 +23,10 @@ class AddPrivilegeManagement extends React.Component {
             usergroupparentId:'',
             usergroupcode:'',
             findPrivilegeTypes:[],
-            findPrivilegSubTypes:[]
+            findPrivilegSubTypes:[],
+            showThreeusergroup:false,
+            showThreeparentId:false,
+            three:[]
 
         };
         this.findPrivilegeTypes     = this.findPrivilegeTypes.bind(this)
@@ -28,6 +35,11 @@ class AddPrivilegeManagement extends React.Component {
         this.handleChangegrouptype  = this.handleChangegrouptype.bind(this)
         this.handleChanegesubtype   = this.handleChanegesubtype.bind(this)
         this.handleChangegeparentId = this.handleChangegeparentId.bind(this)
+        this.getUsergroupFindByParentId=this.getUsergroupFindByParentId.bind(this)
+        this.getUsergroupId            =this.getUsergroupId.bind(this)
+        this.showThreeparentId         =this.showThreeparentId.bind(this)
+        this.showThreeusergroup        =this.showThreeusergroup.bind(this)
+        this.getparentId               = this.getparentId.bind(this)
     }
     handleChange = (event) => {
         this.setState(
@@ -131,10 +143,55 @@ class AddPrivilegeManagement extends React.Component {
         event.preventDefault();
         this.refs.editDialog.hide();
     }
+    componentDidMount(){
+        this.getUsergroupFindByParentId()
+    }
+    //获取用户组树
+    getUsergroupFindByParentId(){
+        fetch(SERVER_URL + '/usergroup/findByParentId',{
+          mode: "cors",
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json,text/plain,*/*'
+          },
+        })
+        .then((response) => response.json())
+        .then((responseData) => {
+             this.setState({
+               three:responseData.data
+             })
+        })
+        .catch(err => console.error(err));
+    }
+    //修改树显示
+    showThreeusergroup(){
+        let NewshowThree = this.state.showThreeusergroup
+         this.setState({
+            showThreeusergroup:!NewshowThree
+         })
+    }
+    showThreeparentId(){
+        let NewshowThree = this.state.showThreeparentId
+         this.setState({
+            showThreeparentId:!NewshowThree
+         })
+    }
+    getUsergroupId(e){
+        console.log(e.parent)
+        this.setState({
+            usergroupId:e.parent
+        })
+    }
+    getparentId(e){
+        this.setState({
+            usergroupparentId:e.parent
+        })
+    }
     render(){
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="editDialog">
+                <SkyLight  hideOnOverlayClicked ref="editDialog">
                     <h3>权限管理用户组-新增</h3>
                     <form>
                         <div className="OutermostBox">
@@ -179,44 +236,45 @@ class AddPrivilegeManagement extends React.Component {
                                 </div>
                                 <div className="InputBox">
                                         <FormLabel className="InputBox-text">usergroupId:</FormLabel>
-                                        <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"    
-                                        onChange={this.handleChangegeusergroupId} v value={this.state.usergroupId} />
-                                        {/* <NativeSelect      
-                                            style={{ width:'70%'}}                                  
-                                            native
-                                            value={this.state.usergroupId}
-                                            onChange={this.handleChangegeusergroupId}
-                                            name='usergroupId' 
-                                            input={<Input name="usergroupId" id="usergroupId" />}
-                                            > */}
-                                            {/* <option value=""/>  */}
-                                            {/* {this.state.userList.map(item => {
-                                                return (<option value={item.name} >{item.name}</option>)
-                                            }) */}
-                                    {/* </NativeSelect> */}
+                                        <Input style={{ width:'75%'}}  className="InputBox-text" className="Input"    
+                                        onChange={this.handleChangegeusergroupId}  value={this.state.usergroupId} onClick={this.showThreeusergroup} />
+                                        <IconButton  onClick={this.showThreeusergroup} aria-label="Search">
+                                                <SearchIcon />
+                                        </IconButton>
                                 </div>
                                 <div className="InputBox">
                                         <FormLabel className="InputBox-text">parentId:</FormLabel>
                                         <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"    
-                                        onChange={this.handleChangegeparentId} v value={this.state.usergroupparentId} />
-                                        {/* <NativeSelect      
-                                            style={{ width:'70%'}}                                  
-                                            native
-                                            value={this.state.usergroupparentId}
-                                            onChange={this.handleChangegeparentId}
-                                            name='originalName' 
-                                            input={<Input name="originalName" id="originalName" />}
-                                            > */}
-                                            {/* <option value=""/>  */}
-                                            {/* {this.state.userList.map(item => {
-                                                return (<option value={item.name} >{item.name}</option>)
-                                            }) */}
-                                    {/* </NativeSelect> */}
+                                        onChange={this.handleChangegeparentId}  value={this.state.usergroupparentId} onClick={this.showThreeparentId} />
+                                        <IconButton  onClick={this.showThreeparentId} aria-label="Search">
+                                                <SearchIcon/>
+                                        </IconButton>
                                 </div>
-                                <div className="InputBox">
-                                
-                                </div>
+                                    {
+                                        (this.state.showThreeusergroup !== false)?
+                                        <div className="InputBox" style={{height:'200px'}} >
+                                        <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                                            color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
+                                            <TreeMenu data={this.state.three} onClickItem={this.getusergroupId} ></TreeMenu>
+                                        </List>    
+                                        </div>
+                                        :
+                                        <div className="InputBox"></div>
+                                    }
+                                    {
+                                        (this.state.showThreeparentId !== false)?
+                                        <div className="InputBox" style={{height:'200px'}} >
+                                        <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                                            color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
+                                            <TreeMenu data={this.state.three} onClickItem={this.getparentId} ></TreeMenu>
+                                        </List>    
+                                        </div>
+                                        :
+                                        <div className="InputBox"></div>
+                                    }
+                                    <div className="InputBox"></div>
                             </div>
+                            <div style={{height:'100px'}}></div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>

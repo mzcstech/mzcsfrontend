@@ -114,7 +114,7 @@ class AddTemplate extends React.Component {
         })
         this.getIndustry(customer.insdutry);
         //其它公司信息回显
-        if(event.target.value != "" && customer.registerArea !=""){
+        if(event.target.value != "" && customer.registerArea !="" && customer.registerArea !=null){
             this.setState({
                 level1: customer.registerArea.split('-')[0],
                 level2: customer.registerArea.split('-')[1],

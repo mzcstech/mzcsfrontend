@@ -249,7 +249,6 @@ class TablesPrivilegeManagement extends React.Component {
     }
    // 分页
    fetchTemplate = (queryList) => { 
-
     let NewqueryList =[]
     NewqueryList.push(queryList)
     let followUpVo = new FormData();
@@ -281,15 +280,7 @@ class TablesPrivilegeManagement extends React.Component {
       })
       .catch(err => console.error(err));
   }
-  //排序
-  // handleRequestSort = (event, property) => {
-  //   const orderBy = property;
-  //   let order = 'desc';
-  //   if (this.state.orderBy === property && this.state.order === 'desc') {
-  //     order = 'asc';
-  //   }
-  //   this.setState({ order, orderBy });
-  // };
+
 
   handleSelectAllClick = event => {
     if (event.target.checked) {
@@ -434,7 +425,8 @@ class TablesPrivilegeManagement extends React.Component {
         },
         body: usergroupInformationVo
       })
-      .then(res => {
+      .then(res => {  
+        console.log(res)
         this.fetchTemplate()
       })
       .catch(err => console.error(err))
