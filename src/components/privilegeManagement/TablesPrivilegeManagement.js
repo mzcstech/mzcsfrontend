@@ -487,7 +487,9 @@ class TablesPrivilegeManagement extends React.Component {
                       <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.subtype}</TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.parentId}</TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  ><EditPrivilegeManagement usergroupId={n.usergroupId} editTemplate={this.editTemplate} three={this.props.three}/></TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >
+                        <EditPrivilegeManagement usergroupId={n.usergroupId} editTemplate={this.editTemplate} three={this.props.three} NewparentId={n.parentId}/>
+                      </TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none" ><Button size="small" style={linkStyletwo} variant="text" color="primary"
                        onClick={() => { this.jumpToprivilegeSubordinate(n.usergroupId) }}>所属</Button></TableCell>
                     </TableRow>

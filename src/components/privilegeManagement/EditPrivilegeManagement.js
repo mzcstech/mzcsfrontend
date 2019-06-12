@@ -1,12 +1,17 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import { SERVER_URL } from '../../constants.js';
+import TreeMenu from 'react-simple-tree-menu'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 class EditPrivilegeManagement extends React.Component {
     constructor(props) {
@@ -16,11 +21,11 @@ class EditPrivilegeManagement extends React.Component {
             usergroupName:'',
             usergrouptype:'',
             usergroupsubtype:'',
-            usergroupparentId:'',
+            usergroupparentId:this.props.NewparentId,
             usergroupcode:'',
             findPrivilegeTypes:[],
-            findPrivilegSubTypes:[]
-
+            findPrivilegSubTypes:[],
+            showThree:false,
         };
         this.findPrivilegeTypes     = this.findPrivilegeTypes.bind(this)
         this.findById               = this.findById.bind(this)
@@ -28,6 +33,8 @@ class EditPrivilegeManagement extends React.Component {
         this.handleChangegrouptype  = this.handleChangegrouptype.bind(this)
         this.handleChanegesubtype   = this.handleChanegesubtype.bind(this)
         this.handleChangegeparentId = this.handleChangegeparentId.bind(this)
+        this.showThree              = this.showThree.bind(this)
+        this.getthreekey            = this.getthreekey.bind(this)
     }
     handleChange = (event) => {
         this.setState(
@@ -42,11 +49,6 @@ class EditPrivilegeManagement extends React.Component {
     handleChanegesubtype=(event) =>{
         this.setState(
             { usergroupsubtype: event.target.value }
-        );
-    }
-    handleChangegeparentId=(event) =>{
-        this.setState(
-            { usergroupparentId: event.target.value }
         );
     }
     handleChangegeparentId=(event) =>{
@@ -154,6 +156,18 @@ class EditPrivilegeManagement extends React.Component {
         event.preventDefault();
         this.refs.editDialog.hide();
     }
+    //修改树显示
+    showThree(){
+        let NewshowThree = this.state.showThree
+       this.setState({
+        showThree:!NewshowThree
+       })
+    }
+    getthreekey(e){
+        this.setState({
+            usergroupparentId:e.parent
+        })
+    }
     render(){
         return (
             <div>
@@ -201,25 +215,35 @@ class EditPrivilegeManagement extends React.Component {
                                     </NativeSelect>
                                 </div>
                                 <div className="InputBox">
-                                        <FormLabel className="InputBox-text">父节点:</FormLabel>
-                                        <NativeSelect      
+                                        <FormLabel className="InputBox-text" >父节点:</FormLabel>
+                                      
+                                            <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"  onClick={this.showThree}   onChange={this.handleChangegeparentId} value={this.state.usergroupparentId}/>
+                                            <IconButton  aria-label="Search">
+                                                <SearchIcon />
+                                            </IconButton>
+                                        {/* <NativeSelect      
                                             style={{ width:'70%'}}                                  
                                             native
                                             value={this.state.usergroupparentId}
                                             onChange={this.handleChangegeparentId}
+                                            onClick={this.showThree}
                                             name='originalName' 
                                             input={<Input name="originalName" id="originalName" />}
                                             >
-                                            {/* <option value=""/>  */}
-                                            {/* {this.state.userList.map(item => {
-                                                return (<option value={item.name} >{item.name}</option>)
-                                            }) */}
-                                            }
-                                    </NativeSelect>
+                                            </NativeSelect> */}
                                 </div>
-                                {/* <div className="InputBox">
-                                
-                                </div> */}
+                                <div className="InputBox"></div>
+                                {
+                                    (this.state.showThree !== false)?
+                                     <div className="InputBox" style={{height:'200px'}} >
+                                     <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                                         color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
+                                         <TreeMenu data={this.props.three} onClickItem={this.getthreekey} ></TreeMenu>
+                                     </List>    
+                                     </div>
+                                     :
+                                    <option></option>
+                                }
                             </div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>

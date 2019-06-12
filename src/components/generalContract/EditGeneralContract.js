@@ -123,13 +123,12 @@ class AddTemplate extends React.Component {
             })
         }
         if(event.target.value != ''){
-            this.setState(
-                {  // industry:customer.insdutry,        
-                    linkman: customer.linkman,
-                }, () => {
-                    this.getRegisterAreaList();
-    
-                });
+        this.setState(
+            {  // industry:customer.insdutry,        
+                linkman: customer.linkman,
+            }, () => {
+                this.getRegisterAreaList();
+            });
         }else{
             this.setState({
                 companyName:'',

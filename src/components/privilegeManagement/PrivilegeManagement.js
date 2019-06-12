@@ -6,7 +6,7 @@ import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
 import AddPrivilegeManagement from './AddPrivilegeManagement.js';
 
 import TreeMenu from 'react-simple-tree-menu'
-import 'react-dropdown-tree-select/dist/styles.css'
+
 // import store from '../../store'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -26,58 +26,7 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail'; 
 import './styles/PrivilegeManagement.css'
 
-const drawerWidth ='15%';
-const drawerWidth2 ='84%';
-const styles = theme => ({
-    root: {
-      width: '100%',
-      marginTop: theme.spacing.unit * 3,
-    },
-    // 新加
-    // boxbotton:{
-    //     [theme.breakpoints.up('sm')]: {
-    //         width: `calc(100% - ${drawerWidth}px)`,
-    //     },
-    // },
-    nested: {
-        paddingLeft: theme.spacing.unit * 4,
-    },
-    drawer: {
-        [theme.breakpoints.up('sm')]: {
-          width: drawerWidth,
-          flexShrink: 0,
-        },
-    },
-    appBar: {
-        marginLeft: drawerWidth,
-        [theme.breakpoints.up('sm')]: {
-          width: `calc(100% - ${drawerWidth}px)`,
-        },
-    },
-      menuButton: {
-        marginRight: 20,
-        [theme.breakpoints.up('sm')]: {
-          display: 'none',
-        },
-      },
-      toolbar: theme.mixins.toolbar,
-      toolbarRight:{
-        borderTop:'2px solid #eeeeee',
-        
-      },
-      drawerPaper: {
-        maxHeight:`calc(83%)`,
-        top:`calc(21.5%)`,
-        width: drawerWidth,
-      },
-      content: {
-        width:drawerWidth2,
-        // border:'1px solid red',
-        flexGrow: 1,
-      },
-  });
- 
- 
+
   class PrivilegeManagement extends React.Component {
     constructor(props){
         super(props)
@@ -159,11 +108,11 @@ const styles = theme => ({
             </AppBar> 
             <AddPrivilegeManagement addTemplate={this.addTemplate}></AddPrivilegeManagement>
             <div className="nav_box" style={{width:"100%"}}>
-                <List classNmae="left_boxs" style={{maxWidth:'15%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                <List classNmae="left_boxs" style={{width:'17%',maxHeight: 600,position: 'relative', overflow: 'auto',
                 color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginTop:'24px',marginLeft:"0.5%"}}>
-                     <TreeMenu data={three} onClickItem={true}></TreeMenu>
+                     <TreeMenu data={three}   ></TreeMenu>
                 </List>
-                <div style={{marginRight:'0.5%',width:'83.5%',float:"right",marginLeft:"0.5%" }}>
+                <div style={{marginRight:'0.5%',width:'99%',float:"right",marginLeft:"0.5%" }}>
                     <main>
                         <TablesPrivilegeManagement  onRef={this.onRef} threekey={threekey} history={history} three={three}  />
                     </main>
@@ -176,4 +125,4 @@ const styles = theme => ({
 PrivilegeManagement.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles, { withTheme: true })(PrivilegeManagement);
+export default withStyles( { withTheme: true })(PrivilegeManagement);
