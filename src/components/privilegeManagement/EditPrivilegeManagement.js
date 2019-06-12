@@ -115,7 +115,6 @@ class EditPrivilegeManagement extends React.Component {
             subtype: this.state.usergroupsubtype,
             parentId: this.state.usergroupparentId,
         };
-        
         this.props.editTemplate(usergroupInformationVo);
         this.refs.editDialog.hide();
         this.setState({
@@ -136,7 +135,6 @@ class EditPrivilegeManagement extends React.Component {
                     'Accept': '*/*'
                 },
             })
-            
             .then(res => res.json())
             .then((responseData) => {
                 this.setState({
@@ -144,8 +142,7 @@ class EditPrivilegeManagement extends React.Component {
                     usergrouptype: responseData.data.type,
                     usergroupsubtype: responseData.data.subtype,
                     usergroupparentId: responseData.data.parentId},()=>{
-
-                    })
+                })
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' }) 

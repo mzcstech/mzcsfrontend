@@ -54,12 +54,12 @@ class QueryPrivilegeManagement extends Component{
     render(){
         return(
             <div className="box">
-                <Input style={{width:'175px'}} className="Input" value={this.state.usergroupId}  onChange={this.handcompanyNameChange} placeholder="ID"/>
+                {/* <Input style={{width:'175px'}} className="Input" value={this.state.usergroupId}  onChange={this.handcompanyNameChange} placeholder="ID"/>
                 <div className="Separate"></div>
-                <Button  onClick={this.findAllUser} variant="contained" color="primary" >搜索</Button>
-        </div>
+                <Button  onClick={this.findAllUser} variant="contained" color="primary" >搜索</Button> */}
+             </div>
         )
     }
     
 }
-export default QueryPrivilegeManagement;
+export default QueryPrivilegeManagement;        

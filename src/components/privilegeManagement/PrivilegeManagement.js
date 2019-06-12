@@ -4,8 +4,9 @@ import Topbar from '../Topbar';
 // import QueryPrivilegeManagement from './QueryPrivilegeManagement.js';
 import TablesPrivilegeManagement from './TablesPrivilegeManagement.js';
 import AddPrivilegeManagement from './AddPrivilegeManagement.js';
-import TreeMenu  from 'react-simple-tree-menu'
 
+import TreeMenu from 'react-simple-tree-menu'
+import 'react-dropdown-tree-select/dist/styles.css'
 // import store from '../../store'
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -33,11 +34,11 @@ const styles = theme => ({
       marginTop: theme.spacing.unit * 3,
     },
     // 新加
-    boxbotton:{
-        [theme.breakpoints.up('sm')]: {
-            width: `calc(100% - ${drawerWidth}px)`,
-        },
-    },
+    // boxbotton:{
+    //     [theme.breakpoints.up('sm')]: {
+    //         width: `calc(100% - ${drawerWidth}px)`,
+    //     },
+    // },
     nested: {
         paddingLeft: theme.spacing.unit * 4,
     },
@@ -143,35 +144,11 @@ const styles = theme => ({
     }
     //点击节点渲染列表
     render(){
-      
         const { three,threekey} = this.state
         const { classes ,theme ,history} = this.props;
         const currentPath = this.props.location.pathname; 
-        const  drawer = (
-            <div>
-              <div className={classes.toolbar} />
-              <Divider />
-              <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                  <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                ))}
-              </List>
-              <Divider />
-              <List>
-                {['All mail', 'Trash', 'Spam'].map((text  , index) => (
-                  <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                ))}
-              </List>
-            </div>
-        );
         return(
-        <Paper className={classes.bottonbox}>
+        <Paper>
             <Topbar currentPath={currentPath} />
             <AppBar style={{height:'60px'}} position="static"  color="default" >
                 <Toolbar>
@@ -181,23 +158,14 @@ const styles = theme => ({
                 </Toolbar>
             </AppBar> 
             <AddPrivilegeManagement addTemplate={this.addTemplate}></AddPrivilegeManagement>
-            <div >
-                <div className={classes.boxbotton} >
-                    <nav className={classes.drawer} >
-                        <Hidden xsDown implementation="css">
-                            <Drawer
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}  
-                            variant="permanent"
-                            open
-                            >
-                            {/* <TreeMenu data={three} onClickItem={this.nodeComparison} /> */}
-                            </Drawer>
-                        </Hidden>
-                    </nav>
-                    <main style={{marginLeft:'15.5%',width:'84%' }}>
-                        <TablesPrivilegeManagement  onRef={this.onRef} threekey={threekey} history={history} three={three}/>
+            <div className="nav_box" style={{width:"100%"}}>
+                <List classNmae="left_boxs" style={{maxWidth:'15%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginTop:'24px',marginLeft:"0.5%"}}>
+                     <TreeMenu data={three} onClickItem={true}></TreeMenu>
+                </List>
+                <div style={{marginRight:'0.5%',width:'83.5%',float:"right",marginLeft:"0.5%" }}>
+                    <main>
+                        <TablesPrivilegeManagement  onRef={this.onRef} threekey={threekey} history={history} three={three}  />
                     </main>
                 </div>
             </div>

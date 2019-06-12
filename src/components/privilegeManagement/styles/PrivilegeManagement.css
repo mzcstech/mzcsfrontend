@@ -186,3 +186,22 @@
     .leftDropMenuPrivilegeManagement:first-child{
         border:1px solid rgba(0, 0, 0, 0.12);
     }
+    /* ----------------------------------------------------------------------------------------------------------------------- */
+.nav_box{
+   width:100%;
+   min-height:600px;
+   display:flex;
+}
+.left_boxs{
+    
+    -webkit-box-shadow: 0 5px 8px rgba(0,0,0,.15);
+    box-shadow: 0 5px 8px rgba(0,0,0,.15);
+}
+.root{
+    width: '100%';
+    max-width: 360px;
+    /* background: theme.palette.background.paper, */
+    position: 'relative';
+    overflow: 'auto';
+    max-height: 300px;
+}

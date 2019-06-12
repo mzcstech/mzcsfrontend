@@ -102,7 +102,7 @@ class QueryPrivilegeSubordinate extends Component {
                         <Badge className="number" color="secondary">
                         </Badge>
                 </div>
-                {
+                {/* {
                     (this.state.processUrl === '/usergroup/findUsersByUsergroup?usergroupId=')?
                     <div style={{position:'absolute',right:'30px',display:'flex'}}>
                         <Input className="Input" onChange={this.handleChange} value={name}     name="name" placeholder="人员姓名搜索" />
@@ -121,7 +121,7 @@ class QueryPrivilegeSubordinate extends Component {
                         <div className="Separate"></div>
                         <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
                     </div>
-                }
+                } */}
             </div>
         )
     }

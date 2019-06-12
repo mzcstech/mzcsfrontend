@@ -162,7 +162,7 @@ const styles = theme => ({
                   </ListItem>
                 ))}
               </List>
-            </div> 
+            </div>  
         );
         return(
         <Paper>

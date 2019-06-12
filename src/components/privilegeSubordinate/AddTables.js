@@ -74,7 +74,6 @@ class AddTablesHead extends React.Component {
     }
     const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
     return (
-     
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox">
@@ -114,7 +113,6 @@ class AddTablesHead extends React.Component {
     );
   }
 }
-
 AddTablesHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
@@ -161,7 +159,7 @@ let EnhancedTableToolbar = props => {
       <div className={classes.title}>
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subtitle1">
-            {numSelected} selected
+            {numSelected} 条数据
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
@@ -174,7 +172,7 @@ let EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon />
+              {/* <DeleteIcon /> */}
             </IconButton>
           </Tooltip>
         ) : (
@@ -340,20 +338,21 @@ handisSelected=(userId)=>
                stableSort(data).slice(0, rowsPerPage)
                .map((n) =>
                   {
-                  const isSelected = this.isSelected(n.userId);
+                  const isSelectedUser = this.isSelected(n.userId);
+                  const isSelectedPrivilege = this.isSelected(n.privilegeId);
                   return (
                     this.props.processUrl==='/usergroup/findUsersByUsergroup?usergroupId='?
                     <TableRow
                       hover
                       onClick={event => this.handleClick(event, n.userId)}
                       role="checkbox"
-                      aria-checked={isSelected}
+                      aria-checked={isSelectedUser}
                       tabIndex={-1}
                       key={n.userId}
-                      selected={isSelected}
+                      selected={isSelectedUser}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} className='AddTablesTitle' onClick={()=>{this.handisSelected(n.userId)}} />
+                        <Checkbox checked={isSelectedUser} className='AddTablesTitle' onClick={()=>{this.handisSelected(n.userId)}} />
                       </TableCell>
                       <TableCell className='AddTablesTitle' component="th" scope="row" padding="none" align="center">{n.name}</TableCell>
                       <TableCell className='AddTablesTitle' padding="none" align="center">{n.phone}</TableCell>
@@ -365,13 +364,13 @@ handisSelected=(userId)=>
                      hover
                      onClick={event => this.handleClick(event, n.privilegeId)}
                      role="checkbox"
-                     aria-checked={isSelected}
+                     aria-checked={isSelectedPrivilege}
                      tabIndex={-1}
                      key={n.privilegeId}
-                     selected={isSelected}
+                     selected={isSelectedPrivilege}
                      > 
                      <TableCell padding="checkbox">
-                       <Checkbox checked={isSelected}  className='AddTablesTitle' onClick={()=>{this.handisSelected(n.privilegeId)}} />
+                       <Checkbox checked={isSelectedPrivilege}  className='AddTablesTitle' onClick={()=>{this.handisSelected(n.privilegeId)}} />
                      </TableCell>
                      <TableCell  className='AddTablesTitle' component="th" scope="row" padding="none" align="center">{n.name}</TableCell>
                      <TableCell  className='AddTablesTitle' padding="none" align="center">{n.type}</TableCell>
@@ -389,7 +388,7 @@ handisSelected=(userId)=>
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={5}
           component="div"
           count={total}
           rowsPerPage={rowsPerPage}

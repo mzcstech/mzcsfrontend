@@ -178,11 +178,12 @@ let EnhancedTableToolbar = props => {
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
-        {numSelected > 0 ? (
+        {
+          numSelected > 0 ? (
           <Tooltip  title="Delete">
             <IconButton aria-label="Delete">
-              <DeleteIcon onClick={confirmDelete}    />
-            </IconButton>`
+              <DeleteIcon onClick={confirmDelete}/>
+            </IconButton>
           </Tooltip>
         ) : (
           <Tooltip title="Filter list">
@@ -190,7 +191,8 @@ let EnhancedTableToolbar = props => {
               <FilterListIcon />
             </IconButton>
           </Tooltip>
-        )}
+        )
+        }
       </div>
     </Toolbar>
   );
@@ -297,13 +299,12 @@ class TablesPrivilegeManagement extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, usergroupId) => {
+  handleClick = (event, id) => {
     const { selected } = this.state;
-    const selectedIndex = selected.indexOf(usergroupId);
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
-
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, usergroupId);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -314,10 +315,9 @@ class TablesPrivilegeManagement extends React.Component {
         selected.slice(selectedIndex + 1),
       );
     }
-
     this.setState({ selected: newSelected });
   };
-
+  
   handleChangePage = (event, page) => {
     this.state.page = page;
     this.fetchTemplate()
@@ -400,11 +400,13 @@ class TablesPrivilegeManagement extends React.Component {
           'Accept': 'text/plain,*/*',
           "content-type": "application/json"
         },
+        
         body:JSON.stringify(this.state.idsState)
       })
+     
       .then((response) => response.json())
       .then((response) => {
-        this.setState({ open: true, message: '删除成功',idsState:[] },()=>{
+        this.setState({ open: true, message: '删除成功',idsState:[],selected:[] },()=>{
           ids=[]
           this.fetchTemplate()
         });
@@ -444,7 +446,6 @@ class TablesPrivilegeManagement extends React.Component {
     const { classes,label } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page , idsState ,total } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.data.length - page * rowsPerPage);
-    console.log(idsState,'idsState')
     return (
       <div>
         <div className="QueryPrivilegInto" >
@@ -468,17 +469,17 @@ class TablesPrivilegeManagement extends React.Component {
                 stableSort((newData.length != 0 ? newData : data)).slice(0, rowsPerPage)
                 .map((n,index) => { 
                   const isSelected = this.isSelected(n.usergroupId); 
+                  console.log(isSelected,'isSelected')
                   return (
                     <TableRow
                       className="PrivilegTableCell"
-                      onClick={event => this.handleClick(event, n.usergroupId)}
                       role="checkbox"
                       aria-checked={isSelected} 
                       tabIndex={-1}
                       key={n.usergroupId} 
                       selected={isSelected}
                     >
-                      <TableCell key={n.usergroupId} clas sName="PrivilegTableCell" padding="checkbox">
+                      <TableCell key={n.usergroupId} clas sName="PrivilegTableCell" padding="checkbox"  onClick={event => this.handleClick(event, n.usergroupId)}>
                          <Checkbox checked={isSelected} key={n.usergroupId} onChange={(e)=>{this.handisSelected(e,n.usergroupId)}} key={index}/>
                       </TableCell>
                       <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row"  key={index} >{n.name} </TableCell>
@@ -509,7 +510,7 @@ class TablesPrivilegeManagement extends React.Component {
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={5}
           component="div"
           count={total}
           rowsPerPage={rowsPerPage}

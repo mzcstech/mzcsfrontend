@@ -83,10 +83,10 @@ class EnhancedTableHead extends React.Component {
                                 >
                                     {/*hover排列箭头*/}
                                     <TableSortLabel
-                                        className="TableSortLabel"
-                                        hideSortIcon={true}
+                                    className="TableSortLabel"
+                                    hideSortIcon={true}
                                     >
-                                        {row.label}
+                                    {row.label}
                                     </TableSortLabel>
                                 </Tooltip>
                             </TableCell>

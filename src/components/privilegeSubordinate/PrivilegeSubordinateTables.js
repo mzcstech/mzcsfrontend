@@ -20,6 +20,7 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import Snackbar from '@material-ui/core/Snackbar';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
 import { confirmAlert } from 'react-confirm-alert';
 import './styles/privilegeSubordinate.css'
@@ -103,7 +104,7 @@ class EnhancedTableHead extends React.Component {
                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                  enterDelay={300}
                 >
-                <TableSortLabel
+                <TableSortLabel 
                   className="TableSortLabel"
                   hideSortIcon={true}
                 >
@@ -155,7 +156,7 @@ const toolbarStyles = theme => ({
 });
 
 let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
+  const { numSelected, classes,confirmDelete } = props;
   return (
     <Toolbar
       className={classNames(classes.root, {
@@ -175,10 +176,11 @@ let EnhancedTableToolbar = props => {
       </div>
       <div className={classes.spacer} />
       <div className={classes.actions}>
-        {numSelected > 0 ? (
+        {
+          numSelected > 0 ? (
           <Tooltip title="Delete">
             <IconButton aria-label="Delete">
-              {/* <DeleteIcon  onClick={confirmDelete}/> */}
+              <DeleteIcon onClick={confirmDelete} />
             </IconButton>
           </Tooltip>
         ) : (
@@ -226,11 +228,12 @@ class PrivilegeSubordinateTablesHead extends React.Component {
       rowsPerPage: 5,
       processUrl:this.props.processUrl,
       usergroupId:'',
-      UseridsState:[]
+      UseridsState:[],
+      open: false,
+      message:'',
     };
     this.fetchTemplate = this.fetchTemplate.bind(this)
     this.editTemplate  = this.editTemplate.bind(this)
-    this.confirmDelete = this.confirmDelete.bind(this)
   }
   
   
@@ -382,19 +385,50 @@ class PrivilegeSubordinateTablesHead extends React.Component {
       ]
     })
   }
+  //多选删除给子组件按钮
+  onDelClickCheckbox = () => {
+   let DeletePostUrl = "";
+   if(this.props.processUrl == '/usergroup/findUsersByUsergroup?usergroupId='){
+        DeletePostUrl = "/usergroup/deleteUsersOfUsergroup?mappingIds="
+   }else{
+        DeletePostUrl = "/usergroup/deletePrivilegesOfUsergroup?mappingIds="
+   }
+    fetch(SERVER_URL + DeletePostUrl + this.state.UseridsState ,
+      { 
+        mode: "cors",
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'text/plain,*/*',
+          "content-type": "application/json"
+        },
+      })
+      .then((response) => response.json())
+      .then((response) => {
+        this.setState({ open: true, message: '删除成功',UseridsState:[],selected:[] },()=>{
+          Userids=[]
+          this.fetchTemplate()
+        });
+      })
+      .catch(err => {
+        this.setState({ open: true, message: 'Error when deleting' });
+        console.error(err) 
+      })    
+    }
+
+
   render(){
     let linkStyle = { backgroundColor: '#2196F3', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page ,total} = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-    console.log(this.state.UseridsState)
     return (
       <Paper className={classes.root}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} confirmDelete={this.confirmDelete}  />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
-              numSelected={selected.length}
+              numSelected={selected.length} 
               order={order}
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
@@ -412,7 +446,6 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                return (
                  <TableRow
                    className="PrivilegTableCellUser"
-                   style={{width:'100%'}}
                    onClick={event => this.handleClick(event, n.userId)}
                    role="checkbox"
                    aria-checked={isSelected}
@@ -436,7 +469,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
              :
              stableSort(data)
                .slice(0, rowsPerPage)
-                .map((n) => { 
+                .map((n,index) => { 
                   const isSelected = this.isSelected(n.privilegeId); 
                   return (
                     <TableRow
@@ -449,7 +482,7 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell className="PrivilegTableCellPrivileg" padding="checkbox">
-                          <Checkbox checked={isSelected} />
+                          <Checkbox  key={index} checked={isSelected} onChange={(e)=>{this.handisUserSelectDelete(e,n.masterAccessOperationMappingId)}}/>
                       </TableCell>
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none"component="th" scope="data" >{n.name} </TableCell>
                       <TableCell className="PrivilegTableCellPrivileg" align="center" padding="none" >{n.type}</TableCell>
@@ -471,10 +504,17 @@ class PrivilegeSubordinateTablesHead extends React.Component {
                 </TableRow>
               )} */}
             </TableBody>
+            <Snackbar
+              style={{ width: 300, color: 'green' }}
+              open={this.state.open}
+              onClose={this.handleClose}
+              autoHideDuration={1500}
+              message={this.state.message}
+            />
           </Table>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={5}
           component="div"
           count={total}
           rowsPerPage={rowsPerPage}
