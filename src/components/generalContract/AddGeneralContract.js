@@ -15,6 +15,7 @@ class AddTemplate extends React.Component {
         super(props);
         this.state = {
             companyName: '',//公司 
+            customerId:'',
             registerArea: '',//注册区域    
             contractCreateDate: '2019-06-04',//合同登记日期  
             contractDate: '2019-06-04',//合同签订日期
@@ -114,7 +115,7 @@ class AddTemplate extends React.Component {
         })
         this.getIndustry(customer.insdutry);
         //其它公司信息回显
-        if(event.target.value != "" && customer.registerArea !=""){
+        if(event.target.value != ""&& customer.registerArea !=null && customer.registerArea !=""){
             this.setState({
                 level1: customer.registerArea.split('-')[0],
                 level2: customer.registerArea.split('-')[1],
@@ -125,6 +126,7 @@ class AddTemplate extends React.Component {
             this.setState(
                 {  // industry:customer.insdutry,//行业                
                     linkman: customer.linkman,
+                    customerId:customer.customerId
                 }, () => {
                     this.getRegisterAreaList();
     
@@ -132,6 +134,7 @@ class AddTemplate extends React.Component {
         }else{
             this.setState({
                 companyName:'',
+                customerId:'',
                 level1:'',
                 level2:'',
                 level3:'',
@@ -184,6 +187,7 @@ class AddTemplate extends React.Component {
         if (this.state.companyName != '') {
             var templateVo = {
                 companyName: this.state.companyName,//公司
+                customerId:this.state.customerId,
                 registerArea: this.state.level1+'-'+this.state.level2+'-'+this.state.level3,//注册区域    
                 contractCreateDate: this.state.contractCreateDate,//合同登记日期  
                 contractDate: this.state.contractDate,//合同签订日期
