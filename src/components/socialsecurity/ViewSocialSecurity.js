@@ -150,7 +150,7 @@ class AddTemplate extends React.Component {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
