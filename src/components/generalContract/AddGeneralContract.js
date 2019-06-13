@@ -259,7 +259,7 @@ class AddTemplate extends React.Component {
                 if (reg.name == level1) {
                     registerList1 = reg.childTreeList
                 }
-            });
+            }); 
             this.setState({ registerAreaList1: registerList1 }, () => {
                 if (level2 != '') {
                     let registerAreaList1 = this.state.registerAreaList1;

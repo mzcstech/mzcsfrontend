@@ -80,7 +80,7 @@ class AddTemplate extends React.Component {
                 customer=item;                
             }
         })
-        if(event.target.value != "" && customer.registerArea !=""){
+        if(event.target.value != "" && customer.registerArea !=null&& customer.registerArea !=""){
             this.setState({
                 level1:customer.registerArea.split('-')[0],
                 level2:customer.registerArea.split('-')[1],
