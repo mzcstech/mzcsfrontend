@@ -151,7 +151,7 @@ class AddTemplate extends React.Component {
                 user.append(key, params[key])
             }
         }
-        fetch(SERVER_URL + '/user/listAll',
+        fetch(SERVER_URL + '/user/listAllAndSelf',
             {
                 mode: "cors",
                 method: 'POST',
@@ -243,7 +243,7 @@ class AddTemplate extends React.Component {
             <div>
                 <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
                             maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
-                    <h3 className="title">社保工单查看-新增</h3>
+                    <h3 className="title">社保工单-查看</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row">

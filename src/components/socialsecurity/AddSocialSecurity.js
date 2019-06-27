@@ -326,7 +326,7 @@ class AddTemplate extends React.Component {
         // +'","gongzi":"'+this.state.gongzi+'","telephone":"'+this.state.telephone+'","personType":"'+this.state.personType+'","remark":"'+this.state.remark+'"}]';
         var personalInformation = this.getPersonInformations();
         var templateVo = {}
-        if (this.state.companyName != '') {
+        if (this.state.companyName != ''&&this.state.saler!='') {
             templateVo = {
                 customerId:this.state.customerId,
                 companyName: this.state.companyName,
@@ -356,11 +356,17 @@ class AddTemplate extends React.Component {
                 open: true,
                 message: '新增成功'
             })
-        } else {
+        } else if(this.state.companyName == ''){
             this.setState({
                 error: true,
                 open: true,
                 message: '请填写公司名称'
+            })
+        }else if(this.state.saler == ''){
+            this.setState({
+                error: true,
+                open: true,
+                message: '请填写签单人'
             })
         }
     }

@@ -324,18 +324,18 @@ class EnhancedTable extends React.Component {
                           )}
                       </TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none">
-                        {this.state.QX.edit == "1" ? (
+                      {/*   {this.state.QX.edit == "1" ? (
                           <EditgeneralContract editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} generalContractId={n.generalContractId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
-                          )}
-                      </TableCell>
+                          )}*/}
+                      </TableCell> 
                       <TableCell className="TableCellCUM" align="center" padding="none">
-                        {this.state.QX.del == "1" ? (
+                        {/* {this.state.QX.del == "1" ? (
                           <Button size="small" style={linkStyleDelete} variant="text" color="primary" onClick={() => { this.confirmDelete(n.generalContractId) }}>删除</Button>
                         ) : (
                             <Button size="small" style={linkStyleDelete} variant="text" disabled="true" >删除</Button>
-                          )}
+                          )} */}
 
                       </TableCell>
                     </TableRow>
