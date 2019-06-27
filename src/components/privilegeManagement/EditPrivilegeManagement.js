@@ -17,24 +17,25 @@ class EditPrivilegeManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usergroupId: this.props.usergroupId,
+            usergroupId:this.props.usergroupId,
             usergroupName:'',
             usergrouptype:'',
             usergroupsubtype:'',
-            usergroupparentId:this.props.NewparentId,
+            parentId:'',
             usergroupcode:'',
             findPrivilegeTypes:[],
             findPrivilegSubTypes:[],
             showThree:false,
+            three:[]
         };
         this.findPrivilegeTypes     = this.findPrivilegeTypes.bind(this)
         this.findById               = this.findById.bind(this)
         this.handleChange           = this.handleChange.bind(this)
         this.handleChangegrouptype  = this.handleChangegrouptype.bind(this)
         this.handleChanegesubtype   = this.handleChanegesubtype.bind(this)
-        this.handleChangegeparentId = this.handleChangegeparentId.bind(this)
         this.showThree              = this.showThree.bind(this)
         this.getthreekey            = this.getthreekey.bind(this)
+        this.splicThree             = this.splicThree.bind(this)
     }
     handleChange = (event) => {
         this.setState(
@@ -49,11 +50,6 @@ class EditPrivilegeManagement extends React.Component {
     handleChanegesubtype=(event) =>{
         this.setState(
             { usergroupsubtype: event.target.value }
-        );
-    }
-    handleChangegeparentId=(event) =>{
-        this.setState(
-            { usergroupparentId: event.target.value }
         );
     }
     //下拉菜单数据初始化
@@ -115,7 +111,7 @@ class EditPrivilegeManagement extends React.Component {
             name: this.state.usergroupName,
             type: this.state.usergrouptype,
             subtype: this.state.usergroupsubtype,
-            parentId: this.state.usergroupparentId,
+            parentId: this.state.parentId,
         };
         this.props.editTemplate(usergroupInformationVo);
         this.refs.editDialog.hide();
@@ -143,32 +139,65 @@ class EditPrivilegeManagement extends React.Component {
                     usergroupName: responseData.data.name,
                     usergrouptype: responseData.data.type,
                     usergroupsubtype: responseData.data.subtype,
-                    usergroupparentId: responseData.data.parentId},()=>{
+                    parentId: responseData.data.parentId},()=>{
                 })
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' }) 
             )
+            let NewThree =this.props.three
+            this.splicThree(NewThree)
         this.refs.editDialog.show();
     }
+    //修改树的结构
+    
+       
+  
     // Cancel and close modal form
     cancelSubmit = (event) => {
+        this.setState({
+            showThree:false
+        })
         event.preventDefault();
         this.refs.editDialog.hide();
     }
     //修改树显示
     showThree(){
-      let NewshowThree = this.state.showThree
+      let NewshowThree = this.state.showThreef
        this.setState({
         showThree:!NewshowThree
        })
     }
+     splicThree(NewThree){
+        for(let i = 0;i<NewThree.length;i++){
+            if(NewThree[i].key === this.state.usergroupId){
+                NewThree[i].NewThree = null
+                this.setState({
+                    three:NewThree
+                },()=>{})
+                return
+            }else{
+                if(NewThree[i].nodes){
+                    this.splicThree(NewThree[i].nodes)
+                }   
+            }
+        }
+    }
     getthreekey(e){
+        let NewKey = e.key
+
+        if(NewKey == '' || NewKey == null ||NewKey == undefined){
+            NewKey= "ROOF"
+        }
+        var index = NewKey .lastIndexOf("\/");  
+        let NewsKey = NewKey.substring(index + 1, NewKey.length)
         this.setState({
-            usergroupparentId:e.parent
+            parentId:NewsKey
+        },()=>{
         })
     }
     render(){
+        let PreservationThree = this.props.three
         return (
             <div>
                 <SkyLight hideOnOverlayClicked ref="editDialog">
@@ -217,18 +246,18 @@ class EditPrivilegeManagement extends React.Component {
                                 <div className="InputBox" >
                                         <FormLabel className="InputBox-text"  >父节点:</FormLabel>
                                             <Input style={{ width:'75%'}}  className="InputBox-text" className="Input"  onClick={this.showThree}  
-                                             onChange={this.handleChangegeparentId} value={this.state.usergroupparentId}/>
+                                            value={this.state.parentId}/>
                                             <IconButton  onClick={this.showThree} aria-label="Search">
                                                 <SearchIcon />
                                             </IconButton>
                                 </div>
                                 <div className="InputBox"></div>
                                 {
-                                    (this.state.showThree !== false)?
+                                    (this.state.showThree != false)?
                                      <div className="InputBox" style={{height:'200px'}} >
                                      <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
                                          color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
-                                         <TreeMenu data={this.props.three} onClickItem={this.getthreekey} ></TreeMenu>
+                                         <TreeMenu data={PreservationThree} onClickItem={this.getthreekey} ></TreeMenu>
                                      </List>    
                                      </div>
                                      :

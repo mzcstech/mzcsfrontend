@@ -9,6 +9,7 @@ import NativeSelect from '@material-ui/core/NativeSelect';
 import { SERVER_URL } from '../../constants.js';
 import Dialog from '@material-ui/core/Dialog';
 import store from '../../store'
+import { connect } from 'react-redux'
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
 let addline = 1;
@@ -471,4 +472,20 @@ class AddTemplate extends React.Component {
         );
     }
 }
-export default AddTemplate;
+const mapStateToprops =(state)=>{
+    return{
+      // dataList:state.getIn(['PrivilegeReducer'],['dataList'])
+      //  dataList:state.get('PrivilegeReducer').get('dataList'),
+      //  page:state.get('PrivilegeReducer').get('page'),
+      //  total:state.get('PrivilegeReducer').get('total'),
+      //  rowsPerPage:state.get('PrivilegeReducer').get('rowsPerPage'),
+    }
+  }
+  const mapDispathToProps =(dispatch)=>{
+    return{
+        // getDatalist(){
+        //   dispatch(actionCreators.getDatalist())
+        // },
+    }
+  }
+export default connect(mapStateToprops,mapDispathToProps)(AddTemplate);

@@ -1,39 +1,41 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import { SERVER_URL } from '../../constants.js';
+import TreeMenu from 'react-simple-tree-menu'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import FormLabel from '@material-ui/core/FormLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
+import List from '@material-ui/core/List';
+import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
-import List from '@material-ui/core/List';
-import TreeMenu from 'react-simple-tree-menu';
 
-class AddPrivilegeManagement extends React.Component {
+class EditPrivilegeController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            usergroupId:this.props.usergroupId,
             usergroupName:'',
             usergrouptype:'',
             usergroupsubtype:'',
-            usergroupparentId:'',
+            parentId:'',
             usergroupcode:'',
             findPrivilegeTypes:[],
             findPrivilegSubTypes:[],
-            showThreeusergroup:false,
-            showThreeparentId:false,
+            showThree:false,
+            three:[]
         };
-        this.findPrivilegeTypes        = this.findPrivilegeTypes.bind(this)
-        this.findById                  = this.findById.bind(this)
-        this.handleChange              = this.handleChange.bind(this)
-        this.handleChangegrouptype     = this.handleChangegrouptype.bind(this)
-        this.handleChanegesubtype      = this.handleChanegesubtype.bind(this)
-        this.showThreeparentId         = this.showThreeparentId.bind(this)
-        this.getparentId               = this.getparentId.bind(this)
-        this.setid                     = this.setid.bind(this)
+        this.findPrivilegeTypes     = this.findPrivilegeTypes.bind(this)
+        this.findById               = this.findById.bind(this)
+        this.handleChange           = this.handleChange.bind(this)
+        this.handleChangegrouptype  = this.handleChangegrouptype.bind(this)
+        this.handleChanegesubtype   = this.handleChanegesubtype.bind(this)
+        this.showThree              = this.showThree.bind(this)
+        this.getthreekey            = this.getthreekey.bind(this)
+        this.splicThree             = this.splicThree.bind(this)
     }
     handleChange = (event) => {
         this.setState(
@@ -50,7 +52,11 @@ class AddPrivilegeManagement extends React.Component {
             { usergroupsubtype: event.target.value }
         );
     }
-
+    //下拉菜单数据初始化
+    componentWillMount(){
+        this.findPrivilegeTypes()
+        this.findPrivilegSubTypes()
+    }
     //获取下拉框类型查询
     findPrivilegeTypes= () => {
     fetch(SERVER_URL + '/privilege/findPrivilegeTypes',
@@ -69,7 +75,7 @@ class AddPrivilegeManagement extends React.Component {
             })
         })
         .catch(err =>
-            this.setState({ open: true, message: 'Error when 新增详情' })
+            this.setState({ open: true, message: 'Error when 修改详情' })
         )
     }
     //获取下拉框类型查询子类型
@@ -90,7 +96,7 @@ class AddPrivilegeManagement extends React.Component {
                 })
             })
             .catch(err =>
-                this.setState({ open: true, message: 'Error when 新增详情' })
+                this.setState({ open: true, message: 'Error when 修改详情' })
             )
         }
     //提示框 
@@ -101,70 +107,101 @@ class AddPrivilegeManagement extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
         var usergroupInformationVo = {
+            usergroupId:this.state.usergroupId,
             name: this.state.usergroupName,
-            parentId:this.state.usergroupparentId,
             type: this.state.usergrouptype,
             subtype: this.state.usergroupsubtype,
+            parentId: this.state.parentId,
         };
-        this.props.addTemplate(usergroupInformationVo);
+        this.props.editTemplate(usergroupInformationVo);
         this.refs.editDialog.hide();
         this.setState({
             open: true,
-            message: '新增成功',
-            usergroupName:'',
-            usergrouptype:'',
-            usergroupsubtype:'',
-            usergroupparentId:'',
-            showThreeparentId:false,
+            message: '修改成功'
         })
-        this.props.getUsergroupFindByParentId()
     }
     //查询详情，并展示详情页
     findById = (event) => {
-        this.findPrivilegeTypes()
-        this.findPrivilegSubTypes()
+        event.preventDefault();
+        var usergroupId = this.state.usergroupId;
+        fetch(SERVER_URL + '/usergroup/findById?id=' + usergroupId,
+            {
+                mode: "cors",
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Accept': '*/*'
+                },
+            })
+            .then(res => res.json())
+            .then((responseData) => {
+                this.setState({
+                    usergroupName: responseData.data.name,
+                    usergrouptype: responseData.data.type,
+                    usergroupsubtype: responseData.data.subtype,
+                    parentId: responseData.data.parentId},()=>{
+                })
+            })
+            .catch(err =>
+                this.setState({ open: true, message: 'Error when 查询详情' }) 
+            )
+            let NewThree =this.props.three
+            this.splicThree(NewThree)
         this.refs.editDialog.show();
     }
+    //修改树的结构
+    
+       
+  
     // Cancel and close modal form
     cancelSubmit = (event) => {
         this.setState({
-            usergroupName:'',
-            usergrouptype:'',
-            usergroupsubtype:'',
-            usergroupparentId:'',
-            showThreeparentId:false,
+            showThree:false
         })
+        event.preventDefault();
         this.refs.editDialog.hide();
     }
     //修改树显示
-    showThreeparentId(){
-        let NewshowThree = this.state.showThreeparentId
-         this.setState({
-            showThreeparentId:!NewshowThree
-         })
+    showThree(){
+      let NewshowThree = this.state.showThreef
+       this.setState({
+        showThree:!NewshowThree
+       })
     }
-    getparentId(e){
+     splicThree(NewThree){
+        for(let i = 0;i<NewThree.length;i++){
+            if(NewThree[i].key === this.state.usergroupId){
+                NewThree[i].NewThree = null
+                this.setState({
+                    three:NewThree
+                },()=>{})
+                return
+            }else{
+                if(NewThree[i].nodes){
+                    this.splicThree(NewThree[i].nodes)
+                }   
+            }
+        }
+    }
+    getthreekey(e){
         let NewKey = e.key
+
         if(NewKey == '' || NewKey == null ||NewKey == undefined){
             NewKey= "ROOF"
         }
         var index = NewKey .lastIndexOf("\/");  
-        let NewsKet = NewKey.substring(index + 1, NewKey.length)
-    
+        let NewsKey = NewKey.substring(index + 1, NewKey.length)
         this.setState({
-            usergroupparentId:NewsKet
+            parentId:NewsKey
+        },()=>{
         })
     }
-    setid(e){
-      this.setState({
-        usergroupparentId:e.target.value
-      })
-    }
     render(){
+        let PreservationThree = this.props.three
         return (
             <div>
-                <SkyLight  hideOnOverlayClicked ref="editDialog">
-                    <h3>权限管理用户组-新增</h3>
+                <SkyLight hideOnOverlayClicked ref="editDialog">
+                    <h3>原件管理公司信息-编辑</h3>
                     <form>
                         <div className="OutermostBox">
                             <div className="tow-row" >
@@ -206,30 +243,27 @@ class AddPrivilegeManagement extends React.Component {
                                             }
                                     </NativeSelect>
                                 </div>
-                                <div className="InputBox">
-                                        <FormLabel className="InputBox-text">parentId:</FormLabel>
-                                        <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"
-                                        onChange={this.setid}    
-                                          value={this.state.usergroupparentId} onClick={this.showThreeparentId} />
-                                        <IconButton  onClick={this.showThreeparentId} aria-label="Search">
-                                                <SearchIcon/>
-                                        </IconButton>
+                                <div className="InputBox" >
+                                        <FormLabel className="InputBox-text"  >父节点:</FormLabel>
+                                            <Input style={{ width:'75%'}}  className="InputBox-text" className="Input"  onClick={this.showThree}  
+                                            value={this.state.parentId}/>
+                                            <IconButton  onClick={this.showThree} aria-label="Search">
+                                                <SearchIcon />
+                                            </IconButton>
                                 </div>
                                 <div className="InputBox"></div>
-                                    {
-                                        (this.state.showThreeparentId !== false)?
-                                        <div className="InputBox" style={{height:'200px'}} >
-                                        <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
-                                            color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
-                                            <TreeMenu data={this.props.three} onClickItem={this.getparentId} ></TreeMenu>
-                                        </List>    
-                                        </div>
-                                        :
-                                        <option></option>
-                                    }
-                                    <div className="InputBox"></div>
+                                {
+                                    (this.state.showThree != false)?
+                                     <div className="InputBox" style={{height:'200px'}} >
+                                     <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
+                                         color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
+                                         <TreeMenu data={PreservationThree} onClickItem={this.getthreekey} ></TreeMenu>
+                                     </List>    
+                                     </div>
+                                     :
+                                    <option></option>
+                                }
                             </div>
-                            <div style={{height:'100px'}}></div>
                             <div className="button">
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
                                 <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
@@ -237,7 +271,7 @@ class AddPrivilegeManagement extends React.Component {
                         </div>
                     </form>
                 </SkyLight>
-                <Button variant="contained" color="primary"  style={{ 'margin': '10px' }}  onClick={this.findById}>新增</Button>
+                <Button variant="contained" color="primary" style={{ 'margin': '10px,0', background: '#286090' }} onClick={this.findById}>修改</Button>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
                     open={this.state.open}
@@ -251,4 +285,4 @@ class AddPrivilegeManagement extends React.Component {
 
 }
 
-export default AddPrivilegeManagement;
+export default EditPrivilegeController;

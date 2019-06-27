@@ -3,7 +3,8 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import './App.css';
 import Routes from './routes'
 import { blue, indigo } from '@material-ui/core/colors'
-
+import {Provider}  from 'react-redux'
+import store from './store/index.js'
 const theme = createMuiTheme({
   palette: {  
     secondary: {
@@ -25,12 +26,12 @@ const theme = createMuiTheme({
 
 class App extends Component {
   render() {
-    return (
-      <div>
-        <MuiThemeProvider theme={theme}>
-          <Routes />
-        </MuiThemeProvider>
-      </div>
+    return ( 
+          <MuiThemeProvider theme={theme}>
+             <Provider store={store}>
+               <Routes />
+            </Provider>
+          </MuiThemeProvider>
     );
   }
 }

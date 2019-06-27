@@ -12,15 +12,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import List from '@material-ui/core/List';
 import TreeMenu from 'react-simple-tree-menu';
 
-class AddPrivilegeManagement extends React.Component {
+class AddPrivilegeController extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            usergroupName:'',
-            usergrouptype:'',
-            usergroupsubtype:'',
-            usergroupparentId:'',
-            usergroupcode:'',
+            privilegeName:'',
+            privilegetype:'',
+            privilegesubtype:'',
             findPrivilegeTypes:[],
             findPrivilegSubTypes:[],
             showThreeusergroup:false,
@@ -37,17 +35,17 @@ class AddPrivilegeManagement extends React.Component {
     }
     handleChange = (event) => {
         this.setState(
-            { usergroupName: event.target.value }
+            { privilegeName: event.target.value }
         );
     }
     handleChangegrouptype=(event) =>{
         this.setState(
-            { usergrouptype: event.target.value }
+            { privilegetype: event.target.value }
         );
     }
     handleChanegesubtype=(event) =>{
         this.setState(
-            { usergroupsubtype: event.target.value }
+            { privilegesubtype: event.target.value }
         );
     }
 
@@ -100,20 +98,19 @@ class AddPrivilegeManagement extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-        var usergroupInformationVo = {
-            name: this.state.usergroupName,
-            parentId:this.state.usergroupparentId,
-            type: this.state.usergrouptype,
-            subtype: this.state.usergroupsubtype,
+        var privilegeInformationVo = {
+            name: this.state.privilegeName,
+            type: this.state.privilegetype,
+            subtype: this.state.privilegesubtype,
         };
-        this.props.addTemplate(usergroupInformationVo);
+        this.props.addTemplate(privilegeInformationVo);
         this.refs.editDialog.hide();
         this.setState({
             open: true,
             message: '新增成功',
-            usergroupName:'',
-            usergrouptype:'',
-            usergroupsubtype:'',
+            privilegeName:'',
+            privilegetype:'',
+            privilegesubtype:'',
             usergroupparentId:'',
             showThreeparentId:false,
         })
@@ -170,17 +167,17 @@ class AddPrivilegeManagement extends React.Component {
                             <div className="tow-row" >
                                 <div className="InputBox">
                                     <FormLabel className="InputBox-text">名称:</FormLabel>
-                                    <Input   style={{ width:'70%'}}  className="InputBox-text" className="Input"    onChange={this.handleChange} value={this.state.usergroupName}  />
+                                    <Input   style={{ width:'70%'}}  className="InputBox-text" className="Input"    onChange={this.handleChange} value={this.state.privilegeName}  />
                                 </div>    
                                 <div className="InputBox">
                                     <FormLabel className="InputBox-text">类型:</FormLabel>
                                     <NativeSelect      
                                         style={{ width:'70%'}}                                  
                                         native
-                                        value={this.state.usergrouptype}
+                                        value={this.state.privilegetype}
                                         onChange={this.handleChangegrouptype}
-                                        name='usergrouptype' 
-                                        input={<Input name="usergrouptype" id="usergrouptype" />}
+                                        name='privilegetype' 
+                                        input={<Input name="privilegetype" id="privilegetype" />}
                                         >
                                         <option value=""/> 
                                         {this.state.findPrivilegeTypes.map((item,index) => {
@@ -194,10 +191,10 @@ class AddPrivilegeManagement extends React.Component {
                                         <NativeSelect      
                                             style={{ width:'70%'}}                                  
                                             native
-                                            value={this.state.usergroupsubtype}
+                                            value={this.state.privilegesubtype}
                                             onChange={this.handleChanegesubtype}
-                                            name='usergroupsubtype' 
-                                            input={<Input name="usergroupsubtype" id="usergroupsubtype" />}
+                                            name='privilegesubtype' 
+                                            input={<Input name="privilegesubtype" id="privilegesubtype" />}
                                             >
                                             <option value=""/> 
                                             {this.state.findPrivilegSubTypes.map((item,index) => {
@@ -206,28 +203,7 @@ class AddPrivilegeManagement extends React.Component {
                                             }
                                     </NativeSelect>
                                 </div>
-                                <div className="InputBox">
-                                        <FormLabel className="InputBox-text">parentId:</FormLabel>
-                                        <Input style={{ width:'70%'}}  className="InputBox-text" className="Input"
-                                        onChange={this.setid}    
-                                          value={this.state.usergroupparentId} onClick={this.showThreeparentId} />
-                                        <IconButton  onClick={this.showThreeparentId} aria-label="Search">
-                                                <SearchIcon/>
-                                        </IconButton>
-                                </div>
                                 <div className="InputBox"></div>
-                                    {
-                                        (this.state.showThreeparentId !== false)?
-                                        <div className="InputBox" style={{height:'200px'}} >
-                                        <List classNmae="left_boxs" style={{ width:'70%',maxHeight: 600,position: 'relative', overflow: 'auto',
-                                            color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginLeft:"30%"}}>
-                                            <TreeMenu data={this.props.three} onClickItem={this.getparentId} ></TreeMenu>
-                                        </List>    
-                                        </div>
-                                        :
-                                        <option></option>
-                                    }
-                                    <div className="InputBox"></div>
                             </div>
                             <div style={{height:'100px'}}></div>
                             <div className="button">
@@ -251,4 +227,4 @@ class AddPrivilegeManagement extends React.Component {
 
 }
 
-export default AddPrivilegeManagement;
+export default AddPrivilegeController;

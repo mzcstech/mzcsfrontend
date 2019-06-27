@@ -14,6 +14,8 @@ import SocialSecurity from './components/socialsecurity/SocialSecurity'
 import ViewSocialSecurity from './components/socialsecurity/ViewSocialSecurity'
 import HousingFund from './components/housingFund/HousingFund'
 import GeneralContract from './components/generalContract/GeneralContract'
+import PrivilegeController from './components/PrivilegeController/index'
+import changeUserPribilege from './components/changeUserPribilege/index'
 export default props => (
   <HashRouter>
     <ScrollToTop>
@@ -31,6 +33,8 @@ export default props => (
         <Route exact path='/viewSocialSecurity/:socialSecurityId' component ={ViewSocialSecurity}/>
         <Route exact path='/housingFund' component={HousingFund}/>
         <Route exact path='/generalContract' component={GeneralContract}/>
+        <Route exact path='/PrivilegeController' component={PrivilegeController}/>
+        <Route exact path='/changeUserPribilege' component={changeUserPribilege}/>
       </Switch> 
     </ScrollToTop>
   </HashRouter>

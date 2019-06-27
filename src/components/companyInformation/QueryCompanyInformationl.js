@@ -1,14 +1,16 @@
 import React,{ Component }from 'react';
 import { SERVER_URL } from '../../constants.js'
-import Input  from '@material-ui/core/Input';
+import { Input } from 'antd';
+// import Input  from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import NativeSelect from '@material-ui/core/NativeSelect';
+import { Select } from 'antd';
 import './styles/CompanyInformationQuery.css'
-
+import 'antd/dist/antd.css'
 import Button from '@material-ui/core/Button';
 
 //模糊查询
-
+const { Option } = Select;
 class QueryCompanyInformationl extends Component{
     constructor(props){
         super(props)
@@ -24,6 +26,7 @@ class QueryCompanyInformationl extends Component{
             userList:[]
         }
     }
+
     componentWillMount(){
         fetch(SERVER_URL + '/dictionaries/findChildlListByBianma?bianma=ORIGINAL_OUT_STATUS',
         {
@@ -70,12 +73,12 @@ class QueryCompanyInformationl extends Component{
         this.setState({companyName :e.target.value},()=>{
         })
     }
-    handoriginalHolderChange(e){
-        this.setState({originalHolder :e.target.value},()=>{
+    handoriginalHolderChange(value){
+        this.setState({originalHolder :`${value}`},()=>{
         })
     }
-    handoriginalOutStatusChange(e){
-        this.setState({originalOutStatus :e.target.value},()=>{ 
+    handoriginalOutStatusChange(value){
+        this.setState({originalOutStatus :`${value}`},()=>{ 
         })
     }
     handsearchBth(){
@@ -85,44 +88,43 @@ class QueryCompanyInformationl extends Component{
     render(){
         return(
             <div className="box">
-               
                 <Input style={{width:'175px'}} className="Input" value={this.state.companyName}  onChange={this.handcompanyNameChange} placeholder="公司名称"/>
                 <div className="Separate"></div>
-                <InputLabel  style={{color:'black'}} >原件持有人:</InputLabel>
-                    <NativeSelect    
-                        style={{textAlign:'center',width:'175px'}}
-                        native
-                        value={this.state.originalHolder}
-                        onChange={this.handoriginalHolderChange}
-                        name='originalHolder' 
-                        input={<Input name="name" id="name"  />}
-                        >
-                        <option value="" /> 
-                        {this.state.userList.map(item => {
-                            return (<option  value={item.username}>{item.name}</option>)
-                        })
-                        }
-                  </NativeSelect>
+                <InputLabel  style={{color:'black'}} >原件持有人:</InputLabel> 
+                 <Select
+                    showSearch
+                    style={{ width: 175,marginLeft:'8px' }}
+                    placeholder="可输入搜索内容"
+                    optionFilterProp="children"
+                    onChange={this.handoriginalHolderChange}
+                    onSearch={this.onSearch}
+                    // input={<Input name="name" id="name"  />}
+                    filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                    >
+                    {this.state.userList.map(item => {
+                        return (<Option  value={item.username}>{item.name}</Option>)
+                    })
+                    }
+                </Select>
                 <div className="Separate"></div>
                 <InputLabel style={{color:'black'}} htmlFor="age-simple">流转状态:</InputLabel>
-                <NativeSelect
-                    style={{textAlign:'center',width:'175px'}}
-                    native
-                    className="downBox-form"
-                    value={this.state.originalOutStatus} 
+                <Select
+                    showSearch
+                    style={{ width: 175,marginLeft:'8px' }}
+                    placeholder="可输入搜索内容"
+                    optionFilterProp="children"
                     onChange={this.handoriginalOutStatusChange}
-                    name='originalOutStatus' 
-                    input={<Input name="name" id="name"  />}
-                >
-                    <option value="" /> 
-                    {
-                        this.state.singleElectionData.map(item=>{
-                            return(
-                                <option value={item.bianma}>{item.name}</option>
-                            )
-                        })
+                    filterOption={(input, option) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
-                </NativeSelect>
+                    >
+                   {this.state.singleElectionData.map(item=>{
+                        return(<Option  value={item.bianma}>{item.name}</Option>)
+                    })
+                    }
+                </Select>
                 <div className="Separate"></div>
                 <Button  onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
         </div>
