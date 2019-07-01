@@ -1,5 +1,6 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
+import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -10,9 +11,11 @@ import { SERVER_URL } from '../../constants.js';
 import PersonInformation from './PersonInformation.js'
 import Dialog from '@material-ui/core/Dialog';
 import store from '../../store'
+import { Select } from 'antd';
 // import { Input } from 'material-ui-icons';
 require('./styles/SocialSecurity.css')
 let addline = 1;
+const { Option } = Select;
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -72,7 +75,7 @@ class AddTemplate extends React.Component {
     //选择公司名称后执行
     handleChangeCompanyInformation = (event) => {
         this.setState(
-            { [event.target.name]: event.target.value }
+            { [event.target.name]:event.target.value}
         );
         var customer={}
         this.state.customerList.forEach((item)=>{
@@ -257,6 +260,8 @@ class AddTemplate extends React.Component {
             .then((res) => {
                 this.setState({
                     customerList: res.data
+                },()=>{
+                   
                 });
 
             })
@@ -297,14 +302,13 @@ class AddTemplate extends React.Component {
     //从redux获取数据PersonInformations,并转成json
     getPersonInformations = () => {
         //store.从redux获取数据personinformations
-        var personinformations = store.getState().personinformations;
+        var personinformations = this.props.personinformations
         var str =''
         //return JSON.stringify(personinformations)
         var persons=[];
         personinformations.forEach((obj)=>{           
             // str='{"personName":"'+obj.personName+'","idCardNumber":"'+obj.idCardNumber
             // +'","gongzi":"'+obj.gongzi+'","telephone":"'+obj.telephone+'","personType":"'+obj.personType+'","remark":"'+obj.remark+'"}';
-
             var personObj={
                 personName:obj.personName,
                 idCardNumber:obj.idCardNumber,
@@ -389,10 +393,12 @@ class AddTemplate extends React.Component {
         event.preventDefault();
     }
     render() {
+        let customerList  = this.state.customerList
         let registerAreaList = this.state.registerAreaList;
         let registerAreaList1 = this.state.registerAreaList1;
         let registerAreaList2 = this.state.registerAreaList2;
         let userList = this.state.userList;
+   
         return (
             <div>
               <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
@@ -463,7 +469,7 @@ class AddTemplate extends React.Component {
                                     <div className="InputBox">
                                         <div className="socialsecurity-text">客户联系方式:</div>
                                         <TextField className="socialsecurity-next" placeholder="请输入客户联系方式"
-                                            placeholder="请输入电话" type="number" maxlength="5"
+                                            placeholder="请输入电话" type="number" 
                                             error={this.state.error} value={this.state.customerPhone} ref="customerPhone" name="customerPhone" onChange={this.handleChange} />
                                     </div>
                                     <div className="InputBox">
@@ -708,4 +714,14 @@ class AddTemplate extends React.Component {
         );
     }
 }
-export default AddTemplate;
+const mapStateToprops =(state)=>{
+    return{
+        personinformations:state.get('SocialSecurity').get('personinformations')
+    }
+}
+const mapDispathToProps =(dispatch)=>{
+    return{
+
+    }
+}
+export default connect(mapStateToprops,mapDispathToProps)(AddTemplate);

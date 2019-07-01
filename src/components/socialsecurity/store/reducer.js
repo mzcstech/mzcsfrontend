@@ -1,13 +1,11 @@
 // import * as actionType from './actionType'
 import {fromJS} from 'immutable'
-let PrivilegeReducer = ({    
+let PrivilegeReducer = fromJS({    
     personinformations:[]
 })
 export default (state = PrivilegeReducer, action) => {
     if(action.type === "EDIT_PERSONINFORMATIONS" ){
-        alert(123)
-        // state.personinformations = action.personinformations;
-        return state;
+        return state.merge({personinformations:action.personInformation})
     }
     return state; 
 } 

@@ -108,7 +108,7 @@ import './styles/style.css'
             </div>
         </Paper> 
         )
-    }
+    } 
 }
 PrivilegeController.propTypes = {
     classes: PropTypes.object.isRequired,

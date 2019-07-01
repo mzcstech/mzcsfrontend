@@ -127,6 +127,7 @@ class AddTemplate extends React.Component {
                     isClerkStopBuyInsurance: responseData.data.isClerkStopBuyInsurance,
                     identityCardNumber: responseData.data.identityCardNumber
                 }, () => {
+                    alert(123)
                     var personinformations = JSON.parse(responseData.data.personalInformation);
                     const action = {
                         type: "EDIT_PERSONINFORMATIONS",

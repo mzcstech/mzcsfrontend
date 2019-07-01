@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux'
 import store from '../../store'
 let i = 0;
 let str = "";
@@ -30,9 +31,9 @@ class PersonInformation extends React.Component {
     }
 
     handleChange = (event) => {
-        var id = event.target.id;
-        var personInformation = {};
-        var personinformations = store.getState().personinformations;
+        let id = event.target.id;
+        let personInformation = {};
+        let personinformations = this.props.personinformation;
         personinformations.forEach((perinformation) => {
             if (perinformation.id == id) {                
                 this.setState({
@@ -58,16 +59,12 @@ class PersonInformation extends React.Component {
             };
 
            
-            var personinformations = store.getState().personinformations;
+            var personinformations = this.props.personinformations;
             //判断personinformations是否存在personInformation   
-            
             if (personinformations.length > 0) {
                 var hasObj = false;//数组是否存在对象
-
                 personinformations.forEach((perinformation) => {
-                    
                     if (perinformation.id == personInformation.id) {
-                       
                         hasObj = true;
                         //如果存在，替换数组对象                      
                         personinformations.splice(personinformations.findIndex(item => item.id === personInformation.id), 1)
@@ -84,14 +81,9 @@ class PersonInformation extends React.Component {
                 // });
             }
             //将personInformation 放到store.getState().personinformations里
-            const action = {
-                type: "EDIT_PERSONINFORMATIONS",
-                personinformations
-            }
-            store.dispatch(action);
+            this.props.EDIT_PERSONINFORMATIONS(personInformation)
             //console.log(store.getState().personinformations, "getStore")
-            this.setState.personinformations = personinformations
-           
+            this.setState.personinformations = personInformation
         }
         );
     }
@@ -100,7 +92,7 @@ class PersonInformation extends React.Component {
     }
     //删除一行
     delete = (index) => {
-        var personinformations = store.getState().personinformations;
+        var personinformations = this.props.personinformation;
         personinformations.splice(personinformations.findIndex(item => item.id === index), 1);   
         this.props.deletePersonInformation(index, this.props.personDoms);
     }
@@ -149,5 +141,20 @@ render() {
 }
 }
 
-export default PersonInformation;
-
+const mapStateToprops =(state)=>{
+    return{
+        personinformations:state.get('SocialSecurity').get('personinformations')
+    }
+}
+const mapDispathToProps =(dispatch)=>{
+    return{
+        EDIT_PERSONINFORMATIONS(personInformation){
+            const action = {
+                type: "EDIT_PERSONINFORMATIONS",
+                personInformation:personInformation
+            }
+            store.dispatch(action);
+        }
+    }
+}
+export default connect(mapStateToprops,mapDispathToProps)(PersonInformation);
