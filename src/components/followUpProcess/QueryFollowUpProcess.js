@@ -47,6 +47,7 @@ class QueryTemplate extends Component {
             this.props.handleValue(this.state.companyName)
     }
     render() {
+        console.log(this.props.name,'name')
         return ( 
             <div className="box">
                 <div className="singleElection-text">业务类型:</div>
@@ -83,7 +84,7 @@ class QueryTemplate extends Component {
                         />} label="工商变更" />
                         <Badge className="number"  badgeContent={this.props.map.gShangChangeNum} color="secondary">
                     </Badge>
-                    <div>{this.props.name}</div>
+                    <div style={{marginLeft:'40px'}}>{this.props.name !== undefined?'员工姓名:'+this.props.name:this.props.name}</div>
                 </div>
                 <div style={{position:'absolute',right:'30px',display:'flex'}}>
                     <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="公司名称搜索" />
