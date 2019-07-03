@@ -95,10 +95,10 @@ class ViewFollowUpProcess extends React.Component {
                             </TableHead>
                             <TableBody >
                                 {stableSort(processVoList)
-                                    .map(n => {
+                                    .map((n,index) => {
                                         // 便利显示列表页面
                                         return (
-                                            <TableRow>
+                                            <TableRow key={index}>
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.actName}>{n.actName}</TableCell>
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.assignee}>{n.assignee}</TableCell>
                                                 <TableCell className="TableCell" align="center" padding="none" title={n.startTime}>{n.startTime}</TableCell>

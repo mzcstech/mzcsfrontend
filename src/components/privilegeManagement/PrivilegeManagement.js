@@ -96,7 +96,6 @@ import './styles/PrivilegeManagement.css'
     }
     //根据点击查询列表
     postParentId(e){
-         console.log(e.key)
          let Neweparent =e.parent
          this.child.fetchTemplate(Neweparent)
     }

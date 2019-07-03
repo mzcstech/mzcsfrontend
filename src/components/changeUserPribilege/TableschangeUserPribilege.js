@@ -174,7 +174,6 @@ class TableschangeUserPribilege extends React.Component {
     }
    //分页
    fetchTemplate = (UserName) => { 
-    console.log(UserName,'UserName')
     let followUpVo   = new FormData();
     followUpVo.append("pageNum", this.state.page + 1)
     followUpVo.append("pageSize", this.state.rowsPerPage)

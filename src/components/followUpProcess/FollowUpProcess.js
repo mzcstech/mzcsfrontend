@@ -1,6 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import TreeMenu from 'react-simple-tree-menu'
+import SeelistUser from './SeelistUser'
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,28 +18,31 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import EnhancedTableHead from './FollowUpProcessTableHead.js';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
 import { SERVER_URL } from '../../constants.js'
 import './styles/FollowUpProcess.css'
+
 // 对应列表项的id
 
 //整体样式
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-  },
-  table: {
-    minWidth: 1020,
-  },
-  tableWrapper: {
-    marginTop:'54px',
-    overflowX: 'auto',
-  },
-});
+// const styles = theme => ({
+//   root: {
+//     width: '100%',
+//     marginTop: theme.spacing.unit * 3,
+//   },
+//   table: {
+//     minWidth: 1020,
+//   },
+//   tableWrapper: {
+//     marginTop:'54px',
+//     overflowX: 'auto',
+//   },
+// });
 function stableSort(array) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   return stabilizedThis.map(el => el[0]);
 }
+let NewprocessUrl =''
 class EnhancedTable extends React.Component {
   constructor(props) {
     super(props)
@@ -52,9 +57,17 @@ class EnhancedTable extends React.Component {
       procInstId: '',
       NewresponseData: {},
       valueInput: '', 
-      processUrl: '/commerce/listProcessByUser',
-      map:[]
+      map:[],
+      three:[],
+      openUser:false,
+      Neweparent:'',
+      processUrl:'/commerce/listProcessByUser',
+      name:''
     };
+    this.getlistHierarchy = this.getlistHierarchy.bind(this)
+    this.postParentId     = this.postParentId.bind(this)
+    this.fetchTemplate    = this.fetchTemplate.bind(this)
+    this.handleChangePage = this.handleChangePage.bind(this)
   }  
   //根据选择业务类型跳转页面
   handleUrl = (val) => {
@@ -75,27 +88,66 @@ class EnhancedTable extends React.Component {
     this.fetchTemplate()
 
   }
-  
-
-
   //组件御载时触发
   componentDidMount = () => {
-
+    this.getlistHierarchy()
     this.fetchTemplate();
   }
   //提示框的显示判断
   handleClose = (event, reason) => {
     this.setState({ open: false });
   }; 
- 
+
+  //获取部门列表树
+  getlistHierarchy(){
+    fetch(SERVER_URL + '/department/listHierarchy',{
+      mode: "cors",
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json,text/plain,*/*'
+      }
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+          this.setState({
+           three:responseData.data
+         },()=>{
+         })
+    })
+    .catch(err => console.error(err));
+  }
+  //根据点击查询列表
+  postParentId(e){
+       let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
+       this.setState({
+        openUser:true,
+        Neweparent:Neweparent
+       },()=>{
+        this.refs.getSwordButton.SuperiorComponent(this.state.openUser)
+       })
+      
+  }
 
   //分页
-  fetchTemplate = (processUrl) => {
+  fetchTemplate = (staffId,name) => {
+      this.setState({
+        name:name
+      })
       let followUpVo = new FormData();
       followUpVo.append("pageNum", this.state.page + 1)
       followUpVo.append("pageSize", this.state.rowsPerPage)
       followUpVo.append("companyName", this.state.valueInput)
-      fetch(SERVER_URL + this.state.processUrl, {
+      let NewUsrl = ''
+      if(staffId != '' && staffId !=null && staffId != undefined ){
+        NewprocessUrl = staffId
+      }
+      if(NewprocessUrl != '' && NewprocessUrl !=null && NewprocessUrl != undefined ){
+         NewUsrl = this.state.processUrl + '?staffId=' + NewprocessUrl
+      }else{
+         NewUsrl = this.state.processUrl
+      }
+      fetch(SERVER_URL  + NewUsrl , { 
         mode: "cors",
         method: 'POST', 
         credentials: 'include',
@@ -126,58 +178,46 @@ class EnhancedTable extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    this.setState({ selected: newSelected });
-  };
   // 页面更改时触发回调
   handleChangePage = (event, page) => {
     this.state.page = page;
-    this.fetchTemplate();
+    this.fetchTemplate()
   };
   // 每页的行数更改时触发回调
   handleChangeRowsPerPage = event => {
-    this.state.rowsPerPage = event.target.value; 
-    this.fetchTemplate();
+    this.setState({ rowsPerPage: event.target.value });
+    this.fetchTemplate()
   };
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const { data, order, orderBy, selected, rowsPerPage, page, three,openUser ,Neweparent } = this.state; 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage); 
     const currentPath = this.props.location.pathname;
     return (
-      <Paper className={classes.root}>
+      <Paper>
         <Topbar currentPath={currentPath} />
         <Grid container>
-        <AppBar style={{ height: '60px' }} position="static" color="default" className={classes.appBar}>
+        <AppBar style={{ height: '60px' }} position="static" color="default" >
           <Toolbar>
           <div className="QueryFollowUpProcess">
             <div className="QueryFollowUpProcessInto" >
-              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
+              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} name={this.state.name} />
             </div>
           </div>
           </Toolbar> 
          </AppBar>
         </Grid>
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
+        <div className="nav_box" style={{width:"100%"}}>
+        <List classNmae="left_boxs" style={{width:'17%',maxHeight: 600,position: 'relative', overflow: 'auto',color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginTop:'24px',marginLeft:"0.5%"}}>
+          <TreeMenu data={three} onClickItem={this.postParentId}></TreeMenu>
+        </List>
+        {/* 员工显示组件 */}
+        <SeelistUser openUser={openUser} Neweparent={Neweparent} ref="getSwordButton" fetchTemplate={this.fetchTemplate} ></SeelistUser>
+        <div style={{marginRight:'0.5%',width:'99%',float:"right",marginLeft:"0.5%",marginTop:'24px' }}>
+          <Table  aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}
             <EnhancedTableHead
               numSelected={selected.length}
@@ -187,17 +227,14 @@ class EnhancedTable extends React.Component {
               rowCount={this.state.total}
             />
             <TableBody >
-              {/* {stableSort(data, getSorting(order, orderBy)) */}
               {stableSort(data)
                 .slice(0, rowsPerPage)
                 .map(n => {
-                  // 遍历显示列表页面
                   return ( 
                     <TableRow
                       hover
-                      onClicock={event => this.handleClick(event, n.excutionId)}
                       role="checkbox" 
-                      key={n.excutionId}
+                      key={n.staffId}
                     >
                       <TableCell className="TableCell" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.contractDate}>{n.contractDate}</TableCell>
@@ -225,9 +262,10 @@ class EnhancedTable extends React.Component {
               message={this.state.message}
             />
           </Table>
+          </div>
         </div>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10]}
           component="div"
           count={this.state.total}
           rowsPerPage={this.state.rowsPerPage}
@@ -250,4 +288,4 @@ EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(EnhancedTable);
+export default (EnhancedTable);

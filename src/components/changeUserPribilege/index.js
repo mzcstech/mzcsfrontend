@@ -90,4 +90,3 @@ const mapDispathToProps =(dispatch)=>{
     }
 }
 export default connect(mapStateToprops,mapDispathToProps)(changeUserPribilege);
-// export default withStyles( { withTheme: true })(PrivilegeController);

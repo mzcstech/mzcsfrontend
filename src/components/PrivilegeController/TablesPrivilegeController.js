@@ -98,7 +98,7 @@ class EnhancedTableHead extends React.Component {
             row => (
               <TableCell
                 className="PrivilegTableCell"
-                key={row.usergroupId}
+                key={row.privilegeId}
                 align="center"
                 padding="none"
               >
@@ -106,7 +106,7 @@ class EnhancedTableHead extends React.Component {
                   title={rows.label}
                   placement={row.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
-                  key={rows.usergroupId}
+                  key={rows.privilegeId}
                 >
                 <TableSortLabel
                   className="TableSortLabel"
@@ -251,7 +251,6 @@ class TablesPrivilegeController extends React.Component {
       .then((response) => response.json())
       .then((responseData)  => {
           if(responseData.status !== 500){
-            console.log(responseData,'responseData')
             this.setState({
               data: responseData.data.list,
               page: responseData.data.pageNum - 1,
@@ -299,7 +298,6 @@ class TablesPrivilegeController extends React.Component {
   };
 
   handleChangeRowsPerPage = event => {
-
     this.setState({
        rowsPerPage: event.target.value
     });
@@ -320,6 +318,7 @@ class TablesPrivilegeController extends React.Component {
   componentDidMount(){
     this.fetchTemplate()
     this.props.onRef(this)
+  
   }
    //提示框的显示判断
    handleClose = (event, reason) => {
@@ -355,7 +354,7 @@ class TablesPrivilegeController extends React.Component {
   }
    //多选删除给子组件按钮
   onDelClickCheckbox = () => {
-    console.log(this.state.idsState,'idsState')
+    console.log(this.state.idsState,'this.state.idsState')
     fetch(SERVER_URL + '/privilege/delete' ,
       { 
         mode: "cors",
@@ -407,7 +406,7 @@ class TablesPrivilegeController extends React.Component {
   render() {
     let linkStyletwo = { backgroundColor: '#2196F3', color: '#ffffff', height: '36px' }
     const { } = this.props;
-    const { data, order, orderBy, selected, idsState,total,rowsPerPage,page } = this.state;
+    const { order, orderBy, selected, idsState,data,total,rowsPerPage,page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.data.length - page * rowsPerPage);
     return (
       <div>
@@ -440,14 +439,14 @@ class TablesPrivilegeController extends React.Component {
                       selected={isSelected}
                     >
                       <TableCell key={n.privilegeId} clas sName="PrivilegTableCell" padding="checkbox"  onClick={event => this.handleClick(event, n.privilegeId)}>
-                         <Checkbox checked={isSelected} key={n.privilegeId} onChange={(e)=>{this.handisSelected(e,n.privilegeId)}} key={index}/>
+                         <Checkbox checked={isSelected} key={n.privilegeId} onChange={(e)=>{this.handisSelected(e,n.privilegeId)}} />
                       </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row"  key={index} >{n.name} </TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.type}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.subType}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.privilegeId}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >{n.code}</TableCell>
-                      <TableCell className="PrivilegTableCell" align="center" padding="none" key={index}  >
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"component="th" scope="row" >{n.name} </TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"  >{n.type}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"  >{n.subType}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"  >{n.privilegeId}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"  >{n.code}</TableCell>
+                      <TableCell className="PrivilegTableCell" align="center" padding="none"  >
                         <EditPrivilegeController usergroupId={n.privilegeId} editTemplate={this.editTemplate} three={this.props.three} 
                         getUsergroupFindByParentId={this.props.getUsergroupFindByParentId}
                         />
@@ -485,7 +484,7 @@ class TablesPrivilegeController extends React.Component {
           nextIconButtonProps={{
             'aria-label': 'Next Page',
           }}
-          onChangePage={this.handleChangePage}
+          onChangePage={ this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
       </Paper>
@@ -509,11 +508,11 @@ const mapStateToprops =(state)=>{
 }
 const mapDispathToProps =(dispatch)=>{
   return{
-      // getDatalist(){
-      //   dispatch(actionCreators.getDatalist())
+      // getDatalist(Nextpage,NextrowsPerPage){
+      //   dispatch(actionCreators.getDatalist(Nextpage,NextrowsPerPage))
       // },
-      // handleChangeRowsPerPage(){
-      //   dispatch(actionCreators.handleChangeRowsPerPage())
+      // handleChangePage(page){
+      //   dispatch(actionCreators.handleChangePage(page))
       // }
   }
 }

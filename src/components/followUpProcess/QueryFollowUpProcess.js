@@ -49,7 +49,6 @@ class QueryTemplate extends Component {
     render() {
         return ( 
             <div className="box">
-                {/* <FormControlLabel control={<FormLabel>单选框</FormLabel>} /> */}
                 <div className="singleElection-text">业务类型:</div>
                 <div className="singleElection-next">
                     <FormControlLabel control={
@@ -84,6 +83,7 @@ class QueryTemplate extends Component {
                         />} label="工商变更" />
                         <Badge className="number"  badgeContent={this.props.map.gShangChangeNum} color="secondary">
                     </Badge>
+                    <div>{this.props.name}</div>
                 </div>
                 <div style={{position:'absolute',right:'30px',display:'flex'}}>
                     <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="公司名称搜索" />
