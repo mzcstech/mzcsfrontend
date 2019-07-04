@@ -8,18 +8,20 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import TableHead from '@material-ui/core/TableHead';
-
+import Input from '@material-ui/core/Input';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { Select } from 'antd';
 import './styles/FollowUpProcess.css'
 
 function stableSort(array) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     return stabilizedThis.map(el => el[0]);
 }
+const { Option } = Select;
 class SeelistUser extends React.Component {
     constructor(props) {
         super(props);
@@ -29,13 +31,18 @@ class SeelistUser extends React.Component {
             open:false,
             fullWidth: true,
             maxWidth: 'md',
-            NewstaffId:''
+            NewstaffId:'',
+            name:''
         };
         this.getlistAllByDepartId = this.getlistAllByDepartId.bind(this)
         this.setStaffIdFordaddyComponent = this.setStaffIdFordaddyComponent.bind(this)
+        this.handValueChange             = this.handValueChange.bind(this)
+        this.handsearchBth               = this.handsearchBth.bind(this)
     }
     //查询详情，并展示详情页
     getlistAllByDepartId = () => {
+        let nameUpVo = new FormData();
+        nameUpVo.append("name", this.state.name)
         fetch(SERVER_URL + '/staff/listAllByDepartId?departmentId=' + this.props.Neweparent,
             {
                 mode: "cors",
@@ -43,7 +50,8 @@ class SeelistUser extends React.Component {
                 credentials: 'include',
                 headers: {
                     'Accept': '*/*'
-                }
+                },
+            body: nameUpVo
             })
             .then(res => res.json())
             .then((responseData) => {
@@ -57,7 +65,9 @@ class SeelistUser extends React.Component {
     }
     handleClose = (event) => {
         this.setOpen(false);
-        
+        this.setState({
+            name:''
+        })
     }
     setOpen = (event) => {  
         this.setState({ open: event }, () => {
@@ -77,6 +87,14 @@ class SeelistUser extends React.Component {
             })
         })
     }
+    handValueChange(e){
+        this.setState({
+            name:e.target.value
+        })
+    }
+    handsearchBth(){
+        this.getlistAllByDepartId()
+    }
     render() { 
         const UserList = this.state.UserList
         return (
@@ -84,7 +102,14 @@ class SeelistUser extends React.Component {
                 {/* <SkyLight hideOnOverlayClicked ref="editDialog" overlayStyles> */}
                 <Dialog open={this.state.open} onClose={this.handleClose} fullWidth={this.state.fullWidth}
                     maxWidth={this.state.maxWidth} aria-labelledby="form-dialog-title">
+                    <div style={{display:'flex',alignItems:'center'}}>
                     <DialogTitle id="form-dialog-title" onClose={this.handleClose}>查看员工信息</DialogTitle>
+                    <div  style={{display:'flex',alignItems:'center',position:'absolute',right:'10px'}}> 
+                        <Input  className="Input"  value={this.state.name} onChange={this.handValueChange} placeholder="员工查询" />
+                        <div className="Separate"></div>
+                        <Button onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                    </div>
+                </div>
                     <DialogContent>
                         <DialogContentText>
                             <TableHead>

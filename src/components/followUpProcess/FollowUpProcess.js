@@ -119,14 +119,15 @@ class EnhancedTable extends React.Component {
   }
   //根据点击查询列表
   postParentId(e){
-       let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
-       this.setState({
-        openUser:true,
-        Neweparent:Neweparent
-       },()=>{
-        this.refs.getSwordButton.SuperiorComponent(this.state.openUser)
-       })
-      
+       if(e !== undefined){
+        let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
+        this.setState({
+         openUser:true,
+         Neweparent:Neweparent
+        },()=>{
+         this.refs.getSwordButton.SuperiorComponent(this.state.openUser)
+        })
+       }
   }
 
   //分页
@@ -141,7 +142,7 @@ class EnhancedTable extends React.Component {
       let NewUsrl = ''
       if(staffId != '' && staffId !=null && staffId != undefined ){
         NewprocessUrl = staffId
-      }
+      } 
       if(NewprocessUrl != '' && NewprocessUrl !=null && NewprocessUrl != undefined ){
          NewUsrl = this.state.processUrl + '?staffId=' + NewprocessUrl
       }else{
@@ -229,12 +230,12 @@ class EnhancedTable extends React.Component {
             <TableBody >
               {stableSort(data)
                 .slice(0, rowsPerPage)
-                .map(n => {
+                .map((n,index) => {
                   return ( 
                     <TableRow
                       hover
                       role="checkbox" 
-                      key={n.staffId}
+                      key={index}
                     >
                       <TableCell className="TableCell" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.contractDate}>{n.contractDate}</TableCell>
