@@ -22,22 +22,6 @@ import List from '@material-ui/core/List';
 import { SERVER_URL } from '../../constants.js'
 import './styles/FollowUpProcess.css'
 
-// 对应列表项的id
-
-//整体样式
-// const styles = theme => ({
-//   root: {
-//     width: '100%',
-//     marginTop: theme.spacing.unit * 3,
-//   },
-//   table: {
-//     minWidth: 1020,
-//   },
-//   tableWrapper: {
-//     marginTop:'54px',
-//     overflowX: 'auto',
-//   },
-// });
 function stableSort(array) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   return stabilizedThis.map(el => el[0]);
@@ -62,7 +46,8 @@ class EnhancedTable extends React.Component {
       openUser:false,
       Neweparent:'',
       processUrl:'/commerce/listProcessByUser',
-      name:''
+      name:'',
+      label:''
     };
     this.getlistHierarchy = this.getlistHierarchy.bind(this)
     this.postParentId     = this.postParentId.bind(this)
@@ -113,13 +98,19 @@ class EnhancedTable extends React.Component {
           this.setState({
            three:responseData.data
          },()=>{
+           for(let item of responseData.data){
+            this.setState({
+              label:item.label
+            },()=>{
+            })
+           }
          })
     })
     .catch(err => console.error(err));
   }
   //根据点击查询列表
   postParentId(e){
-       if(e !== undefined){
+       if(e !== undefined && e !== ''){
         let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
         this.setState({
          openUser:true,
@@ -129,7 +120,6 @@ class EnhancedTable extends React.Component {
         })
        }
   }
-
   //分页
   fetchTemplate = (staffId,name) => {
       this.setState({
@@ -159,6 +149,7 @@ class EnhancedTable extends React.Component {
       })
         .then((response) => response.json())
         .then((responseData) => {
+        
           this.setState({
             data: responseData.data.list,
             map:responseData.data.map,
@@ -194,7 +185,7 @@ class EnhancedTable extends React.Component {
   render() {
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page, three,openUser ,Neweparent } = this.state; 
+    const { data, order, orderBy, selected, rowsPerPage, page, three,openUser ,Neweparent,label} = this.state; 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage); 
     const currentPath = this.props.location.pathname;
     return (
@@ -212,9 +203,16 @@ class EnhancedTable extends React.Component {
          </AppBar>
         </Grid>
         <div className="nav_box" style={{width:"100%"}}>
-        <List classNmae="left_boxs" style={{width:'17%',maxHeight: 600,position: 'relative', overflow: 'auto',color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginTop:'24px',marginLeft:"0.5%"}}>
-          <TreeMenu data={three} onClickItem={this.postParentId}></TreeMenu>
-        </List>
+          {
+            label !== null && label !== '' && label !== undefined ?
+            <List classNmae="left_boxs" style={{width:'17%',maxHeight: 600,position: 'relative', overflow: 'auto',color:"rgba(0,0,0,.87)",borderTop:' 1px solid rgba(0,0,0,.05)',boxShadow:'0 5px 8px rgba(0,0,0,.15)',marginTop:'24px',marginLeft:"0.5%"}}>
+              <TreeMenu data={three} onClickItem={this.postParentId}></TreeMenu>
+           </List>:
+            null
+          
+          }
+         
+          
         {/* 员工显示组件 */}
         <SeelistUser openUser={openUser} Neweparent={Neweparent} ref="getSwordButton" fetchTemplate={this.fetchTemplate} ></SeelistUser>
         <div style={{marginRight:'0.5%',width:'99%',float:"right",marginLeft:"0.5%",marginTop:'24px' }}>

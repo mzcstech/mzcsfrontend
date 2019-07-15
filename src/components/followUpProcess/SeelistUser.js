@@ -1,9 +1,6 @@
 import React from 'react';
-import SkyLight from 'react-skylight';
 import { SERVER_URL } from '../../constants.js';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
@@ -55,6 +52,7 @@ class SeelistUser extends React.Component {
             })
             .then(res => res.json())
             .then((responseData) => {
+                console.log(responseData,'responseData')
                 this.setState({
                     UserList: responseData.data
                 });

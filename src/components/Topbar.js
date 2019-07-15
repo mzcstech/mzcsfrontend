@@ -200,7 +200,7 @@ class Topbar extends Component {
                 <Typography variant="h6" color="inherit" noWrap>
                   <Link to='/' className={classes.link}>
                     <img width={18} src={logo} alt="" />
-                    <span className={classes.tagline}>诚信宏OA内控系统</span>
+                    <span className={classes.tagline}>成信宏OA内控系统</span>
                   </Link>
                 </Typography>
               </div>  
