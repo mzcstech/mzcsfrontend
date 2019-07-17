@@ -74,7 +74,7 @@ class QueryTemplate extends Component {
                         <Badge className="number" badgeContent={this.props.map.gShangChangeNum} color="secondary"></Badge>
                 </div>
                 <div style={{position:'absolute',right:'30px',display:'flex'}}>
-                    <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="人员搜索" />
+                    <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="签单人搜索" />
                     <div className="Separate"></div>
                     <Button onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
                 </div>

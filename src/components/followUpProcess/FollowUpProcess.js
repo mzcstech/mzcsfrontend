@@ -59,7 +59,7 @@ class EnhancedTable extends React.Component {
       this.fetchTemplate()
     })
   }
-  //公司名称查询
+  //根据签单人查询
   handleValue = (val) => {
     this.setState({ valueInput: val }, () => {
       this.fetchTemplate()
@@ -122,7 +122,7 @@ class EnhancedTable extends React.Component {
       let followUpVo = new FormData();
       followUpVo.append("pageNum", this.state.page + 1)
       followUpVo.append("pageSize", this.state.rowsPerPage)
-      followUpVo.append("companyName", this.state.valueInput)
+      followUpVo.append("signPerson", this.state.valueInput)
       let NewUsrl = ''
       if(staffId != '' && staffId !=null && staffId != undefined ){
         NewprocessUrl = staffId
