@@ -43,10 +43,8 @@ class EnhancedTable extends React.Component {
       valueInput: '', 
       map:[],
       three:[],
-      openUser:false,
       Neweparent:'',
-      processUrl:'/commerce/listProcessByUser',
-      name:'',
+      processUrl:'/commerce/listProcessByDepartmentId',
       label:''
     };
     this.getlistHierarchy = this.getlistHierarchy.bind(this)
@@ -113,18 +111,14 @@ class EnhancedTable extends React.Component {
        if(e !== undefined && e !== ''){
         let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
         this.setState({
-         openUser:true,
          Neweparent:Neweparent
         },()=>{
-         this.refs.getSwordButton.SuperiorComponent(this.state.openUser)
+          this.fetchTemplate(this.state.Neweparent)
         })
        }
   }
   //分页
-  fetchTemplate = (staffId,name) => {
-      this.setState({
-        name:name
-      })
+  fetchTemplate = (staffId) => {
       let followUpVo = new FormData();
       followUpVo.append("pageNum", this.state.page + 1)
       followUpVo.append("pageSize", this.state.rowsPerPage)
@@ -134,7 +128,7 @@ class EnhancedTable extends React.Component {
         NewprocessUrl = staffId
       } 
       if(NewprocessUrl != '' && NewprocessUrl !=null && NewprocessUrl != undefined ){
-         NewUsrl = this.state.processUrl + '?staffId=' + NewprocessUrl
+         NewUsrl = this.state.processUrl + '?departmentId=' + NewprocessUrl
       }else{
          NewUsrl = this.state.processUrl
       }
@@ -149,7 +143,6 @@ class EnhancedTable extends React.Component {
       })
         .then((response) => response.json())
         .then((responseData) => {
-        
           this.setState({
             data: responseData.data.list,
             map:responseData.data.map,
@@ -183,9 +176,10 @@ class EnhancedTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
+
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page, three,openUser ,Neweparent,label} = this.state; 
+    const { data, order, orderBy, selected, rowsPerPage, page, three ,Neweparent,label} = this.state; 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage); 
     const currentPath = this.props.location.pathname;
     return (
@@ -196,7 +190,7 @@ class EnhancedTable extends React.Component {
           <Toolbar>
           <div className="QueryFollowUpProcess">
             <div className="QueryFollowUpProcessInto" >
-              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} name={this.state.name} />
+              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
             </div>
           </div>
           </Toolbar> 
@@ -214,7 +208,7 @@ class EnhancedTable extends React.Component {
          
           
         {/* 员工显示组件 */}
-        <SeelistUser openUser={openUser} Neweparent={Neweparent} ref="getSwordButton" fetchTemplate={this.fetchTemplate} ></SeelistUser>
+        {/* <SeelistUser openUser={openUser} Neweparent={Neweparent} ref="getSwordButton" fetchTemplate={this.fetchTemplate} ></SeelistUser> */}
         <div style={{marginRight:'0.5%',width:'99%',float:"right",marginLeft:"0.5%",marginTop:'24px' }}>
           <Table  aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}

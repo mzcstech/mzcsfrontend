@@ -24,7 +24,7 @@ class SeelistUser extends React.Component {
         super(props);
         this.state = {
             procInstId: this.props.procInstId,
-            UserList: [],
+            UserList: [], 
             open:false,
             fullWidth: true,
             maxWidth: 'md',
