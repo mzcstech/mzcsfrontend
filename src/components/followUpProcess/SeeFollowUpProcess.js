@@ -38,7 +38,7 @@ class ViewFollowUpProcess extends React.Component {
     //查询详情，并展示详情页
     findByProcInstId = (event) => {
         event.preventDefault();
-        var procInstId = this.state.procInstId;
+        var procInstId = this.props.procInstId;
         fetch(SERVER_URL + '/ruprocdef/viewProcess?procInstId=' + procInstId,
             {
                 mode: "cors",
@@ -94,7 +94,7 @@ class ViewFollowUpProcess extends React.Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody >
-                                {stableSort(processVoList)
+                                {stableSort(this.state.processVoList)
                                     .map((n,index) => {
                                         // 便利显示列表页面
                                         return (

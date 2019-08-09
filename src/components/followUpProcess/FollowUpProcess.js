@@ -176,7 +176,6 @@ class EnhancedTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
-
     let linkStyle = { backgroundColor: '#c9302c', color: '#ffffff', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page, three ,Neweparent,label} = this.state; 
@@ -236,7 +235,9 @@ class EnhancedTable extends React.Component {
                       <TableCell className="TableCell" align="center" padding="none" title={n.businessTypes}>{n.businessTypes}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.actName}>{n.actName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.actAssignee}>{n.actAssignee}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none"  ><SeeFollowUpProcess  fetchFollowUpProcess={this.fetchFollowUpProcess} procInstId={n.procInstId} /></TableCell>
+                      <TableCell className="TableCell" align="center" padding="none"  >
+                        <SeeFollowUpProcess  fetchFollowUpProcess={this.fetchFollowUpProcess} procInstId={n.procInstId} />
+                      </TableCell>
                     </TableRow>
                   );
                 })}

@@ -110,7 +110,6 @@ class EnhancedTable extends React.Component {
         original.append(key, params[key])
       }
     }
-
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",

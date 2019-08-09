@@ -187,8 +187,6 @@ class LoanOriginal extends React.Component {
         this.setOpen(false);
         
     }
-
-   
     render() {
         console.log(this.state.originalOutTo)
         //alert(this.state.TEMPLATE_CHECKBOX)     
