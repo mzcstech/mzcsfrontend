@@ -22,6 +22,7 @@ class AddTemplate extends React.Component {
         this.corporatename = this.corporatename.bind(this)
         this.handChangecorporatename = this.handChangecorporatename.bind(this)
         this.uploadBusinessexcel     = this.uploadBusinessexcel.bind(this)
+        this.uploadFinanceexcel      = this.uploadFinanceexcel.bind(this)
     }
     //提示框
     handleClose = (event, reason) => {
@@ -112,7 +113,7 @@ class AddTemplate extends React.Component {
             this.setState({
                 corporateData:res.data
             },()=>{
-         
+                
             })
         })
         .catch(err => console.error(err,'err'))
@@ -138,7 +139,10 @@ class AddTemplate extends React.Component {
             },
         }).then(res => res.json())
              .then((res) => {
-            console.log(res,'res')             
+                this.setState({
+                    message:'上传成功',
+                    open:true
+                })
         })
           .catch(error => console.log(error));
     };
@@ -160,8 +164,11 @@ class AddTemplate extends React.Component {
                 "Accept": "*/*"
             },
         }).then(res => res.json())
-             .then((res) => {
-            console.log(res,'res')             
+            .then((res) => {
+            this.setState({
+                message:'上传成功',
+                open:true
+            })            
         })
           .catch(error => console.log(error));
     };

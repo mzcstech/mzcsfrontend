@@ -51,8 +51,10 @@ class EditOriginal extends React.Component {
           },
         }
       )
+
         .then((response) => response.json())
         .then(res =>{
+            console.log(res.data,'res.data')
             this.setState({
                 singleElectionData:res.data
             })
@@ -162,20 +164,33 @@ class EditOriginal extends React.Component {
                             {/* <FormControlLabel className="singleElection-text" control={<FormLabel >单选框:</FormLabel>} /> */}
                             <div className="singleElection-text">持有状态:</div>
                             <div className="singleElection-next">
-                                {this.state.singleElectionData.map(item=>{
-                                    return (
-                                        <FormControlLabel control={
+                                   <FormControlLabel control={
                                         <Radio
-                                            checked={this.state.originalHoldStatus  === item.bianma}
-                                            key={item.dictionariesId}
+                                            checked={this.state.originalHoldStatus  === "0"}
+                                           
                                             onChange={this.handleChangeRodio}
-                                            value={item.bianma}
-                                            name={item.bianma}
-                                            aria-label={item.name}
-                                        />} label={item.name} />
-                                          )
-                                      })  
-                                }
+                                            value="0"
+                                            name="0"
+                                            aria-label="0"
+                                        />} label="无" />
+                                         <FormControlLabel control={
+                                    <Radio
+                                        checked={this.state.originalHoldStatus  === "1"}
+                                      
+                                        onChange={this.handleChangeRodio}
+                                        value="1"
+                                        name="1"
+                                        aria-label="1"
+                                    />} label="在客户处" />
+                                        <FormControlLabel control={
+                                    <Radio
+                                        checked={this.state.originalHoldStatus  === "2"}
+                                       
+                                        onChange={this.handleChangeRodio}
+                                        value="2"
+                                        name="2"
+                                        aria-label="2"
+                                    />} label="在公司内部" />
                             </div>
                          </div>                         
                       </div>

@@ -179,7 +179,6 @@ class AddTemplate extends React.Component {
                 <div >
                     {/* <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>新增</Button> */}
                     {/* <Button size="small" style={link2Style} variant="text" disabled="true" onClick={this.batchimport} >批量导入</Button> */}
-                    <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadexcel} />
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
