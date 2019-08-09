@@ -31,14 +31,14 @@ class QueryTemplate extends Component {
         }
     }
 
-
     handValueChange(e) { 
         this.setState({companyName: e.target.value});
-        
     }
+
     handsearchBth(){   
             this.props.handleValue(this.state.companyName)
     }
+
     render() {
         return ( 
             <div className="box">
@@ -48,7 +48,7 @@ class QueryTemplate extends Component {
                         <Radio  
                             checked={this.state.processUrl === '/commerce/listProcessByDepartmentId'}
                             onChange={this.handleProcessUrl}
-                            value="/commerce/listProcessByDepartmentId"
+                            value='/commerce/listProcessByDepartmentId'
                             name="processUrl"
                             aria-label="工商注册"
                         />

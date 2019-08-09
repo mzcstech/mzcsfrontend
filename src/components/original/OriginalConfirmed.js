@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
 import Snackbar from '@material-ui/core/Snackbar';
+import Dialog from '@material-ui/core/Dialog';
 class LoanOriginal extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +16,8 @@ class LoanOriginal extends React.Component {
             userList: [],
             companyName: '',
             originalName: '',
-            originalHolder: ''
+            originalHolder: '',
+            fullWidth: true,
 
         };
     }
@@ -137,7 +139,10 @@ class LoanOriginal extends React.Component {
                 this.setState({ open: true, message: 'Error when 获取User列表' })
             )
     }
-
+    //添加批量输入信息框
+    handleAddSubmit(){
+        
+    }
     //根据输入的姓名过滤userList
     searchUser = (event) => {
         console.log(event.value)
@@ -177,12 +182,20 @@ class LoanOriginal extends React.Component {
         event.preventDefault();
         this.refs.editDialog.hide();
     }
+    //显示弹框
+    handleClose = (event) => {
+        this.setOpen(false);
+        
+    }
+
+   
     render() {
         console.log(this.state.originalOutTo)
         //alert(this.state.TEMPLATE_CHECKBOX)     
         return (
             <div>
-                <SkyLight hideOnOverlayClicked ref="editDialog">
+             <Dialog open={this.state.open} onClose={this.handleClose} fullWidth={this.state.fullWidth}
+                    maxWidth={this.state.maxWidth} aria-labelledby="form-dialog-title">
                     <h3>确认页面</h3>
                     <form>
                         <div className="OutermostBox">
@@ -212,7 +225,7 @@ class LoanOriginal extends React.Component {
                             </div>
                         </div>
                     </form>
-                </SkyLight>
+            </Dialog>
                 <Button variant="contained" color="primary" onClick={this.findById}>确认</Button>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

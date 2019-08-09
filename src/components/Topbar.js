@@ -198,10 +198,10 @@ class Topbar extends Component {
             <Grid item xs={12} className={classes.flex}>
               <div className={classes.inline}>
                 <Typography variant="h6" color="inherit" noWrap>
-                  <Link to='/' className={classes.link}>
+                  <div  className={classes.link}>
                     <img width={18} src={logo} alt="" />
                     <span className={classes.tagline}>成信宏OA内控系统</span>
-                  </Link>
+                  </div>
                 </Typography>
               </div>  
               {!this.props.noTabs && (

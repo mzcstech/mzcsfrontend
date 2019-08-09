@@ -70,6 +70,7 @@ class EnhancedTable extends React.Component {
       href:''
     };
     this.editTemplate = this.editTemplate.bind(this)
+    this.batchimport = this.batchimport.bind(this)
   }
   // 保存id
   componentWillMount(){
@@ -256,10 +257,15 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
+  //批量导入excel
+  batchimport =() =>{
+   console.log(123)
+  }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
+    
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
@@ -268,7 +274,7 @@ class EnhancedTable extends React.Component {
     return (
       <Paper className={classes.root}>
         <Topbar currentPath={currentPath} />
-        {/* <div className={classes.tableWrapper}>
+        {/* <div className={classes.tableWrapper}>  
           <font>原件详情列表</font>
         </div> */}
 
@@ -286,15 +292,21 @@ class EnhancedTable extends React.Component {
         <Grid container>
           <div className="QueryTemplate">
             <Grid item>
+           
               {this.state.QX.add == "1" ? (
                 <AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} />
+               
               ) : (
-                  <Button size="small" style={linkStyle} variant="text" disabled="true" >新增</Button>
+                  <Button size="small" style={linkStyle} variant="text" disabled="true"  >新增</Button>
+                 
                 )}
+               
             </Grid>
-
+            
           </div>
+         
         </Grid>
+        
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             {/* 头列表页组件展示 */}

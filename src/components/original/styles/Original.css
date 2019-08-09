@@ -212,3 +212,14 @@
     .TableRow{
         border:1px solid red;
     }
+    .totleDisplay{
+        display:flex;
+        flex-direction:row-reverse;
+        padding-right:3%;
+        width:100%;
+    }
+
+    .addDisplay{
+        display:flex;
+        width:100%;
+    }

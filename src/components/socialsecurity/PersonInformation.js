@@ -27,15 +27,13 @@ class PersonInformation extends React.Component {
     }
     //保存值到redux
     saveValueToRedux = (params) => {
-
     }
-
     handleChange = (event) => {
         let id = event.target.id;
         let personInformation = {};
         let personinformations = this.props.personinformation;
         personinformations.forEach((perinformation) => {
-            if (perinformation.id == id) {                
+            if (perinformation.id == id) {             
                 this.setState({
                     personName: perinformation.personName,
                     idCardNumber: perinformation.idCardNumber,
@@ -57,8 +55,6 @@ class PersonInformation extends React.Component {
                 remark: this.state.remark,
                 id: id
             };
-
-           
             var personinformations = this.props.personinformations;
             //判断personinformations是否存在personInformation   
             if (personinformations.length > 0) {
@@ -87,9 +83,7 @@ class PersonInformation extends React.Component {
         }
         );
     }
-    add() {
 
-    }
     //删除一行
     delete = (index) => {
         var personinformations = this.props.personinformation;

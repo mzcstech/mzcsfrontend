@@ -154,6 +154,7 @@ class AddTemplate extends React.Component {
         this.setState({
             personDoms: arr
         })
+    
     }
     //点击删除一行人员信息
     deletePersonInformation = (index, personDoms) => {
