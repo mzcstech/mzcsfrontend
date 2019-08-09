@@ -14,7 +14,7 @@ class AddTemplate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            companyName: '',
+            customerId: '',
             remark: '',
             error:false,
             corporateData:[]
@@ -33,7 +33,7 @@ class AddTemplate extends React.Component {
         );
     }
     handChangecorporatename(value){
-        this.setState({companyName :`${value}`},()=>{ 
+        this.setState({customerId :`${value}`},()=>{ 
         })
     }
     //多选框事件
@@ -62,15 +62,15 @@ class AddTemplate extends React.Component {
     };
     // Save car and close modal form
     handleSubmit = (event) => {
-        if(this.state.companyName != ''){
+        if(this.state.customerId != ''){
             var templateVo = {
-                companyName: this.state.companyName,
+                customerId: this.state.customerId,
                 remark: this.state.remark
             };
             this.props.addTemplate(templateVo);
             this.refs.addDialog.hide();
             this.setState({
-                companyName:'',
+                customerId:'',
                 remark:'',
                 error:false,
                 open: true,
@@ -151,7 +151,7 @@ class AddTemplate extends React.Component {
                         <div className="OutermostBox">
                             <div className="tow-row">
                             <div className="InputBox">
-                            <div className="InputBox-text">原件持有人:</div>
+                            <div className="InputBox-text">原件公司:</div>
                                   <Select
                                     className="InputBox-next"
                                     showSearch
