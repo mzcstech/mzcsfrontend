@@ -57,7 +57,6 @@ class ViewFollowUpProcess extends React.Component {
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 查询详情' })
             )
-
         this.setOpen(true);
     }
 

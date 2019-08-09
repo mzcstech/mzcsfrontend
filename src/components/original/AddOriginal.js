@@ -30,34 +30,9 @@ class AddTemplate extends React.Component {
             maxWidth: 'lg',
             originalInformations:[]
         };
-        this.uploadexcel = this.uploadexcel.bind(this)
+     
         this.savedata    =this.savedata.bind(this)
-    }
-    //上传excel
-    uploadexcel(e){
-        e.preventDefault();
-        let file = e.target.files[0];
-        let formdata = new FormData();
-        formdata.append('xlsx', file);
-        console.log(formdata,'formdata')
-        for (var value of formdata.values()) {
-            console.log(value);
-        }
-        fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{
-            method: 'POST',
-            body: formdata,
-            credentials: 'include',
-            headers: {
-                "Accept": "*/*"
-            },
-        }).then(res => res.json())
-             .then((res) => {
-            console.log(res,'res')             
-        })
-          .catch(error => console.log(error));
-    };
-
-    
+    }    
  //提示框
     handleClose = (event, reason) => {
         this.setState({ open: false });
@@ -75,7 +50,6 @@ class AddTemplate extends React.Component {
         })
     }
     savedata(originalInformations){
-      
         this.setState({
             originalInformations:originalInformations
         },()=>{
@@ -86,24 +60,7 @@ class AddTemplate extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-        // if(this.state.originalName == '' ){
-        //     this.setState({
-        //         error:true,
-        //         open:true,
-        //         message:'请填写原件名'
-        //      })
-        // }else if( this.state.originalHoldStatus ==''){
-        //     this.setState({
-        //         open:true,
-        //         message:'请选择持有状态'
-        //      }) 
-        // }else{
-        // var original = {
-        //     originalName:this.state.originalName,
-        //     originalHoldStatus:this.state.originalHoldStatus,
-        //     remark:this.state.remark,    
-        //     companyInformationId:this.state. companyInformationId      
-        // }; 
+   
             this.props.addTemplate(this.state.originalInformations);
             // this.refs.addDialog.hide();
             this.setState({
@@ -132,7 +89,6 @@ class AddTemplate extends React.Component {
         this.setState({
             personDoms: arr
         })
-
     }
     //点击删除一行信息
     deleteOriginalInformation = (index, personDoms) => {
@@ -221,10 +177,9 @@ class AddTemplate extends React.Component {
                     </form>
                 </Dialog> 
                 <div >
-                    <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>新增</Button>
+                    {/* <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>新增</Button> */}
                     {/* <Button size="small" style={link2Style} variant="text" disabled="true" onClick={this.batchimport} >批量导入</Button> */}
                     <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadexcel} />
-                    {/* <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>上传</Button> */}
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

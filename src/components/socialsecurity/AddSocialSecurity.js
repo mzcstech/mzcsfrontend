@@ -290,7 +290,7 @@ class AddTemplate extends React.Component {
             })
             .catch(err =>
                 this.setState({ open: true, message: 'Error when 获取注册区域列表' })
-            )
+            ) 
     }
     showAdd = (event) => {
         this.setState({

@@ -194,4 +194,9 @@
     .TableRow{
         border:1px solid red;
     }
-   
+   .addexcel{
+       display:flex;
+       align-items:center;
+       color: #252525;
+       margin-top:3px;
+   }

@@ -21,7 +21,7 @@ class AddTemplate extends React.Component {
         };
         this.corporatename = this.corporatename.bind(this)
         this.handChangecorporatename = this.handChangecorporatename.bind(this)
-        this.uploadexcel             = this.uploadexcel.bind(this)
+        this.uploadBusinessexcel     = this.uploadBusinessexcel.bind(this)
     }
     //提示框
     handleClose = (event, reason) => {
@@ -119,8 +119,8 @@ class AddTemplate extends React.Component {
     
         // this.findAllUser()
     }
-     //上传excel
-     uploadexcel(e){
+     //上传工商excel
+     uploadBusinessexcel(e){
         e.preventDefault();
         let file = e.target.files[0];
         let formdata = new FormData();
@@ -130,6 +130,29 @@ class AddTemplate extends React.Component {
             console.log(value);
         }
         fetch(SERVER_URL + '/companyInformation/importBusinessExcel',{
+            method: 'POST',
+            body: formdata,
+            credentials: 'include',
+            headers: {
+                "Accept": "*/*"
+            },
+        }).then(res => res.json())
+             .then((res) => {
+            console.log(res,'res')             
+        })
+          .catch(error => console.log(error));
+    };
+    //上传财务excel
+    uploadFinanceexcel(e){
+        e.preventDefault();
+        let file = e.target.files[0];
+        let formdata = new FormData();
+        formdata.append('xlsx', file);
+        console.log(formdata,'formdata')
+        for (var value of formdata.values()) {
+            console.log(value);
+        }
+        fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{
             method: 'POST',
             body: formdata,
             credentials: 'include',
@@ -187,9 +210,16 @@ class AddTemplate extends React.Component {
                         </div>
                     </form>
                 </SkyLight>
-                <div>
+                <div className="addexcel">
                     <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={() => this.refs.addDialog.show()}>新增</Button>
-                    <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadexcel} />
+                    <div className="addexcel">
+                        <div>导入工商原件:</div>
+                        <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadBusinessexcel} />
+                    </div>
+                    <div className="addexcel">
+                        <div>导入财务原件:</div>
+                        <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadFinanceexcel} />
+                    </div>
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

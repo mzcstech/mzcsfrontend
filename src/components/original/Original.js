@@ -47,6 +47,7 @@ function stableSort(array) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   return stabilizedThis.map(el => el[0]);
 }
+let conpanameID = ''
 class EnhancedTable extends React.Component {
   constructor(props) {
     super(props)
@@ -70,7 +71,7 @@ class EnhancedTable extends React.Component {
       href:''
     };
     this.editTemplate = this.editTemplate.bind(this)
-    this.batchimport = this.batchimport.bind(this)
+    // this.batchimport = this.batchimport.bind(this)
   }
   // 保存id
   componentWillMount(){
@@ -89,6 +90,8 @@ class EnhancedTable extends React.Component {
       companyInformationId: recvParam,
       companyName :CdCompanyName,
       href:window.location.href
+    },()=>{
+      conpanameID =this.state.companyInformationId 
     })
   }
   // componentWillUpdate =()=>{
@@ -104,12 +107,25 @@ class EnhancedTable extends React.Component {
   };
   // 新增
   addTemplate(params) {
-    let original = new FormData()
-    if (params) {
-      for (let key in params) {
-        original.append(key, params[key])
+ 
+    var person =[];
+    params.map((item)=>{
+      var personObj = {
+        companyInformationId:conpanameID,
+        originalName:item.originalName,
+        originalHoldStatus:item.bianma,
+        remark:item.remark
       }
-    }
+      //JSON.stringify(personObj)
+      if(!person.personObj){
+        person.push(personObj);
+      }
+      
+    })
+    let param1=  JSON.stringify(person);
+    
+     let param = new FormData()
+     param.append("param",param1)
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
@@ -118,12 +134,12 @@ class EnhancedTable extends React.Component {
         headers: {
           'Accept': 'application/json,text/plain,*/*'
         },
-        body: original
+        body: param
       }
     )
       .then(res => this.fetchTemplate())
       .catch(err => console.error(err))
-
+      conpanameID = ""
   }
   //修改
   editTemplate(params) {
@@ -256,10 +272,7 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
-  //批量导入excel
-  batchimport =() =>{
-   console.log(123)
-  }
+
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
