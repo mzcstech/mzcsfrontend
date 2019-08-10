@@ -27,6 +27,7 @@ function stableSort(array) {
   return stabilizedThis.map(el => el[0]);
 }
 let NewprocessUrl =''
+let judge         = false
 class EnhancedTable extends React.Component {
   constructor(props) {
     super(props)
@@ -51,6 +52,7 @@ class EnhancedTable extends React.Component {
     this.postParentId     = this.postParentId.bind(this)
     this.fetchTemplate    = this.fetchTemplate.bind(this)
     this.handleChangePage = this.handleChangePage.bind(this)
+    this.judgeFatherFun   =this.judgeFatherFun.bind(this)
   }  
   //根据选择业务类型跳转页面
   handleUrl = (val) => {
@@ -59,12 +61,15 @@ class EnhancedTable extends React.Component {
       this.fetchTemplate()
     })
   }
+  judgeFatherFun(){
+    judge = true
+    this.fetchTemplate()
+  }
   //根据签单人查询
   handleValue = (val) => {
     this.setState({ valueInput: val }, () => {
       this.fetchTemplate()
     })
-
   }
   //按钮搜索查询
   handleSearch = (val) => {
@@ -108,6 +113,7 @@ class EnhancedTable extends React.Component {
   }
   //根据点击查询列表
   postParentId(e){
+       judge = false
        if(e !== undefined && e !== ''){
         let Neweparent = e.key.substring(e.key.lastIndexOf("/")+1)
         this.setState({
@@ -124,13 +130,17 @@ class EnhancedTable extends React.Component {
       followUpVo.append("pageSize", this.state.rowsPerPage)
       followUpVo.append("signPerson", this.state.valueInput)
       let NewUsrl = ''
-      if(staffId != '' && staffId !=null && staffId != undefined ){
-        NewprocessUrl = staffId
-      } 
-      if(NewprocessUrl != '' && NewprocessUrl !=null && NewprocessUrl != undefined ){
-         NewUsrl = this.state.processUrl + '?departmentId=' + NewprocessUrl
+      if(judge == true){
+        NewUsrl = this.state.processUrl
       }else{
-         NewUsrl = this.state.processUrl
+        if(staffId != '' && staffId !=null && staffId != undefined ){
+          NewprocessUrl = staffId
+        } 
+        if(NewprocessUrl != '' && NewprocessUrl !=null && NewprocessUrl != undefined ){
+           NewUsrl = this.state.processUrl + '?departmentId=' + NewprocessUrl
+        }else{
+           NewUsrl = this.state.processUrl
+        }
       }
       fetch(SERVER_URL  + NewUsrl , { 
         mode: "cors",
@@ -189,7 +199,7 @@ class EnhancedTable extends React.Component {
           <Toolbar>
           <div className="QueryFollowUpProcess">
             <div className="QueryFollowUpProcessInto" >
-              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} />
+              <QueryFollowUpProcess map={this.state.map} handleUrl={this.handleUrl} handleValue={this.handleValue} handleSearch={this.handleSearch} NewresponseData={this.state.NewresponseData} judgeFatherFun={this.judgeFatherFun} />
             </div>
           </div>
           </Toolbar> 

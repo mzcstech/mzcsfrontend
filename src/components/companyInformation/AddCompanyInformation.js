@@ -125,7 +125,7 @@ class AddTemplate extends React.Component {
         e.preventDefault();
         let file = e.target.files[0];
         let formdata = new FormData();
-        formdata.append('xls', file);
+        formdata.append('xlsx', file);
         for (var value of formdata.values()) {
           if(value.name.substring(value.name.length-3) =='xls' ){
             fetch(SERVER_URL + '/companyInformation/importBusinessExcel',{
@@ -138,7 +138,7 @@ class AddTemplate extends React.Component {
             }).then(res => res.json())
             
                  .then((res) => {
-                    console.log(res)
+                    console.log(res,'xlsx')
                     this.setState({
                         message:'上传成功',
                         open:true
@@ -157,7 +157,7 @@ class AddTemplate extends React.Component {
         e.preventDefault();
         let file = e.target.files[0];
         let formdata = new FormData();
-        formdata.append('xls', file);
+        formdata.append('xlsx', file);
         for (var value of formdata.values()) {
             if(value.name.substring(value.name.length-3) =='xls' ){
                 fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{

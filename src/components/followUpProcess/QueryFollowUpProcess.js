@@ -5,6 +5,8 @@ import Badge from '@material-ui/core/Badge';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
 import './styles/FollowUpProcess.css'
 
 //模糊查询
@@ -21,6 +23,9 @@ class QueryTemplate extends Component {
             processUrl:'/commerce/listProcessByUser',
             companyName:''
         }
+        this.handjudge = this.handjudge.bind(this)
+        this.handValueChange = this.handValueChange.bind(this)
+        this.handsearchBth = this.handsearchBth.bind(this)
     }
 
     //根据选择业务类型跳转页面
@@ -36,9 +41,11 @@ class QueryTemplate extends Component {
     }
 
     handsearchBth(){   
-            this.props.handleValue(this.state.companyName)
+        this.props.handleValue(this.state.companyName)
     }
-
+    handjudge(){
+        this.props.judgeFatherFun()
+    }
     render() {
         return ( 
             <div className="box">
@@ -72,11 +79,13 @@ class QueryTemplate extends Component {
                             aria-label="工商变更"
                         />} label="工商变更" />
                         <Badge className="number" badgeContent={this.props.map.gShangChangeNum} color="secondary"></Badge>
+                       
                 </div>
+                <Button onClick={this.handjudge} variant="contained" color="primary" style={{whiteSpace:'nowrap',marginLeft:'10px'}} >查看当前账号</Button>
                 <div style={{position:'absolute',right:'30px',display:'flex'}}>
                     <Input  className="Input"  value={this.state.companyName} onChange={this.handValueChange} placeholder="签单人搜索" />
                     <div className="Separate"></div>
-                    <Button onClick={this.handsearchBth} variant="contained" color="primary" >搜索</Button>
+                    <Button onClick={this.handValueChange} variant="contained" color="primary" >搜索</Button>
                 </div>
             </div>
         )
