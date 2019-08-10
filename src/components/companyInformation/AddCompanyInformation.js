@@ -126,25 +126,28 @@ class AddTemplate extends React.Component {
         let file = e.target.files[0];
         let formdata = new FormData();
         formdata.append('xlsx', file);
-        console.log(formdata,'formdata')
         for (var value of formdata.values()) {
-            console.log(value);
+          if(value.name.substring(value.name.length-4) =='xlsx' ){
+            fetch(SERVER_URL + '/companyInformation/importBusinessExcel',{
+                method: 'POST',
+                body: formdata,
+                credentials: 'include',
+                headers: {
+                    "Accept": "*/*"
+                },
+            }).then(res => res.json())
+                 .then((res) => {
+                    this.setState({
+                        message:'上传成功',
+                        open:true
+                    })
+            })
+            .catch(error => console.log(error));
+          }else{
+            alert('必须上传后缀为.xlsx文件')
+           
+          }
         }
-        fetch(SERVER_URL + '/companyInformation/importBusinessExcel',{
-            method: 'POST',
-            body: formdata,
-            credentials: 'include',
-            headers: {
-                "Accept": "*/*"
-            },
-        }).then(res => res.json())
-             .then((res) => {
-                this.setState({
-                    message:'上传成功',
-                    open:true
-                })
-        })
-          .catch(error => console.log(error));
     };
     //上传财务excel
     uploadFinanceexcel(e){
@@ -154,23 +157,27 @@ class AddTemplate extends React.Component {
         formdata.append('xlsx', file);
         console.log(formdata,'formdata')
         for (var value of formdata.values()) {
-            console.log(value);
+            if(value.name.substring(value.name.length-4) =='xlsx' ){
+                fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{
+                    method: 'POST',
+                    body: formdata,
+                    credentials: 'include',
+                    headers: {
+                        "Accept": "*/*"
+                    },
+                }).then(res => res.json())
+                    .then((res) => {
+                    this.setState({
+                        message:'上传成功',
+                        open:true
+                    })            
+                })
+                  .catch(error => console.log(error));
+            }else{
+                alert('必须上传后缀为.xlsx文件')
+            }
         }
-        fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{
-            method: 'POST',
-            body: formdata,
-            credentials: 'include',
-            headers: {
-                "Accept": "*/*"
-            },
-        }).then(res => res.json())
-            .then((res) => {
-            this.setState({
-                message:'上传成功',
-                open:true
-            })            
-        })
-          .catch(error => console.log(error));
+       
     };
     render() {
         return (

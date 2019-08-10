@@ -10,7 +10,7 @@ import followUpProcess from './components/followUpProcess/FollowUpProcess'
 import Original from './components/original/Original'
 import OriginalProcessRecords from './components/original/OriginalProcessRecords'
 import PrivilegeManagement from './components/privilegeManagement/PrivilegeManagement'
-import privilegeSubordinate from './components/privilegeSubordinate/PrivilegeSubordinate'
+import PrivilegeSubordinate from './components/privilegeSubordinate/PrivilegeSubordinate'
 import SocialSecurity from './components/socialsecurity/SocialSecurity'
 import ViewSocialSecurity from './components/socialsecurity/ViewSocialSecurity'
 import HousingFund from './components/housingFund/HousingFund'
@@ -30,7 +30,7 @@ export default props => (
           <Route exact path='/Original' component={Original} />
           <Route exact path='/OriginalProcessRecords' component={OriginalProcessRecords} />
           <Route exact path='/PrivilegeManagement' component={PrivilegeManagement} />
-          <Route exact path='/privilegeSubordinate' component={privilegeSubordinate} />
+          <Route exact path='/PrivilegeSubordinate' component={PrivilegeSubordinate} />
           <Route exact path='/socialSecurity' component={SocialSecurity}/>
           <Route exact path='/viewSocialSecurity/:socialSecurityId' component ={ViewSocialSecurity}/>
           <Route exact path='/housingFund' component={HousingFund}/>

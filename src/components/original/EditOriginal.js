@@ -54,7 +54,6 @@ class EditOriginal extends React.Component {
 
         .then((response) => response.json())
         .then(res =>{
-            console.log(res.data,'res.data')
             this.setState({
                 singleElectionData:res.data
             })

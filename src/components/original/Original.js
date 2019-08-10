@@ -72,6 +72,7 @@ class EnhancedTable extends React.Component {
     };
     this.editTemplate = this.editTemplate.bind(this)
     // this.batchimport = this.batchimport.bind(this)
+    this.JudgeReturnValue = this.JudgeReturnValue.bind(this)
   }
   // 保存id
   componentWillMount(){
@@ -272,15 +273,18 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
-
+  //判断返回值
+  JudgeReturnValue=(value)=>{
+    console.log(value,'value')
+  }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
     let NewUrl =  this.state.href.replace('/Original',"") + '/companyInformation'
     let linkStyle = { backgroundColor: '#303f9f', color: '#ffffff', height: '36px' }
-    
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    console.log(data,'data')
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
@@ -349,13 +353,15 @@ class EnhancedTable extends React.Component {
                     > 
                       <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
-                      <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus}>{n.originalHoldStatus}</TableCell>
+                      <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus==='0'?'无':n.originalHoldStatus==='1'?'在客户处':n.originalHoldStatus==='2'?'在公司内部':''}>
+                        {n.originalHoldStatus=='0'?'无':n.originalHoldStatus=='1'?'在客户处':n.originalHoldStatus=='2'?'在公司内部':''}
+                      </TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" >
                         {this.state.QX.edit == "1" ? (
                           <EditOriginal editTemplate={this.editTemplate} id={n.originalId} originalName={n.originalName} />
                         ) : (
-                            <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
+                          <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none"><OriginalProcessRecords id={n.originalId} originalName={n.originalName} /></TableCell>

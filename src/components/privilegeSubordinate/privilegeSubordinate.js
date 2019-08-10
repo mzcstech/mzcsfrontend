@@ -73,7 +73,7 @@ const styles = theme => ({
       },
   });
  
-  class privilegeSubordinate extends React.Component {
+  class PrivilegeSubordinate extends React.Component {
     constructor(props){
         super(props)
         this.state = {
@@ -191,7 +191,7 @@ const styles = theme => ({
         )
     }
 }
-privilegeSubordinate.propTypes = {
+PrivilegeSubordinate.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles, { withTheme: true })(privilegeSubordinate);
+export default withStyles(styles, { withTheme: true })(PrivilegeSubordinate);
