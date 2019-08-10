@@ -12,7 +12,7 @@ const { Option } = Select;
 class AddTemplate extends React.Component {
 
     constructor(props) {
-        super(props);
+        super(props); 
         this.state = {
             customerId: '',
             remark: '',
@@ -144,6 +144,7 @@ class AddTemplate extends React.Component {
                         open:true
                     })
                     formdata=""
+                    this.props.fetchTemplate()
             })
             .catch(error => console.log(error));
           }else{
@@ -173,7 +174,8 @@ class AddTemplate extends React.Component {
                         message:'上传成功',
                         open:true
                     })
-                    formdata=""            
+                    formdata=""        
+                    this.props.fetchTemplate()    
                 })
                   .catch(error => console.log(error));
             }else{
