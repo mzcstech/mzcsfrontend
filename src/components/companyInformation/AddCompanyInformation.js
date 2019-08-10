@@ -125,9 +125,9 @@ class AddTemplate extends React.Component {
         e.preventDefault();
         let file = e.target.files[0];
         let formdata = new FormData();
-        formdata.append('xlsx', file);
+        formdata.append('xls', file);
         for (var value of formdata.values()) {
-          if(value.name.substring(value.name.length-4) =='xlsx' ){
+          if(value.name.substring(value.name.length-3) =='xls' ){
             fetch(SERVER_URL + '/companyInformation/importBusinessExcel',{
                 method: 'POST',
                 body: formdata,
@@ -136,15 +136,18 @@ class AddTemplate extends React.Component {
                     "Accept": "*/*"
                 },
             }).then(res => res.json())
+            
                  .then((res) => {
+                    console.log(res)
                     this.setState({
                         message:'上传成功',
                         open:true
                     })
+                    formdata=""
             })
             .catch(error => console.log(error));
           }else{
-            alert('必须上传后缀为.xlsx文件')
+            alert('必须上传后缀为.xls文件')
            
           }
         }
@@ -154,10 +157,9 @@ class AddTemplate extends React.Component {
         e.preventDefault();
         let file = e.target.files[0];
         let formdata = new FormData();
-        formdata.append('xlsx', file);
-        console.log(formdata,'formdata')
+        formdata.append('xls', file);
         for (var value of formdata.values()) {
-            if(value.name.substring(value.name.length-4) =='xlsx' ){
+            if(value.name.substring(value.name.length-3) =='xls' ){
                 fetch(SERVER_URL + '/companyInformation/importFinanceExcel',{
                     method: 'POST',
                     body: formdata,
@@ -170,11 +172,12 @@ class AddTemplate extends React.Component {
                     this.setState({
                         message:'上传成功',
                         open:true
-                    })            
+                    })
+                    formdata=""            
                 })
                   .catch(error => console.log(error));
             }else{
-                alert('必须上传后缀为.xlsx文件')
+                alert('必须上传后缀为.xls文件')
             }
         }
        
@@ -239,8 +242,12 @@ class AddTemplate extends React.Component {
                     style={{ width: 300, color: 'green' }}
                     open={this.state.open}
                     onClose={this.handleClose}
-                    autoHideDuration={1500}
+                    autoHideDuration={3000}
                     message={this.state.message}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                    }}
                 />
             </div>
         );
