@@ -62,7 +62,7 @@ class LoanOriginal extends React.Component {
                 mode: "cors",
                 method: 'POST',
                 credentials: 'include',
-                headers: {
+                headers: { 
                     'Accept': 'application/json,text/plain,*/*'
                 },
                 body: original
