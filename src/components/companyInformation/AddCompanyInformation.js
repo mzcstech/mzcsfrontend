@@ -227,7 +227,7 @@ class AddTemplate extends React.Component {
                                     <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
                                 </div>
                         </div>
-                    </form>
+                    </form> 
                 </SkyLight>
                 <div className="addexcel">
                     <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={() => this.refs.addDialog.show()}>新增</Button>

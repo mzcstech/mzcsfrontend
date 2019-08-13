@@ -5,8 +5,10 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
 import Snackbar from '@material-ui/core/Snackbar';
+import { Select } from 'antd';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import Input from '@material-ui/core/Input';
+const { Option } = Select;
 class LoanOriginal extends React.Component {
     constructor(props) {
         super(props);
@@ -20,11 +22,16 @@ class LoanOriginal extends React.Component {
             originalHolder:''
 
         };
+        this.hanmeSelscet = this.hanmeSelscet.bind(this)
     }
     handleChange = (event) => {
         this.setState(
             { [event.target.name]: event.target.value }
         );
+    }
+    hanmeSelscet(value){
+        this.setState({originalOutTo :`${value}`},()=>{ 
+        })
     }
     //提示框
     handleClose = (event, reason) => {
@@ -167,12 +174,12 @@ class LoanOriginal extends React.Component {
                                     <TextField className="InputBox-next" placeholder="originalName"  name="originalName"  value={this.state.originalName} />
                                 </div>
                                 <div className="InputBox">                                    
-                                    <FormLabel className="InputBox-text">当前原件持有人:</FormLabel>
+                                    <FormLabel className="InputBox-text" style={{width:"35%"}}>当前原件持有人:</FormLabel>
                                     <TextField className="InputBox-next" placeholder="originalHolder"  name="originalHolder" value={this.state.originalHolder} />
                                 </div>
                                 <div className="InputBox">                                   
                                     <FormLabel className="InputBox-text">借出对象:</FormLabel>
-                                    <NativeSelect     
+                                    {/* <NativeSelect     
                                         style={{width:'70%'}}                                    
                                         native
                                         value={this.state.originalOutTo}
@@ -186,8 +193,25 @@ class LoanOriginal extends React.Component {
                                             return (<option value={item.username}>{item.name}</option>)
                                         })
                                         }
-                                    </NativeSelect >
-
+                                    </NativeSelect > */}
+                                    <Select
+                                    className="InputBox-next"
+                                    showSearch
+                                    style={{height:'30px',marginTop:'14px'}}
+                                    placeholder="可输入搜索内容"
+                                    optionFilterProp="children"
+                                    onChange={this.hanmeSelscet}
+                                    onSearch={this.onSearch}
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    }
+                                    >
+                                    {this.state.userList.map(item => {
+                                        return (<Option  value={item.username}>{item.name}</Option>)
+                                    })
+                                    }  
+                                 </Select>
                                 </div>
                             </div>
                             <div className="button" style={{ position: 'absolute,botton:20px' }}>
