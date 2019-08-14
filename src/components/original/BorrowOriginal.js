@@ -129,7 +129,7 @@ class LoanOriginal extends React.Component {
                                     <TextField className="InputBox-next"  placeholder="originalName"  name="originalName"  value={this.state.originalName} />
                                 </div>
                                 <div className="InputBox">                                    
-                                    <FormLabel className="InputBox-text">当前原件持有人:</FormLabel>
+                                    <FormLabel className="InputBox-text" style={{width:"35%"}}>当前原件持有人:</FormLabel>
                                     <TextField className="InputBox-next"   placeholder="originalHolder" name="originalHolder"  value={this.state.originalHolder} />
                                 </div>
                                 <div className="InputBox">                                     
