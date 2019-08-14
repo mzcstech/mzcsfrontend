@@ -62,7 +62,7 @@ class LoanOriginal extends React.Component {
                 mode: "cors",
                 method: 'POST',
                 credentials: 'include',
-                headers: {
+                headers: { 
                     'Accept': 'application/json,text/plain,*/*'
                 },
                 body: original
@@ -184,7 +184,8 @@ class LoanOriginal extends React.Component {
     }
     //显示弹框
     handleClose = (event) => {
-        this.setOpen(false);
+        event.preventDefault();
+        this.refs.editDialog.show();
         
     }
     render() {
@@ -192,8 +193,7 @@ class LoanOriginal extends React.Component {
         //alert(this.state.TEMPLATE_CHECKBOX)     
         return (
             <div>
-             <Dialog open={this.state.open} onClose={this.handleClose} fullWidth={this.state.fullWidth}
-                    maxWidth={this.state.maxWidth} aria-labelledby="form-dialog-title">
+              <SkyLight hideOnOverlayClicked ref="editDialog">
                     <h3>确认页面</h3>
                     <form>
                         <div className="OutermostBox">
@@ -223,7 +223,7 @@ class LoanOriginal extends React.Component {
                             </div>
                         </div>
                     </form>
-            </Dialog>
+                </SkyLight>
                 <Button variant="contained" color="primary" onClick={this.findById}>确认</Button>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}

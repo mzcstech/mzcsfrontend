@@ -65,6 +65,7 @@ class EnhancedTable extends React.Component {
       display_outgoingCount: 'none',
       display_toBeConfirmedCount: 'none',
     };
+    this.fetchTemplate = this.fetchTemplate.bind(this)
   }
   componentWillMount() {
     this.companyInformationGetCount()
@@ -412,7 +413,7 @@ class EnhancedTable extends React.Component {
 
                       </TableCell>
                     </TableRow>
-                  );
+                  ); 
                 })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>

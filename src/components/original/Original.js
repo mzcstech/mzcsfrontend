@@ -373,7 +373,7 @@ class EnhancedTable extends React.Component {
                           )}
                       </TableCell>
                       <TableCell className="TableCell" align="center" padding="none">
-                        {n.hasLoanInAuthorized ? (
+                        {n.hasLoanInAuthorized ? ( 
                           <BorrowOriginal id={n.originalId} fetchTemplate={this.fetchTemplate} />
                         ) : (
                             <Button size="small" style={linkReadonlyStyle} variant="text" disabled="true" >借入</Button>
