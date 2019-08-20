@@ -200,3 +200,13 @@
        color: #252525;
        margin-top:3px;
    }
+   .upload{
+       border:1px solid #31B0d5;
+       border-radius: 4px;
+       height:32px;
+       width:70px;
+       text-align:center;
+       line-height:32px;
+       margin-left:10px;
+       color: #31B0d5;
+   }

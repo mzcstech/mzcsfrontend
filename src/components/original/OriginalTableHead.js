@@ -18,6 +18,8 @@ disablePadding：控制padding
 
 const rows = [
     { id: 'companyName', numeric: false, disablePadding: true, label: '原件名称' },
+    { id: 'originalAmount', numeric: false, disablePadding: true, label: '原件数量' },
+    { id: 'originalAmount', numeric: false, disablePadding: true, label: '原件类型' },
     { id: 'originalListString', numeric: true, disablePadding: false, label: '当前持有人' },
     { id: 'tEMPLATE_SELECT', numeric: true, disablePadding: false, label: '持有状态' },
     { id: 'remark', numeric: true, disablePadding: false, label: '备注' },

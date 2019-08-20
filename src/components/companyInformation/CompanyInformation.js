@@ -66,13 +66,14 @@ class EnhancedTable extends React.Component {
       display_toBeConfirmedCount: 'none',
     };
     this.fetchTemplate = this.fetchTemplate.bind(this)
+    this.showCompanyNumber = this.showCompanyNumber.bind(this)
   }
   componentWillMount() {
     this.companyInformationGetCount()
   }
   componentDidMount = () => {
     this.fetchTemplate();
-    this.showhide()
+    this.showCompanyNumber()
   }
   //提示框的显示判断
   handleClose = (event, reason) => {
@@ -220,6 +221,24 @@ class EnhancedTable extends React.Component {
     })
   }
 
+  //显示公司数量
+  showCompanyNumber(){
+    fetch(SERVER_URL + '/companyInformation/getCompanyCount', {
+      mode: "cors",
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Accept': '*/*'
+       },
+    })
+    .then(res => res.json())
+    .then((res) => {
+        // this.setState({
+        //     userList: res.data
+        // });                
+    })
+      .catch(err => console.error(err));
+  }
   //分页
   fetchTemplate = (companyName, originalHolder, originalOutStatus) => {
     this.setState({
@@ -299,10 +318,6 @@ class EnhancedTable extends React.Component {
     this.state.rowsPerPage = event.target.value;
     this.fetchTemplate();
   };
-  //提示数字信息显示判断
-  showhide() {
-
-  }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {    
     let companyInformationgetCount = this.state.companyInformationgetCount
@@ -385,7 +400,7 @@ class EnhancedTable extends React.Component {
                       tabIndex={-1}
                       key={n.tEMPLATE_ID}
                     >
-                      <TableCell className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
+                      <TableCell  className="TableCellCUM" component="th" scope="row" align="center" padding="none" title={n.companyName}>{n.companyName}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalListString}>{n.originalListString}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.originalInformation}>{n.originalInformation}</TableCell>
                       <TableCell className="TableCellCUM" align="center" padding="none" title={n.remark}>{n.remark}</TableCell>
@@ -397,13 +412,13 @@ class EnhancedTable extends React.Component {
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >查看</Button>
                           )}
                       </TableCell>
-                      <TableCell className="TableCellCUM" align="center" padding="none">
+                      {/* <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.edit == "1" ? (
                           <EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={n.companyInformationId} />
                         ) : (
                             <Button size="small" style={linkStyle} variant="text" disabled="true" >修改</Button>
                           )}
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className="TableCellCUM" align="center" padding="none">
                         {this.state.QX.del == "1" ? (
                           <Button size="small" style={linkStyle} variant="text" color="primary" onClick={() => { this.confirmDelete(n.companyInformationId) }}>删除</Button>

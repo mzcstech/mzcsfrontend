@@ -160,9 +160,6 @@
     .TableCellCUM:nth-last-child(3){
         width:4%;
     }
-    .TableCellCUM:nth-last-child(4){
-        width:4%;
-    }
     .TableCellProcessRecordsTop{
         padding:0 2px;
         border-top:2px solid #EDEDED;

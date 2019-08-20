@@ -205,7 +205,6 @@ class EnhancedTable extends React.Component {
   }
   //分页
   fetchTemplate = () => {
-
     let originalQueryVo = new FormData();
     originalQueryVo.append("companyInformationId", this.state.companyInformationId)
     originalQueryVo.append("pageNum", this.state.page + 1)
@@ -351,7 +350,11 @@ class EnhancedTable extends React.Component {
                       key={n.originalId}
                       selected={isSelected}
                     > 
-                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName}>{n.originalName}</TableCell>
+                      <TableCell  className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalName !="" && n.originalName !=null ? n.originalName:n.otherBusiness!="" && n.otherBusiness !=null?n.otherBusiness:n.otherFinance!="" && n.otherBusiness !=null?n.otherFinance:""}>
+                         {n.originalName !="" && n.originalName !=null ? n.originalName:n.otherBusiness!="" && n.otherBusiness !=null?n.otherBusiness:n.otherFinance!="" && n.otherFinance !=null ? n.otherFinance:""}
+                      </TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalAmount}>{n.originalAmount}</TableCell>
+                      <TableCell className="TableCell" component="th" scope="row" align="center" padding="none" title={n.originalType}>{n.originalType =='0'?'其它原件':n.originalType=='1'?'工商原件':n.originalType=='2'?"财务原件":''}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHolder}>{n.originalHolder}</TableCell>
                       <TableCell className="TableCell" align="center" padding="none" title={n.originalHoldStatus==='0'?'无':n.originalHoldStatus==='1'?'在客户处':n.originalHoldStatus==='2'?'在公司内部':''}>
                         {n.originalHoldStatus=='0'?'无':n.originalHoldStatus=='1'?'在客户处':n.originalHoldStatus=='2'?'在公司内部':''}

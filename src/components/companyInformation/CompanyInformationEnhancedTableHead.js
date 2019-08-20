@@ -40,15 +40,15 @@ const rows = [
         Cell: ({ row }) =>
             (<ViewCompanyInformation fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} ></ViewCompanyInformation>)
     },
-    {
-        id: 'updatePagebutton',
-        numeric: false,
-        disablePadding: false,
-        label: '修改',
+    // {
+    //     id: 'updatePagebutton',
+    //     numeric: false,
+    //     disablePadding: false,
+    //     label: '修改',
 
-        Cell: ({ row }) =>
-            (<EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)
-    },
+    //     Cell: ({ row }) =>
+    //         (<EditCompanyInformation editTemplate={this.editTemplate} fetchTemplate={this.fetchTemplate} templeteId={row.tEMPLATE_ID} />)
+    // },
     {
         id: 'delbutton',
         numeric: false,

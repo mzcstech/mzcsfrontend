@@ -23,6 +23,7 @@ class AddTemplate extends React.Component {
         this.handChangecorporatename = this.handChangecorporatename.bind(this)
         this.uploadBusinessexcel     = this.uploadBusinessexcel.bind(this)
         this.uploadFinanceexcel      = this.uploadFinanceexcel.bind(this)
+        this.uploadBusiness          = this.uploadBusiness.bind(this)
     }
     //提示框
     handleClose = (event, reason) => {
@@ -184,6 +185,21 @@ class AddTemplate extends React.Component {
         }
        
     };
+    //下载excel模板
+    uploadBusiness(event){
+        event.preventDefault();
+        event.stopPropagation();
+            fetch(SERVER_URL + '/companyInformation/business-excel-modle',
+            {
+              mode: "cors",
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                "Accept": "*/*"
+              }
+            }
+          )
+    }
     render() {
         return (
             <div>
@@ -229,16 +245,43 @@ class AddTemplate extends React.Component {
                         </div>
                     </form> 
                 </SkyLight>
+                <SkyLight style={{position:'relative'}} hideOnOverlayClicked ref="Upload">
+                    <h3 className="title">原件管理上传-下载</h3>
+                    <div className="OutermostBox">
+                    <div className="tow-row">
+                        <div className="addexcel" style={{width:'50%'}}>
+                            <div>导入工商原件:</div>
+                            <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadBusinessexcel} />
+                        </div>
+                        <div className="addexcel" style={{width:'50%'}}>
+                            <div>导入财务原件:</div>
+                            <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadFinanceexcel} />
+                        </div>
+                    </div>
+                    <div className="addexcel" style={{marginTop:'10px'}} >
+                        <div className="addexcel" style={{width:'50%'}}>
+                            <div>工商原件模板下载:</div>
+                            {/* <a className="upload"  href={SERVER_URL + "/E:/project_code/CDCXH1/target/classes/filed/businessModle.xls"} download="businessModle.xls">点击下载</a> */}
+                            {/* <div  className="upload" onClick={this.uploadBusiness}>点击下载</div> */}
+                        </div>
+                        <div className="addexcel" style={{width:'50%'}}>
+                            <div>财务原件模板下载:</div>
+                            {/* <a className="upload" href={SERVER_URL + "/companyInformation/finance-excel-modle" } >点击下载</a> */}
+                        </div>
+                    </div>
+                     </div>
+                </SkyLight>
                 <div className="addexcel">
                     <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={() => this.refs.addDialog.show()}>新增</Button>
-                    <div className="addexcel">
+                    <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={() => this.refs.Upload.show()}>上传下载原件模板</Button>
+                    {/* <div className="addexcel">
                         <div>导入工商原件:</div>
                         <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadBusinessexcel} />
                     </div>
                     <div className="addexcel">
                         <div>导入财务原件:</div>
                         <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadFinanceexcel} />
-                    </div>
+                    </div> */}
                 </div>
                 <Snackbar
                     style={{ width: 300, color: 'green' }}
