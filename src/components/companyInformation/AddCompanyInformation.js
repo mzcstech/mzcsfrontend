@@ -12,7 +12,7 @@ const { Option } = Select;
 class AddTemplate extends React.Component {
 
     constructor(props) {
-        super(props); 
+        super(props);
         this.state = {
             customerId: '',
             remark: '',
@@ -139,13 +139,12 @@ class AddTemplate extends React.Component {
             }).then(res => res.json())
             
                  .then((res) => {
-                    console.log(res,'xlsx')
+                    console.log(res)
                     this.setState({
                         message:'上传成功',
                         open:true
                     })
                     formdata=""
-                    this.props.fetchTemplate()
             })
             .catch(error => console.log(error));
           }else{
@@ -175,8 +174,7 @@ class AddTemplate extends React.Component {
                         message:'上传成功',
                         open:true
                     })
-                    formdata=""        
-                    this.props.fetchTemplate()    
+                    formdata=""            
                 })
                   .catch(error => console.log(error));
             }else{
