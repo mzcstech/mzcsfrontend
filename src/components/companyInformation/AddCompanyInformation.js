@@ -9,6 +9,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 // import { Input } from 'material-ui-icons';
 require('./styles/CompanyInformation.css')
 const { Option } = Select;
+
 class AddTemplate extends React.Component {
 
     constructor(props) {
@@ -187,16 +188,34 @@ class AddTemplate extends React.Component {
     uploadBusiness(event){
         event.preventDefault();
         event.stopPropagation();
-            fetch(SERVER_URL + '/companyInformation/business-excel-modle',
-            {
-              mode: "cors",
-              method: 'POST',
-              credentials: 'include',
-              headers: {
-                "Accept": "*/*"
-              }
-            }
-          )
+        fetch(SERVER_URL + '/companyInformation/business-excel-modle',
+        {
+            mode: "cors",
+            method: 'POST',
+            credentials: 'include',
+        //   body: window.JSON.stringify(params),
+            headers: new Headers({
+            'Content-Type': 'application/x-www-form-urlencoded'
+        })
+        })
+        // .then(res => res.json())
+        .then((res) => {
+            console.log(res,'data')       
+        })
+        // .then((response)=>{
+        //     response.blob().then(blob=>{
+        //         const aLink = document.createElement('a');
+        //     document.body.appendChild(aLink);
+        //     aLink.style.display='none';
+        //     const objectUrl = window.URL.createObjectURL(blob);
+        //     aLink.href = objectUrl;
+        //     aLink.download = fileName;
+        //     aLink.click();
+        //     document.body.removeChild(aLink);
+        // })
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
     }
     render() {
         return (
@@ -256,18 +275,18 @@ class AddTemplate extends React.Component {
                             <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadFinanceexcel} />
                         </div>
                     </div>
-                    <div className="addexcel" style={{marginTop:'10px'}} >
+                    {/* <div className="addexcel" style={{marginTop:'10px'}} >
                         <div className="addexcel" style={{width:'50%'}}>
                             <div>工商原件模板下载:</div>
-                            {/* <a className="upload"  href={SERVER_URL + "/E:/project_code/CDCXH1/target/classes/filed/businessModle.xls"} download="businessModle.xls">点击下载</a> */}
-                            {/* <div  className="upload" onClick={this.uploadBusiness}>点击下载</div> */}
+                            <a className="upload" href="blob:http://192.168.50.45:8082/ac8b5412-c510-4685-b505-827386b6fd83" id='a_id'>点击下载</a>
+                            <div  className="upload" onClick={this.uploadBusiness}>点击下载</div>
                         </div>
                         <div className="addexcel" style={{width:'50%'}}>
                             <div>财务原件模板下载:</div>
-                            {/* <a className="upload" href={SERVER_URL + "/companyInformation/finance-excel-modle" } >点击下载</a> */}
+                            <a className="upload" href={SERVER_URL + "/companyInformation/finance-excel-modle" } >点击下载</a>
                         </div>
+                    </div> */}
                     </div>
-                     </div>
                 </SkyLight>
                 <div className="addexcel">
                     <Button variant="contained" color="primary" style={{ 'margin': '10px' }} onClick={() => this.refs.addDialog.show()}>新增</Button>
