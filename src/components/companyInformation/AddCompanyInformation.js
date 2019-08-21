@@ -1,6 +1,7 @@
 import React from 'react';
 import SkyLight from 'react-skylight';
 import { SERVER_URL } from '../../constants.js'
+import { UPLOAD_URL } from './excle/33.txt'
 import { Select } from 'antd';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -18,7 +19,8 @@ class AddTemplate extends React.Component {
             customerId: '',
             remark: '',
             error:false,
-            corporateData:[]
+            corporateData:[],
+            url:""
         };
         this.corporatename = this.corporatename.bind(this)
         this.handChangecorporatename = this.handChangecorporatename.bind(this)
@@ -190,34 +192,30 @@ class AddTemplate extends React.Component {
         event.stopPropagation();
         fetch(SERVER_URL + '/companyInformation/business-excel-modle',
         {
-            mode: "cors",
+            mode: "no-cors",
             method: 'POST',
             credentials: 'include',
         //   body: window.JSON.stringify(params),
-            headers: new Headers({
-            'Content-Type': 'application/x-www-form-urlencoded'
-        })
+            headers: {
+                "Accept": "*/*"
+            },
         })
         // .then(res => res.json())
-        .then((res) => {
-            console.log(res,'data')       
+        .then((response) => {
+            response.blob().then(blob=>{
+                const aLink = document.createElement('a');
+                document.body.appendChild(aLink);
+                aLink.style.display='none';
+                const objectUrl = window.URL.createObjectURL(blob);
+                aLink.href = objectUrl;
+                aLink.download = "businessModle.xls";
+                aLink.click();
+                document.body.removeChild(aLink);
+            })    
         })
-        // .then((response)=>{
-        //     response.blob().then(blob=>{
-        //         const aLink = document.createElement('a');
-        //     document.body.appendChild(aLink);
-        //     aLink.style.display='none';
-        //     const objectUrl = window.URL.createObjectURL(blob);
-        //     aLink.href = objectUrl;
-        //     aLink.download = fileName;
-        //     aLink.click();
-        //     document.body.removeChild(aLink);
-        // })
-        // }).catch((error) => {
-        //     console.log(error);
-        // });
     }
     render() {
+        console.log(this.state.url)
         return (
             <div>
                 <SkyLight style={{position:'relative'}} hideOnOverlayClicked ref="addDialog">
@@ -275,17 +273,17 @@ class AddTemplate extends React.Component {
                             <input style={{color:'#31b0d5',height:'36px',paddingLeft:'10px'}} type="file" name="pic" id="pic" onChange={this.uploadFinanceexcel} />
                         </div>
                     </div>
-                    {/* <div className="addexcel" style={{marginTop:'10px'}} >
+                    <div className="addexcel" style={{marginTop:'10px'}} >
                         <div className="addexcel" style={{width:'50%'}}>
                             <div>工商原件模板下载:</div>
-                            <a className="upload" href="blob:http://192.168.50.45:8082/ac8b5412-c510-4685-b505-827386b6fd83" id='a_id'>点击下载</a>
+                            {/* <a className="upload" href={this.state.url} download="businessModle.xls">点击下载a</a> */}
                             <div  className="upload" onClick={this.uploadBusiness}>点击下载</div>
                         </div>
                         <div className="addexcel" style={{width:'50%'}}>
-                            <div>财务原件模板下载:</div>
-                            <a className="upload" href={SERVER_URL + "/companyInformation/finance-excel-modle" } >点击下载</a>
+                            {/* <div>财务原件模板下载:</div> */}
+                            {/* <a className="upload" href={SERVER_URL + "/companyInformation/finance-excel-modle" } >点击下载</a> */}
                         </div>
-                    </div> */}
+                    </div>
                     </div>
                 </SkyLight>
                 <div className="addexcel">
