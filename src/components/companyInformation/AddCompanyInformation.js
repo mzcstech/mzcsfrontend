@@ -186,30 +186,27 @@ class AddTemplate extends React.Component {
        
     };
     //下载excel模板
-    uploadBusiness(event){
-        event.preventDefault();
-        event.stopPropagation();
+    uploadBusiness(){
         fetch(SERVER_URL + '/companyInformation/business-excel-modle',
         {
             mode: "no-cors",
-            method: 'POST',
+            method: 'get',
             credentials: 'include',
-        //   body: window.JSON.stringify(params),
-            headers: {
-                "Accept": "*/*"
-            },
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            }),
         })
-        // .then(res => res.json())
         .then((response) => {
             response.blob().then(blob=>{
-                const aLink = document.createElement('a');
-                document.body.appendChild(aLink);
-                aLink.style.display='none';
-                const objectUrl = window.URL.createObjectURL(blob);
-                aLink.href = objectUrl;
-                aLink.download = "businessModle.xls";
-                aLink.click();
-                document.body.removeChild(aLink);
+            const aLink = document.createElement('a');
+            const objectUrl = window.URL.createObjectURL(blob);
+            document.body.appendChild(aLink);
+            aLink.style.display='none';
+            aLink.href = objectUrl ;
+            aLink.download = "businessModle.xls";
+            aLink.click();
+            window.URL.revokeObjectURL(objectUrl);
+            document.body.removeChild(aLink);
             })    
         })
     }
@@ -274,9 +271,9 @@ class AddTemplate extends React.Component {
                     </div>
                     <div className="addexcel" style={{marginTop:'10px'}} >
                         <div className="addexcel" style={{width:'50%'}}>
-                            <div>工商原件模板下载:</div>
-                            {/* <a className="upload" href={this.state.url} download="businessModle.xls">点击下载a</a> */}
-                            <div  className="upload" onClick={this.uploadBusiness}>点击下载</div>
+                            {/* <div>工商原件模板下载:</div> */}
+                            {/* <a className="upload" href="./excle/businessModle.xls" download="businessModle.xls">点击下载a</a> */}
+                            {/* <div  className="upload" onClick={this.uploadBusiness}>点击下载</div> */}
                         </div>
                         <div className="addexcel" style={{width:'50%'}}>
                             {/* <div>财务原件模板下载:</div> */}
