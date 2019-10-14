@@ -229,7 +229,6 @@ class AddTemplate extends React.Component {
         personinformations.forEach((obj)=>{           
             // str='{"personName":"'+obj.personName+'","idCardNumber":"'+obj.idCardNumber
             // +'","gongzi":"'+obj.gongzi+'","telephone":"'+obj.telephone+'","personType":"'+obj.personType+'","remark":"'+obj.remark+'"}';
-
             var personObj={
                 personName:obj.personName,
                 idCardNumber:obj.idCardNumber,
@@ -254,7 +253,6 @@ class AddTemplate extends React.Component {
         if (this.state.companyName != '') {
             templateVo = {
                 companyName: this.state.companyName,
-
                 customer: this.state.customer,
                 customerPhone: this.state.customerPhone,//客户联系方式                
                 address: this.state.address,//注册地址

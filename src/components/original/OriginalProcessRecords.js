@@ -87,7 +87,6 @@ class OriginalProcessRecords extends React.Component {
                     <DialogContentText>
                             <TableHead>
                                 <TableRow >
-                                    <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="原件名称">原件名称</TableCell>
                                     <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="原件持有人">原件持有人</TableCell>
                                     <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="借出时间">借出时间</TableCell>
                                     <TableCell style={{color:'black',fontSize:'16px'}} className="TableCellProcessRecordsTop" align="center" padding="none" title="借入人">借入人</TableCell>

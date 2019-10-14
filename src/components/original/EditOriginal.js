@@ -51,7 +51,6 @@ class EditOriginal extends React.Component {
           },
         }
       )
-
         .then((response) => response.json())
         .then(res =>{
             this.setState({

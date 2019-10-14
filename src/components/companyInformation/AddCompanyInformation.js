@@ -151,7 +151,6 @@ class AddTemplate extends React.Component {
             .catch(error => console.log(error));
           }else{
             alert('必须上传后缀为.xls文件')
-           
           }
         }
     };

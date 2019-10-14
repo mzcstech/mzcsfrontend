@@ -53,7 +53,7 @@ class LoanOriginal extends React.Component {
                 originalHolder:this.state.originalHolder,
                 originalId:this.state.originalId
             };
-        
+    
             this.loanOut(original);
             this.refs.editDialog.hide();
             this.setState({
