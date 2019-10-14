@@ -60,7 +60,6 @@ class AddTemplate extends React.Component {
     // Save car and close modal form
     handleSubmit = (event) => {
         event.preventDefault();
-   
             this.props.addTemplate(this.state.originalInformations);
             // this.refs.addDialog.hide();
             this.setState({
@@ -81,103 +80,29 @@ class AddTemplate extends React.Component {
         })
     }
     
-    
-    //点击新增一行信息
-    getPersonInformation= () =>{
-        let arr = this.state.personDoms;
-        arr.push(++addline);
-        this.setState({
-            personDoms: arr
-        })
-    }
-    //点击删除一行信息
-    deleteOriginalInformation = (index, personDoms) => {
-        let arr = [];
-        personDoms.forEach((obj) => {
-            if (obj == index) {
-            } else {
-                arr.push(obj)
-            }   
-        })
-        this.setState({
-            personDoms: arr
-        })
-    }
     render() {    
+    
         let link2Style = { backgroundColor: '#31b0d5', width:'69px',color: '#ffffff', height: '36px', position:'relative',zIndex:'99' }
         let linkReadonlyStyle = { backgroundColor: '#303F9F', color: '#ffffff', height: '36px',poistion:'relative', }
         return (
             <div>
-                <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} 
-                            maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
+                <Dialog open={this.state.openDialog} fullWidth={this.state.fullWidth} maxWidth={this.state.maxWidth} ref="editDialog" aria-labelledby="form-dialog-title">
                     <h3 className="title">原件管理-新增</h3>
-                    <div className="totleDisplay">
-                        <Button  style={linkReadonlyStyle}  variant="outlined" color="secondary" onClick={this.getPersonInformation}>添加</Button>
-                    </div>
                     <form>
-                        {/* <div className="OutermostBox">                        
-                        <div className="tow-row">
-                            <div className="InputBox">
-                                <FormLabel className="InputBox-text">原件名称:</FormLabel>
-                                <NativeSelect      
-                                    style={{ width:'70%'}}
-                                    value={this.state.originalName}
-                                    onChange={this.handleChange}
-                                    name='originalName' 
-                                    input={<Input name="name" id="name" />}
-                                    >
-                                    <option value="" /> 
-                                    {this.state.userList.map(item => {
-                                        return (<option value={item.name}>{item.name}</option>)
-                                    })
-                                    }
-                                </NativeSelect>
-                            </div>            
-                        <div className="singleElection">
-                            <div className="singleElection-text">持有状态:</div>
-                            <div className="singleElection-next">
-                                {this.state.singleElectionData.map(item=>{
-                                    
-                                    return (    
-                                        <FormControlLabel control={
-                                        <Radio
-                                            checked={this.state.originalHoldStatus  === item.bianma}
-                                            key={item.dictionariesId}
-                                            onChange={this.handleChangeRodio}
-                                            value={item.bianma}
-                                            name={item.bianma}
-                                            aria-label={item.name}
-                                        />} label={item.name} />
-                                        )
-                                    })  
-                                }
-                            </div>
-                         </div>                         
-                      </div>
-                        <div className="textDomain">    
-                            <TextField className="textDomain-class" label="备注" placeholder="备注" multiline={true} rows={2}
-                                name="remark" value={this.state.remark} onChange={this.handleChange} />
+                        <div className="" style={{margin:'0 auto'}}>
+                                {this.state.personDoms.map((item) =>
+                                    <OriginalInformation key={item} index={item} personDoms={this.state.personDoms} deleteOriginalInformation={this.deleteOriginalInformation}
+                                    savedata={this.savedata} companyInformationId={this.state.companyInformationId}></OriginalInformation>
+                                )}
                         </div>
-                        <div className="button">
-                            <Button className="button-class"  variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
-                            <Button className="button-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
-                        </div>    
-                </div> */}
-                            <div className="" style={{margin:'0 auto'}}>
-                                
-                                        {this.state.personDoms.map((item) =>
-                                            <OriginalInformation key={item} index={item} personDoms={this.state.personDoms} deleteOriginalInformation={this.deleteOriginalInformation}
-                                            savedata={this.savedata}></OriginalInformation>
-                                        )}
-                            </div>
-                            <div style={{paddingTop:'40px',width:'100%',textAlign:'center',paddingBottom:'20px'}}>
-                                <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
-                                <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
-                            </div>
+                        <div style={{paddingTop:'40px',width:'100%',textAlign:'center',paddingBottom:'20px'}}>
+                            <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.handleSubmit}>保存</Button>
+                            <Button className="Generalbutton-class" variant="outlined" color="secondary" onClick={this.cancelSubmit}>取消</Button>
+                        </div>
                     </form>
                 </Dialog> 
                 <div >
-                    {/* <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>新增</Button> */}
+                    <Button  variant="contained" color="primary" style={{ 'margin': '10px',zIndex:'99' }} onClick={this.showAdd}>新增</Button>
                     {/* <Button size="small" style={link2Style} variant="text" disabled="true" onClick={this.batchimport} >批量导入</Button> */}
                 </div>
                 <Snackbar

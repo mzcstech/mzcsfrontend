@@ -107,26 +107,12 @@ class EnhancedTable extends React.Component {
     this.setState({ open: false });
   };
   // 新增
-  addTemplate(params) {
- 
-    var person =[];
-    params.map((item)=>{
-      var personObj = {
-        companyInformationId:conpanameID,
-        originalName:item.originalName,
-        originalHoldStatus:item.bianma,
-        remark:item.remark
-      }
-      //JSON.stringify(personObj)
-      if(!person.personObj){
-        person.push(personObj);
-      }
-      
-    })
+  addTemplate(paramObj) {
+    let person = []
+    person.push(paramObj)
     let param1=  JSON.stringify(person);
-    
-     let param = new FormData()
-     param.append("param",param1)
+    let param = new FormData()
+    param.append("param",param1)
     fetch(SERVER_URL + '/original/save',
       {
         mode: "cors",
@@ -274,7 +260,7 @@ class EnhancedTable extends React.Component {
   };
   //判断返回值
   JudgeReturnValue=(value)=>{
-    console.log(value,'value')
+
   }
   isSelected = id => this.state.selected.indexOf(id) !== -1;
   render() {
@@ -283,7 +269,6 @@ class EnhancedTable extends React.Component {
     let linkReadonlyStyle = { backgroundColor: 'D1D1D1', color: '#A2A7B0', height: '36px' }
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    console.log(data,'data')
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, this.state.total - page * rowsPerPage);
     const currentPath = this.props.location.pathname;
     return (
@@ -292,12 +277,11 @@ class EnhancedTable extends React.Component {
         {/* <div className={classes.tableWrapper}>  
           <font>原件详情列表</font>
         </div> */}
-
         <AppBar style={{height:'60px'}} position="static"  color="default" className={classes.appBar}>
             <Toolbar style={{paddingLeft:'10px'}}>
               <Fab href={NewUrl} size="small" variant="extended" color="primary" aria-label="Add" style={{background:'#2196F3'}}>
                 <NavigationIcon className={classes.extendedIcon} />
-                返回
+                  返回
               </Fab>
             <Typography style={{ paddingLeft: '40px' }} variant="h7" color="inherit" noWrap>
               原件详情列表 : {this.state.companyName}
@@ -307,17 +291,12 @@ class EnhancedTable extends React.Component {
         <Grid container>
           <div className="QueryTemplate">
             <Grid item>
-           
               {this.state.QX.add == "1" ? (
-                <AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId} />
-               
+                <AddOriginal addTemplate={this.addTemplate} fetchTemplate={this.fetchTemplate} companyInformationId={this.state.companyInformationId}  />
               ) : (
                   <Button size="small" style={linkStyle} variant="text" disabled="true"  >新增</Button>
-                 
-                )}
-               
+              )}
             </Grid>
-            
           </div>
          
         </Grid>

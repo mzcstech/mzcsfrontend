@@ -26,7 +26,7 @@ class OriginalInformation extends React.Component {
             userList:[],
             singleElectionData:[],
             id:'',
-            originalInformations:[]
+            originalInformation:[]
         }
         this.getValue(props);
     }
@@ -88,51 +88,42 @@ class OriginalInformation extends React.Component {
         this.findByName()
     }
     handleChange = (event) => {
-        let id = event.target.id;
         let originalInformation = {};
         this.setState({ [event.target.name]: event.target.value }, () => {
             originalInformation = {
+                companyInformationId:this.props.companyInformationId,
                 originalName: this.state.originalName,
-                bianma: this.state.bianma,
+                originalHoldStatus: this.state.bianma,
                 remark: this.state.remark,
-                id: id
             };
-        
-        originalInformations.push(originalInformation)
-        if(originalInformations.length>0){
-            let hasObj = false;//数组是否存在对象
-            originalInformations.forEach((item) =>{
-                if(item.id == originalInformation.id){
-                     hasObj = true;
-                    //如果存在，替换数组对象 
-                    originalInformations.splice(originalInformations.findIndex(item => item.id === originalInformation.id), 1)
-                    originalInformations.push(originalInformation)
-                }
-            })
-            if (!hasObj) {
-                originalInformations.push(originalInformation)
-            }else{
-                originalInformations.push(originalInformation)
-            }
-        }
+
+        // originalInformations.push(originalInformation)
+        // if(originalInformations.length>0){
+        //     let hasObj = false;//数组是否存在对象
+        //     originalInformations.forEach((item) =>{
+        //         if(item.id == originalInformation.id){
+        //              hasObj = true;
+        //             //如果存在，替换数组对象 
+        //             originalInformations.splice(originalInformations.findIndex(item => item.id === originalInformation.id), 1)
+        //             originalInformations.push(originalInformation)
+        //         }
+        //     })
+        //     if (!hasObj) {
+        //         originalInformations.push(originalInformation)
+        //     }else{
+        //         originalInformations.push(originalInformation)
+        //     }
+        // }
         
         this.setState({
-            originalInformations:originalInformations
+            originalInformation:originalInformation
         },()=>{
-            this.props.savedata(this.state.originalInformations)
+            this.props.savedata(this.state.originalInformation)
         })
         }
         );
     }
 
-    //删除一行
-    delete = (index) => {
-        if(this.state.originalInformations.length > 0){
-            var originalInformations = this.state.originalInformations;
-            originalInformations.splice(originalInformations.findIndex(item => item.id === index), 1);   
-            this.props.deleteOriginalInformation(index, this.props.personDoms);
-        }
-    }
 
 render() {
     let linkStyle = { backgroundColor: '#D9534f', color: '#ffffff', height: '36px',marginTop:'1%',marginLeft:'3%'};    
@@ -181,7 +172,7 @@ render() {
                 <div style={{width:"100%",display:'flex'}}>
                     <TextField style={{width:'70%',marginLeft:'10%'}}  label="备注" placeholder="备注" multiline={true} rows={2}
                     name="remark" value={this.state.remark} onChange={this.handleChange} id={this.props.index} />
-                       <Button size="small" style={linkStyle} id={this.props.index} variant="text" color="primary" onClick={() => { this.delete(this.props.index) }}>删除</Button>
+                    
                  </div>
               </div>
     )
